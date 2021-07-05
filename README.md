@@ -25,4 +25,4 @@ README inspired by [cnrad](https://github.com/cnrad)
 
 
 <img src="https://github-readme-stats.vercel.app/api?username=callumok2004&layout=compact&theme=dark&include_all_commits=true&show_icons=true&count_private=true" align="left" />
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=callumok2004&layout=compact&theme=dark&langs_count=10" align="right" />
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=callumok2004&layout=compact&theme=dark&langs_count=10" align="left" />
