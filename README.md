@@ -13,7 +13,7 @@
   - React/Next.js
   - HTML, CSS, Javascript
 
-- 🛠 Backend (learning):
+- 🛠 Backend:
   - Node.js
   - MongoDB
   - MySQL
