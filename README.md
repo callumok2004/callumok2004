@@ -7,7 +7,7 @@
 </a>
 
                                                                                    
-### 16, Fullstack Developer.
+### 17, Fullstack Developer.
 
 - 🖥️ Frontend:
   - React/Next.js
