@@ -21,6 +21,7 @@
 
 \
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fcallumok2004&count_bg=%230263A4&title_bg=%23002D53&icon=github.svg&icon_color=%23FFFFFF&title=visits&edge_flat=true)](https://hits.seeyoufarm.com)
+![Hits](https://hits.link/hits?url=https://github.com/callumok2004)
 
 README inspired by [cnrad](https://github.com/cnrad)
 
