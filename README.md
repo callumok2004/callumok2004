@@ -5,8 +5,7 @@
 <a href="https://discord.com/users/705665813994012695">
   <img src="https://lanyard-profile-readme.vercel.app/api/506899274748133376" align="right" />
 </a>
-
-                                                                                   
+                                                                              
 ### 17, Fullstack Developer.
 
 - 🖥️ Frontend:
