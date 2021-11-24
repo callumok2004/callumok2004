@@ -19,10 +19,12 @@
   },
   "deepscan.enable": true,
   "deepscan.ignorePatterns": [
+
     "**/node_modules/**"
   ],
   "deepscan.ignoreRules": [
-    "ASSIGN_SAME_VALUE"
+    "ASSIGN_SAME_VALUE",
+    "MISMATCHED_TYPE_OF_ARG"
   ],
   "discord.detailsEditing": "📁 {file_name} • {dir_name} • {workspace}",
   "discord.lowerDetailsEditing": "✏ Line: {current_line}/{total_lines} • Col: {current_column}",
@@ -39,6 +41,7 @@
   "editor.minimap.showSlider": "always",
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
+  "editor.formatOnSave": true,
   "emeraldwalk.runonsave": {
     "commands": [
       {
@@ -50,6 +53,12 @@
   },
   "files.autoSave": "onWindowChange",
   "git.enableSmartCommit": true,
+  "github.copilot.enable": {
+    "*": false,
+    "markdown": false,
+    "plaintext": false,
+    "yaml": false
+  },
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "importSorter.importStringConfiguration.quoteMark": "double",
   "importSorter.importStringConfiguration.tabSize": 2,
@@ -94,7 +103,7 @@
   "VSCodeCounter.outputAsCSV": false,
   "VSCodeCounter.outputAsText": false,
   "window.title": "${activeEditorShort}${separator}${rootName} • VSCode",
-  "window.zoomLevel": -2,
   "workbench.colorTheme": "Min Dark",
-  "workbench.iconTheme": "material-icon-theme"
+  "workbench.iconTheme": "material-icon-theme",
+  "window.zoomLevel": -2
 }
