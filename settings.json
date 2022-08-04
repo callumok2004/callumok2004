@@ -1,12 +1,10 @@
 {
   "[css]": {
-    "editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
+    "editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter",
+    "editor.formatOnSave": false
   },
   "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  },
-  "[php]": {
-    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
   },
   "[scss]": {
     "editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
@@ -19,7 +17,6 @@
   },
   "deepscan.enable": true,
   "deepscan.ignorePatterns": [
-
     "**/node_modules/**"
   ],
   "deepscan.ignoreRules": [
@@ -27,13 +24,14 @@
     "MISMATCHED_TYPE_OF_ARG"
   ],
   "discord.detailsEditing": "📁 {file_name} • {dir_name} • {workspace}",
-  "discord.lowerDetailsEditing": "✏ Line: {current_line}/{total_lines} • Col: {current_column}",
+  "discord.lowerDetailsEditing": "📝 Line: {current_line}/{total_lines} • Col: {current_column}",
   "editor.bracketPairColorization.enabled": true,
   "editor.cursorBlinking": "expand",
   "editor.cursorSmoothCaretAnimation": true,
   "editor.cursorWidth": 5,
   "editor.fontFamily": "'Fira Code'",
   "editor.fontLigatures": true,
+  "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
   "editor.linkedEditing": true,
   "editor.minimap.maxColumn": 100,
@@ -41,31 +39,13 @@
   "editor.minimap.showSlider": "always",
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
-  "editor.formatOnSave": true,
-  "emeraldwalk.runonsave": {
-    "commands": [
-      {
-        "match": ".*",
-        "isShellCommand": false,
-        "cmd": "editor.action.formatDocument"
-      }
-    ]
-  },
   "files.autoSave": "onWindowChange",
   "git.enableSmartCommit": true,
-  "github.copilot.enable": {
-    "*": false,
-    "markdown": false,
-    "plaintext": false,
-    "yaml": false
-  },
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "importSorter.importStringConfiguration.quoteMark": "double",
   "importSorter.importStringConfiguration.tabSize": 2,
   "indentRainbow.colorOnWhiteSpaceOnly": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "markdown-preview-enhanced.automaticallyShowPreviewOfMarkdownBeingEdited": true,
-  "markdown-preview-enhanced.codeBlockTheme": "monokai.css",
   "php.validate.executablePath": "C:/Users/callu/Documents/php-8.0.9-nts-Win32-vs16-x64/php.exe",
   "security.workspace.trust.untrustedFiles": "open",
   "tabnine.experimentalAutoImports": true,
@@ -93,17 +73,75 @@
   },
   "terminal.integrated.scrollback": 10000,
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "VSCodeCounter.exclude": [
-    "**/.gitignore",
-    "**/.vscode/**",
-    "**/node_modules/**",
-    "**/.git/**"
-  ],
-  "VSCodeCounter.history": 1,
-  "VSCodeCounter.outputAsCSV": false,
-  "VSCodeCounter.outputAsText": false,
   "window.title": "${activeEditorShort}${separator}${rootName} • VSCode",
   "workbench.colorTheme": "Min Dark",
   "workbench.iconTheme": "material-icon-theme",
-  "window.zoomLevel": -2
+  "workbench.editor.wrapTabs": false,
+  "[lua]": {
+    "editor.defaultFormatter": "trixnz.vscode-lua"
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": false,
+    "plaintext": true,
+    "markdown": false,
+    "typescriptreact": true
+  },
+  "JSON-zain.json.autorefresh": true,
+  "rojo.pluginManagement": true,
+  "errorLens.fontFamily": "Fira Code",
+  "errorLens.gutterIconsEnabled": true,
+  "errorLens.scrollbarHackEnabled": true,
+  "errorLens.statusBarColorsEnabled": true,
+  "errorLens.statusBarIconsEnabled": true,
+  "errorLens.statusBarMessageEnabled": true,
+  "template-string-converter.addBracketsToProps": true,
+  "template-string-converter.autoRemoveTemplateString": true,
+  "template-string-converter.quoteType": "double",
+  "errorLens.excludePatterns": [
+    "**/*.{lua}"
+  ],
+  "files.associations": {
+    ".env": "code-text-binary"
+  },
+  "liveshare.connectionMode": "relay",
+  "glualint.linter": "C:\\Users\\callu\\Documents\\glualint-1.21.0-Windows\\glualint.exe",
+  "glualint.run": "manual",
+  "template-string-converter.validLanguages": [
+    "svelte",
+    "typescript",
+    "javascript",
+    "typescriptreact",
+    "javascriptreact"
+  ],
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [
+      80
+    ],
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false
+  },
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock",
+    "*.d.ts": "${capture}.d.ts",
+    ".env.*": ".env.${capture}"
+  },
+  "explorer.fileNesting.enabled": true,
+  "gitlens.detectNestedRepositories": true,
+  "js/ts.implicitProjectConfig.target": "ES2022",
+  "window.zoomLevel": -3,
+  "discord.detailsIdling": "https://callumdev.xyz",
+  "discord.lowerDetailsIdling": "https://zarpgaming.com",
+  "discord.smallImage": "GitHub - @callumok2004",
+  "discord.detailsDebugging": "🧪(DBG) {file_name} • {dir_name} • {workspace}"
 }
