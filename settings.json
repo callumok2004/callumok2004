@@ -68,7 +68,7 @@
       "source": "PowerShell"
     },
     "Windows PowerShell": {
-      "path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
     }
   },
   "terminal.integrated.scrollback": 10000,
