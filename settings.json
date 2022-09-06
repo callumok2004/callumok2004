@@ -4,7 +4,7 @@
     "editor.formatOnSave": false
   },
   "[javascript]": {
-    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[scss]": {
     "editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
@@ -139,9 +139,53 @@
   "explorer.fileNesting.enabled": true,
   "gitlens.detectNestedRepositories": true,
   "js/ts.implicitProjectConfig.target": "ES2022",
-  "window.zoomLevel": -3,
   "discord.detailsIdling": "https://callumdev.xyz",
   "discord.lowerDetailsIdling": "https://zarpgaming.com",
   "discord.smallImage": "GitHub - @callumok2004",
-  "discord.detailsDebugging": "🧪(DBG) {file_name} • {dir_name} • {workspace}"
+  "discord.detailsDebugging": "🧪(DBG) {file_name} • {dir_name} • {workspace}",
+  "sonarlint.disableTelemetry": true,
+  "sonarlint.rules": {
+    "php:S1125": {
+      "level": "off"
+    },
+    "php:S1075": {
+      "level": "off"
+    },
+    "php:S125": {
+      "level": "off"
+    },
+    "php:S121": {
+      "level": "off"
+    },
+    "php:S1192": {
+      "level": "off"
+    },
+    "Web:AvoidCommentedOutCodeCheck": {
+      "level": "off"
+    },
+    "php:S836": {
+      "level": "off"
+    },
+    "Web:ItemTagNotWithinContainerTagCheck": {
+      "level": "off"
+    },
+    "Web:BoldAndItalicTagsCheck": {
+      "level": "off"
+    },
+    "javascript:S1848": {
+      "level": "off"
+    },
+    "typescript:S6353": {
+      "level": "off"
+    }
+  },
+  "sonarlint.connectedMode.connections.sonarcloud": [
+    {
+      "organizationKey": "vscode",
+      "connectionId": "vscode"
+    }
+  ],
+  "window.zoomLevel": -3,
+  "editor.stickyScroll.enabled": true,
+  "window.commandCenter": true
 }
