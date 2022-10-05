@@ -109,4 +109,4 @@
 <a href="https://www.buymeacoffee.com/callumokane"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a>
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fcallumok2004&count_bg=%230263A4&title_bg=%23002D53&icon=github.svg&icon_color=%23FFFFFF&title=visits&edge_flat=true)](https://hits.seeyoufarm.com)
-![Hits](https://hits.link/hits?url=https://github.com/callumok2004)
+![Hits](https://hits-app.vercel.app/hits?url=https://github.com/callumok2004)
