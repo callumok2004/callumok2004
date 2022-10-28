@@ -39,6 +39,21 @@
   "editor.minimap.showSlider": "always",
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#1AffFF39",
+    "statusBar.foreground": "#fff",
+    "statusBar.noFolderBackground": "#212121",
+    "statusBar.noFolderForeground": "#fff",
+    "statusBar.debuggingBackground": "#ff0000",
+    "statusBar.debuggingForeground": "#fff",
+    "statusBar.debuggingBorder": "#ff0000",
+    "statusBarItem.hoverBackground": "#1AffFF39",
+    "statusBarItem.remoteForeground": "#fff",
+    "statusBarItem.errorBackground": "#ff0000",
+    "statusBarItem.errorForeground": "#fff",
+    "statusBarItem.warningBackground": "#ff3000",
+    "statusBarItem.warningForeground": "#fff",
+  },
   "files.autoSave": "onWindowChange",
   "git.enableSmartCommit": true,
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
@@ -177,6 +192,48 @@
     },
     "typescript:S6353": {
       "level": "off"
+    },
+    "typescript:S4326": {
+      "level": "off"
+    },
+    "php:S1808": {
+      "level": "off"
+    },
+    "php:S103": {
+      "level": "off"
+    },
+    "php:S4833": {
+      "level": "off"
+    },
+    "php:S2003": {
+      "level": "off"
+    },
+    "php:S1780": {
+      "level": "off"
+    },
+    "php:S1779": {
+      "level": "off"
+    },
+    "php:S113": {
+      "level": "off"
+    },
+    "php:S1784": {
+      "level": "off"
+    },
+    "php:S6353": {
+      "level": "off"
+    },
+    "php:S2681": {
+      "level": "off"
+    },
+    "typescript:S3358": {
+      "level": "off"
+    },
+    "typescript:S2310": {
+      "level": "off"
+    },
+    "typescript:S3776": {
+      "level": "off"
     }
   },
   "sonarlint.connectedMode.connections.sonarcloud": [
@@ -185,7 +242,19 @@
       "connectionId": "vscode"
     }
   ],
-  "window.zoomLevel": -3,
   "editor.stickyScroll.enabled": true,
-  "window.commandCenter": true
+  "window.commandCenter": true,
+  "git.confirmSync": false,
+  "php.suggest.basic": false,
+  "php.validate.enable": false,
+  "emmet.excludeLanguages": [
+    "markdown",
+    "php"
+  ],
+  "intelephense.format.enable": false,
+  "intelephense.maxMemory": 1024,
+  "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": true,
+  "intelephense.diagnostics.embeddedLanguages": false,
+  "git.autofetch": true,
+  "window.zoomLevel": -3
 }
