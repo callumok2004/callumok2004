@@ -12,13 +12,13 @@
     "repository": "https://github.com/bmewburn/vscode-intelephense.git"
   },
   "Dart": {
-    "version": "3.50.0",
+    "version": "3.54.1",
     "description": "Dart language support and debugger for Visual Studio Code.",
     "publisher": "Dart-Code",
     "repository": "https://github.com/Dart-Code/Dart-Code.git"
   },
   "Flutter": {
-    "version": "3.50.0",
+    "version": "3.54.0",
     "description": "Flutter support and debugger for Visual Studio Code.",
     "publisher": "Dart-Code",
     "repository": "https://github.com/Dart-Code/Flutter.git"
@@ -30,19 +30,19 @@
     "repository": "https://github.com/deepscan/vscode-deepscan.git"
   },
   "GitLens — Git supercharged": {
-    "version": "13.0.3",
+    "version": "13.1.1",
     "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
     "publisher": "eamodio",
     "repository": "https://github.com/gitkraken/vscode-gitlens.git"
   },
   "GitHub Copilot Labs": {
-    "version": "0.3.403",
+    "version": "0.4.488",
     "description": "Experimental features for GitHub Copilot",
     "publisher": "GitHub",
     "repository": "https://github.com/github/copilot-docs"
   },
   "GitHub Copilot Nightly": {
-    "version": "1.55.7138",
+    "version": "1.62.7529",
     "description": "Your AI pair programmer",
     "publisher": "GitHub",
     "repository": "N/A"
@@ -96,7 +96,7 @@
     "repository": "https://github.com/Microsoft/vscode-pwa.git"
   },
   "%extension.liveshare.displayName.title%": {
-    "version": "1.0.5750",
+    "version": "1.0.5788",
     "description": "%extension.liveshare.description.title%",
     "publisher": "ms-vsliveshare",
     "repository": "https://github.com/MicrosoftDocs/live-share"
@@ -106,6 +106,12 @@
     "description": "Highlight web colors in your editor",
     "publisher": "naumovs",
     "repository": "https://github.com/naumovs/vscode-ext-color-highlight.git"
+  },
+  "env-cmd-file-syntax": {
+    "version": "0.3.0",
+    "description": "syntax highlight in .env files",
+    "publisher": "Nixon",
+    "repository": "git@github.com:WellerQu/vscode-env-cmd-file-syntax.git"
   },
   "indent-rainbow": {
     "version": "8.3.1",
@@ -120,7 +126,7 @@
     "repository": "https://github.com/Penple03/skript-vscode.git"
   },
   "Material Icon Theme": {
-    "version": "4.21.0",
+    "version": "4.22.0",
     "description": "Material Design Icons for Visual Studio Code",
     "publisher": "PKief",
     "repository": "https://github.com/PKief/vscode-material-icon-theme.git"
@@ -132,34 +138,28 @@
     "repository": "https://github.com/sibiraj-s/vscode-scss-formatter.git"
   },
   "Code Time": {
-    "version": "2.6.33",
+    "version": "2.6.35",
     "description": "Code Time is an open source plugin that provides programming metrics right in Visual Studio Code.",
     "publisher": "softwaredotcom",
     "repository": "https://github.com/swdotcom/swdc-vscode"
   },
   "SonarLint": {
-    "version": "3.11.0",
+    "version": "3.12.0",
     "description": "SonarLint is an IDE extension that helps you detect and fix quality issues as you write code in C, C++, Java, JavaScript, PHP, Python, HTML and TypeScript.",
     "publisher": "SonarSource",
     "repository": "https://github.com/SonarSource/sonarlint-vscode.git"
   },
   "Lua": {
-    "version": "3.5.6",
+    "version": "3.6.4",
     "description": "Lua Language Server coded by Lua",
     "publisher": "sumneko",
     "repository": "https://github.com/sumneko/lua-language-server"
   },
   "Svelte for VS Code": {
-    "version": "106.2.0",
+    "version": "106.3.2",
     "description": "Svelte language support for VS Code",
     "publisher": "svelte",
     "repository": "https://github.com/sveltejs/language-tools.git"
-  },
-  "Tabnine AI": {
-    "version": "3.6.18",
-    "description": "JavaScript, Python, Java, Typescript & all other languages - AI Code completion plugin. Tabnine makes developers more productive by auto-completing their code.",
-    "publisher": "TabNine",
-    "repository": "https://github.com/codota/tabnine-vscode"
   },
   "Error Lens": {
     "version": "3.6.0",
@@ -173,12 +173,6 @@
     "publisher": "venner",
     "repository": "https://github.com/WilliamVenner/vscode-glua-enhanced.git"
   },
-  "%extension.title%": {
-    "version": "0.2.6",
-    "description": "%extension.description%",
-    "publisher": "VisualStudioExptTeam",
-    "repository": "https://github.com/MicrosoftDocs/intellicode"
-  },
   "IntelliCode": {
     "version": "1.2.29",
     "description": "%extension.description%",
@@ -186,7 +180,7 @@
     "repository": "https://github.com/MicrosoftDocs/intellicode"
   },
   "WakaTime": {
-    "version": "20.0.0",
+    "version": "22.1.0",
     "description": "Metrics, insights, and time tracking automatically generated from your programming activity.",
     "publisher": "WakaTime",
     "repository": "https://github.com/wakatime/vscode-wakatime.git"
