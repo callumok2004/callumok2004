@@ -64,7 +64,7 @@
   "php.validate.executablePath": "C:/Users/callu/Documents/php-8.0.9-nts-Win32-vs16-x64/php.exe",
   "security.workspace.trust.untrustedFiles": "open",
   "tabnine.experimentalAutoImports": true,
-  "terminal.integrated.defaultProfile.windows": "Windows PowerShell",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.fontFamily": "FiraCode Nerd Font",
   "terminal.integrated.profiles.windows": {
     "Command Prompt": {
@@ -234,6 +234,9 @@
     },
     "typescript:S3776": {
       "level": "off"
+    },
+    "php:S105": {
+      "level": "off"
     }
   },
   "sonarlint.connectedMode.connections.sonarcloud": [
@@ -256,5 +259,5 @@
   "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": true,
   "intelephense.diagnostics.embeddedLanguages": false,
   "git.autofetch": true,
-  "window.zoomLevel": -3
+  "window.zoomLevel": -2
 }
