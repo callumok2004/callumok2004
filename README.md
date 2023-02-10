@@ -1,9 +1,11 @@
-<h1 align="left">
+<h1 align="center">
   <img src="https://raw.githubusercontent.com/callumok2004/callumok2004/master/header.svg" alt="Hi there, I'm Callum" />
 </h1>
 
-* 🌍  I'm based in Ireland
-* 🖥️  See my portfolio at [callumdev.xyz](http://www.callumdev.xyz)
+<div align="center">
+  * 🌍  I'm based in Ireland
+  * 🖥️  See my portfolio at [callumdev.xyz](http://www.callumdev.xyz)
+</div>
 
 <p align="center">
   <a href="https://www.twitter.com/callumdev_" target="_blank" rel="noreferrer">
