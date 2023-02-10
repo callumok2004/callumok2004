@@ -19,12 +19,6 @@
   </a>
 </p>
 
-<h2 align="center">
-  Support
-</h2>
-
-<div align="center"><a href="https://www.buymeacoffee.com/callumokane"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a></div>
-
 <p align="center">
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="36" height="36" alt="Javascript" />
@@ -72,6 +66,12 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" width="36" height="36" alt="Figma" />
   </a>
 </p>
+
+<h2 align="center">
+  Support
+</h2>
+
+<div align="center"><a href="https://www.buymeacoffee.com/callumokane"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a></div>
 
 <h2 align="center">
   Socials
