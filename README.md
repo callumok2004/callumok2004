@@ -20,8 +20,10 @@
 </p>
 
 <h2 align="center">
-  Technologies
+  Support
 </h2>
+
+<div align="center"><a href="https://www.buymeacoffee.com/callumokane"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a></div>
 
 <p align="center">
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer">
@@ -105,10 +107,6 @@
 <a href="http://www.github.com/callumok2004" align="center"><img src="https://github-readme-streak-stats.herokuapp.com/?user=callumok2004&stroke=ffffff&background=1c1917&ring=3382ed&fire=3382ed&currStreakNum=ffffff&currStreakLabel=3382ed&sideNums=ffffff&sideLabels=ffffff&dates=ffffff&hide_border=true" /></a>
 
 <a href="https://github.com/callumok2004" align="center"><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=callumok2004&langs_count=10&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=1c1917&hide_border=true&locale=en&custom_title=Top%20%Languages" alt="Top Languages" /></a>
-
-### Support Me
-
-<a href="https://www.buymeacoffee.com/callumokane"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a>
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fcallumok2004&count_bg=%230263A4&title_bg=%23002D53&icon=github.svg&icon_color=%23FFFFFF&title=visits&edge_flat=true)](https://hits.seeyoufarm.com)
 ![Hits](https://hits-app.vercel.app/hits?url=https://github.com/callumok2004)
