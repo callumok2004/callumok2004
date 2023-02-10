@@ -8,8 +8,8 @@
 </div>
 
 <p align="center">
-  <a href="https://www.twitter.com/callumdev_" target="_blank" rel="noreferrer">
-    <img src="https://img.shields.io/twitter/follow/callumdev_?logo=twitter&style=for-the-badge&color=3382ed&labelColor=1c1917" />
+  <a href="https://www.twitter.com/CallumDEV_" target="_blank" rel="noreferrer">
+    <img src="https://img.shields.io/twitter/follow/CallumDEV_?logo=twitter&style=for-the-badge&color=3382ed&labelColor=1c1917" />
   </a>
  
  <a href="https://www.github.com/callumok2004" target="_blank" rel="noreferrer">
