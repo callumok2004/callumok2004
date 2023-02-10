@@ -3,8 +3,8 @@
 </h1>
 
 <div align="center">
-  * 🌍  I'm based in Ireland
-  * 🖥️  See my portfolio at [callumdev.xyz](http://www.callumdev.xyz)
+  * 🌍  I'm based in Ireland <br/>
+  * 🖥️  See my portfolio at http://www.callumdev.xyz <br/>
 </div>
 
 <p align="center">
