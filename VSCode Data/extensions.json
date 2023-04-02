@@ -6,43 +6,55 @@
     "repository": "https://github.com/aeschli/vscode-css-formatter"
   },
   "PHP Intelephense": {
-    "version": "1.8.2",
+    "version": "1.9.5",
     "description": "PHP code intelligence for Visual Studio Code",
     "publisher": "bmewburn",
     "repository": "https://github.com/bmewburn/vscode-intelephense.git"
   },
   "Dart": {
-    "version": "3.54.1",
+    "version": "3.60.1",
     "description": "Dart language support and debugger for Visual Studio Code.",
     "publisher": "Dart-Code",
     "repository": "https://github.com/Dart-Code/Dart-Code.git"
   },
   "Flutter": {
-    "version": "3.54.0",
+    "version": "3.60.0",
     "description": "Flutter support and debugger for Visual Studio Code.",
     "publisher": "Dart-Code",
     "repository": "https://github.com/Dart-Code/Flutter.git"
   },
   "DeepScan": {
-    "version": "1.54.0",
+    "version": "1.56.0",
     "description": "Detect bugs and quality issues in JavaScript, TypeScript, React and Vue.js more precisely",
     "publisher": "DeepScan",
     "repository": "https://github.com/deepscan/vscode-deepscan.git"
   },
   "GitLens — Git supercharged": {
-    "version": "13.1.1",
+    "version": "13.4.0",
     "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
     "publisher": "eamodio",
     "repository": "https://github.com/gitkraken/vscode-gitlens.git"
   },
+  "Rojo - Roblox Studio Sync": {
+    "version": "2.1.2",
+    "description": "Rojo for VS Code",
+    "publisher": "evaera",
+    "repository": "N/A"
+  },
+  "Kotlin": {
+    "version": "0.2.26",
+    "description": "Smart code completion, debugging, linting, syntax highlighting and more for Kotlin",
+    "publisher": "fwcd",
+    "repository": "https://github.com/fwcd/vscode-kotlin.git"
+  },
   "GitHub Copilot Labs": {
-    "version": "0.4.488",
+    "version": "0.12.791",
     "description": "Experimental features for GitHub Copilot",
     "publisher": "GitHub",
     "repository": "https://github.com/github/copilot-docs"
   },
   "GitHub Copilot Nightly": {
-    "version": "1.62.7529",
+    "version": "1.78.10605",
     "description": "Your AI pair programmer",
     "publisher": "GitHub",
     "repository": "N/A"
@@ -53,11 +65,11 @@
     "publisher": "icrawl",
     "repository": "https://github.com/iCrawl/discord-vscode.git"
   },
-  "Template String Converter": {
-    "version": "0.6.0",
-    "description": "Converts a string to a template string when ${ is typed",
-    "publisher": "meganrogge",
-    "repository": "https://github.com/meganrogge/template-string-converter"
+  "Kotlin Language": {
+    "version": "1.7.1",
+    "description": "Kotlin language support for VS Code",
+    "publisher": "mathiasfrohlich",
+    "repository": "https://github.com/mathiasfrohlich/vscode-kotlin.git"
   },
   "Git Graph": {
     "version": "1.30.0",
@@ -66,7 +78,7 @@
     "repository": "https://github.com/mhutchie/vscode-git-graph.git"
   },
   "Auto Commit Message": {
-    "version": "0.25.0",
+    "version": "0.26.1",
     "description": "A VS Code extension to generate a smart commit message based on file changes",
     "publisher": "MichaelCurrin",
     "repository": "https://github.com/MichaelCurrin/auto-commit-msg"
@@ -89,6 +101,24 @@
     "publisher": "mrmlnc",
     "repository": "https://github.com/mrmlnc/vscode-scss"
   },
+  "isort": {
+    "version": "2022.8.0",
+    "description": "%extension.description%",
+    "publisher": "ms-python",
+    "repository": "https://github.com/microsoft/vscode-isort.git"
+  },
+  "Python": {
+    "version": "2023.6.0",
+    "description": "IntelliSense (Pylance), Linting, Debugging (multi-threaded, remote), Jupyter Notebooks, code formatting, refactoring, unit tests, and more.",
+    "publisher": "ms-python",
+    "repository": "https://github.com/Microsoft/vscode-python"
+  },
+  "Pylance": {
+    "version": "2023.3.40",
+    "description": "A performant, feature-rich language server for Python in VS Code",
+    "publisher": "ms-python",
+    "repository": "https://github.com/microsoft/pylance-release"
+  },
   "JavaScript Debugger": {
     "version": "1.72.1",
     "description": "An extension for debugging Node.js programs and Chrome.",
@@ -96,7 +126,7 @@
     "repository": "https://github.com/Microsoft/vscode-pwa.git"
   },
   "%extension.liveshare.displayName.title%": {
-    "version": "1.0.5788",
+    "version": "1.0.5834",
     "description": "%extension.liveshare.description.title%",
     "publisher": "ms-vsliveshare",
     "repository": "https://github.com/MicrosoftDocs/live-share"
@@ -126,43 +156,37 @@
     "repository": "https://github.com/Penple03/skript-vscode.git"
   },
   "Material Icon Theme": {
-    "version": "4.22.0",
+    "version": "4.25.0",
     "description": "Material Design Icons for Visual Studio Code",
     "publisher": "PKief",
     "repository": "https://github.com/PKief/vscode-material-icon-theme.git"
   },
+  "Trailing Spaces": {
+    "version": "0.4.1",
+    "description": "Highlight trailing spaces and delete them in a flash!",
+    "publisher": "shardulm94",
+    "repository": "https://github.com/shardulm94/vscode-trailingspaces.git"
+  },
   "SCSS Formatter": {
-    "version": "2.4.3",
+    "version": "2.4.5",
     "description": "%scssFormatter.description%",
     "publisher": "sibiraj-s",
     "repository": "https://github.com/sibiraj-s/vscode-scss-formatter.git"
   },
-  "Code Time": {
-    "version": "2.6.35",
-    "description": "Code Time is an open source plugin that provides programming metrics right in Visual Studio Code.",
-    "publisher": "softwaredotcom",
-    "repository": "https://github.com/swdotcom/swdc-vscode"
-  },
   "SonarLint": {
-    "version": "3.12.0",
+    "version": "3.16.0",
     "description": "SonarLint is an IDE extension that helps you detect and fix quality issues as you write code in C, C++, Java, JavaScript, PHP, Python, HTML and TypeScript.",
     "publisher": "SonarSource",
     "repository": "https://github.com/SonarSource/sonarlint-vscode.git"
   },
   "Lua": {
-    "version": "3.6.4",
+    "version": "3.6.18",
     "description": "Lua Language Server coded by Lua",
     "publisher": "sumneko",
-    "repository": "https://github.com/sumneko/lua-language-server"
-  },
-  "Svelte for VS Code": {
-    "version": "106.3.2",
-    "description": "Svelte language support for VS Code",
-    "publisher": "svelte",
-    "repository": "https://github.com/sveltejs/language-tools.git"
+    "repository": "https://github.com/LuaLS/lua-language-server"
   },
   "Error Lens": {
-    "version": "3.6.0",
+    "version": "3.8.0",
     "description": "Improve highlighting of errors, warnings and other language diagnostics.",
     "publisher": "usernamehw",
     "repository": "https://github.com/usernamehw/vscode-error-lens"
@@ -174,13 +198,13 @@
     "repository": "https://github.com/WilliamVenner/vscode-glua-enhanced.git"
   },
   "IntelliCode": {
-    "version": "1.2.29",
+    "version": "1.2.30",
     "description": "%extension.description%",
     "publisher": "VisualStudioExptTeam",
     "repository": "https://github.com/MicrosoftDocs/intellicode"
   },
   "WakaTime": {
-    "version": "22.1.0",
+    "version": "24.0.7",
     "description": "Metrics, insights, and time tracking automatically generated from your programming activity.",
     "publisher": "WakaTime",
     "repository": "https://github.com/wakatime/vscode-wakatime.git"
@@ -196,6 +220,12 @@
     "description": "Display import/require package size in the editor",
     "publisher": "wix",
     "repository": "https://github.com/wix/import-cost.git"
+  },
+  "PHP Debug": {
+    "version": "1.32.1",
+    "description": "Debug support for PHP with Xdebug",
+    "publisher": "xdebug",
+    "repository": "https://github.com/xdebug/vscode-php-debug.git"
   },
   "json": {
     "version": "2.0.2",
