@@ -23,11 +23,12 @@
     "ASSIGN_SAME_VALUE",
     "MISMATCHED_TYPE_OF_ARG"
   ],
+  "files.autoGuessEncoding": true,
   "discord.detailsEditing": "📁 {file_name} • {dir_name} • {workspace}",
   "discord.lowerDetailsEditing": "📝 Line: {current_line}/{total_lines} • Col: {current_column}",
   "editor.bracketPairColorization.enabled": true,
   "editor.cursorBlinking": "expand",
-  "editor.cursorSmoothCaretAnimation": true,
+  "editor.cursorSmoothCaretAnimation": "on",
   "editor.cursorWidth": 5,
   "editor.fontFamily": "'Fira Code'",
   "editor.fontLigatures": true,
@@ -61,7 +62,7 @@
   "importSorter.importStringConfiguration.tabSize": 2,
   "indentRainbow.colorOnWhiteSpaceOnly": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "php.validate.executablePath": "C:/Users/callu/Documents/php-8.0.9-nts-Win32-vs16-x64/php.exe",
+  "php.validate.executablePath": "C:/php/php.exe",
   "security.workspace.trust.untrustedFiles": "open",
   "tabnine.experimentalAutoImports": true,
   "terminal.integrated.defaultProfile.windows": "PowerShell",
@@ -100,7 +101,8 @@
     "yaml": false,
     "plaintext": true,
     "markdown": false,
-    "typescriptreact": true
+    "typescriptreact": true,
+    "php": true
   },
   "JSON-zain.json.autorefresh": true,
   "rojo.pluginManagement": true,
@@ -237,6 +239,42 @@
     },
     "php:S105": {
       "level": "off"
+    },
+    "php:S1142": {
+      "level": "off"
+    },
+    "php:S3358": {
+      "level": "off"
+    },
+    "typescript:S1848": {
+      "level": "off"
+    },
+    "typescript:S4624": {
+      "level": "off"
+    },
+    "typescript:S1121": {
+      "level": "off"
+    },
+    "typescript:S4325": {
+      "level": "off"
+    },
+    "php:S4830": {
+      "level": "off"
+    },
+    "php:S116": {
+      "level": "off"
+    },
+    "typescript:S5869": {
+      "level": "off"
+    },
+    "Web:S1827": {
+      "level": "off"
+    },
+    "Web:TableWithoutCaptionCheck": {
+      "level": "off"
+    },
+    "php:S117": {
+      "level": "off"
     }
   },
   "sonarlint.connectedMode.connections.sonarcloud": [
@@ -248,16 +286,26 @@
   "editor.stickyScroll.enabled": true,
   "window.commandCenter": true,
   "git.confirmSync": false,
-  "php.suggest.basic": false,
-  "php.validate.enable": false,
   "emmet.excludeLanguages": [
     "markdown",
     "php"
   ],
   "intelephense.format.enable": false,
-  "intelephense.maxMemory": 1024,
+  "intelephense.maxMemory": 2048,
   "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": true,
   "intelephense.diagnostics.embeddedLanguages": false,
   "git.autofetch": true,
+  "editor.accessibilitySupport": "off",
+  "php.debug.executablePath": "c:/php/php.exe",
+  "intelephense.runtime": "C:\\Program Files\\nodejs\\node.exe",
+  "intelephense.completion.maxItems": 200,
+  "editor.insertSpaces": false,
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "workbench.editorAssociations": {
+    "*.lua": "default",
+    "*.jpg": "imagePreview.previewEditor"
+  },
   "window.zoomLevel": -2
 }
