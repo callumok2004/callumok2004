@@ -41,8 +41,8 @@
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
   "workbench.colorCustomizations": {
-    "statusBar.background": "#1AffFF39",
-    "statusBar.foreground": "#fff",
+    "statusBar.background": "#c507ff96",
+    "statusBar.foreground": "#ffffff",
     "statusBar.noFolderBackground": "#212121",
     "statusBar.noFolderForeground": "#fff",
     "statusBar.debuggingBackground": "#ff0000",
@@ -92,7 +92,6 @@
   "window.title": "${activeEditorShort}${separator}${rootName} • VSCode",
   "workbench.colorTheme": "Min Dark",
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.editor.wrapTabs": false,
   "[lua]": {
     "editor.defaultFormatter": "trixnz.vscode-lua"
   },
@@ -275,6 +274,12 @@
     },
     "php:S117": {
       "level": "off"
+    },
+    "typescript:S6481": {
+      "level": "off"
+    },
+    "php:S1131": {
+      "level": "off"
     }
   },
   "sonarlint.connectedMode.connections.sonarcloud": [
@@ -307,5 +312,18 @@
     "*.lua": "default",
     "*.jpg": "imagePreview.previewEditor"
   },
-  "window.zoomLevel": -2
+  "[html]": {
+    "editor.defaultFormatter": "j69.ejs-beautify"
+  },
+  "window.zoomLevel": -2,
+  "diffEditor.maxComputationTime": 0,
+  "errorLens.statusBarIconsAlignment": "right",
+  "errorLens.statusBarMessageAlignment": "right",
+  "workbench.preferredHighContrastColorTheme": "Default Dark+ Experimental",
+  "workbench.tree.indent": 12,
+  "workbench.tree.renderIndentGuides": "always",
+  "workbench.view.alwaysShowHeaderActions": true,
+  "search.showLineNumbers": true,
+  "scm.alwaysShowRepositories": true,
+  "scm.providerCountBadge": "auto"
 }
