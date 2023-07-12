@@ -121,7 +121,7 @@
     ".env": "code-text-binary"
   },
   "liveshare.connectionMode": "relay",
-  "glualint.linter": "C:\\Users\\callu\\Documents\\glualint-1.21.0-Windows\\glualint.exe",
+  "glualint.linter": "C:\\Users\\callu\\OneDrive\\Documents\\glualint\\glualint.exe",
   "glualint.run": "manual",
   "template-string-converter.validLanguages": [
     "svelte",
@@ -280,6 +280,9 @@
     },
     "php:S1131": {
       "level": "off"
+    },
+    "typescript:S6544": {
+      "level": "off"
     }
   },
   "sonarlint.connectedMode.connections.sonarcloud": [
@@ -315,7 +318,6 @@
   "[html]": {
     "editor.defaultFormatter": "j69.ejs-beautify"
   },
-  "window.zoomLevel": -2,
   "diffEditor.maxComputationTime": 0,
   "errorLens.statusBarIconsAlignment": "right",
   "errorLens.statusBarMessageAlignment": "right",
@@ -325,5 +327,19 @@
   "workbench.view.alwaysShowHeaderActions": true,
   "search.showLineNumbers": true,
   "scm.alwaysShowRepositories": true,
-  "scm.providerCountBadge": "auto"
+  "scm.providerCountBadge": "auto",
+  "errorLens.excludeBySource": [
+    "sonarlint(Web:S5256)"
+  ],
+  "Lua.codeLens.enable": true,
+  "extensions.ignoreRecommendations": true,
+  "[kotlin]": {
+    "editor.defaultFormatter": "cstef.kotlin-formatter"
+  },
+  "[kotlinscript]": {
+    "editor.defaultFormatter": "cstef.kotlin-formatter"
+  },
+  "kotlin-formatter.ktlintPath": "C:/Users/callu/OneDrive/Documents/ktlint",
+  "gitlens.views.repositories.showIncomingActivity": true,
+  "window.zoomLevel": -2
 }
