@@ -22,6 +22,13 @@
 </p>
 
 <p align="center">
+  <img src="https://api.statusbadges.me/badge/status/506899274748133376?style=for-the-badge" alt="status">
+  <img src="https://api.statusbadges.me/badge/playing/506899274748133376?style=for-the-badge" alt="playing">
+  <img src="https://api.statusbadges.me/badge/vscode/506899274748133376?style=for-the-badge" alt="vscode">
+  <a href="https://api.statusbadges.me/openspotify/506899274748133376" target="_blank" rel="noopener"><img src="https://api.statusbadges.me/badge/spotify/506899274748133376?style=for-the-badge" alt="spotify"></a>
+</p>
+
+<p align="center">
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="36" height="36" alt="Javascript" />
   </a>
@@ -106,12 +113,10 @@
   </a>
 </p>
 
-<a href="http://www.github.com/callumok2004" align="center"><img src="https://github-readme-stats.vercel.app/api?username=callumok2004&show_icons=true&hide=&count_private=true&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=1c1917&hide_border=true&show_icons=true" alt="callumok2004's GitHub stats" />
-</a>
-
+<a href="http://www.github.com/callumok2004" align="center"><img src="https://github-readme-stats.vercel.app/api?username=callumok2004&show_icons=true&hide=&count_private=true&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=1c1917&hide_border=true&show_icons=true" alt="callumok2004's GitHub stats" /></a>
 <a href="http://www.github.com/callumok2004" align="center"><img src="https://github-readme-streak-stats.herokuapp.com/?user=callumok2004&stroke=ffffff&background=1c1917&ring=3382ed&fire=3382ed&currStreakNum=ffffff&currStreakLabel=3382ed&sideNums=ffffff&sideLabels=ffffff&dates=ffffff&hide_border=true" /></a>
 
-<a href="https://github.com/callumok2004" align="center"><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=callumok2004&langs_count=10&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=1c1917&hide_border=true&locale=en&custom_title=Top%20%Languages" alt="Top Languages" /></a>
+<p href="https://github.com/callumok2004" align="center"><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=callumok2004&langs_count=10&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=1c1917&hide_border=true&locale=en&custom_title=Top%20%Languages" alt="Top Languages" /></a>
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fcallumok2004&count_bg=%230263A4&title_bg=%23002D53&icon=github.svg&icon_color=%23FFFFFF&title=visits&edge_flat=true)](https://hits.seeyoufarm.com)
 ![Hits](https://hits-app.vercel.app/hits?url=https://github.com/callumok2004)
