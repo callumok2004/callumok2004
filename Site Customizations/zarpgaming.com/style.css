@@ -74,3 +74,7 @@ div#rt-mainbody {
   background-color: rgba(255, 255, 255, .1);
   box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 5px inset;
 }
+
+div#rt-page-surround {
+    min-height: 100vh;
+}
