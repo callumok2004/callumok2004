@@ -1,18 +1,23 @@
-document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
-document.body.style.backgroundImage = "url('https://1.bp.blogspot.com/-o5QvmlqxhqI/XysfTRXyCuI/AAAAAAAAZWU/Wsrc1EgGOJAigFTl-T9m1rbQHU4lpJg2ACLcBGAsYHQ/d/gradient-dark-blue.png')";
-document.body.style.backgroundPosition = "center";
-document.body.style.backgroundRepeat = "no-repeat";
-document.body.style.backgroundSize = "cover";
 
-var av = document.getElementsByClassName("klist-avatar");
-for (i = 0; i < av.length; i++) {
-  var arr = /https:\/\/zarpgaming\.com\/media\/kunena\/avatars\/resized\/size36\/users\/(.*)/.exec(av[i].src);
-  if (!arr) continue;
-  av[i].src = "https://zarpgaming.com/media/kunena/avatars/resized/size144/users/" + arr[1];
+
+function sLoad() {
+  document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
+  document.body.style.backgroundImage = "url('https://static.vecteezy.com/system/resources/previews/021/430/833/non_2x/abstract-colorful-dark-blue-and-purple-gradient-blurred-background-night-sky-gradient-blue-gradation-wallpaper-for-background-themes-abstract-background-in-purple-and-blue-tones-web-design-banner-vector.jpg')"
+  document.body.style.backgroundPosition = "center";
+  document.body.style.backgroundRepeat = "no-repeat";
+  document.body.style.backgroundSize = "cover";
+  
+  var av = document.getElementsByClassName("klist-avatar");
+  for (i = 0; i < av.length; i++) {
+    var arr = /https:\/\/zarpgaming\.com\/media\/kunena\/avatars\/resized\/size36\/users\/(.*)/.exec(av[i].src);
+    if (!arr) continue;
+    av[i].src = "https://zarpgaming.com/media/kunena/avatars/resized/size144/users/" + arr[1];
+  }
 }
+sLoad()
 
 function oloaded() {
-  console.log(arguments)
+  sLoad()
   document.querySelector("#rt-sidebar-a > div.rt-block.fp-menu.title1.rt-small-sidebar-title.nomargintop.nopaddingtop.visible-large > div > div.module-title")?.remove()
   //document.querySelector("#rt-header > div.rt-container > div.rt-grid-9.rt-omega > div > ul > li.item108.parent > a > i").innerHTML = "ZARP Perks"
 
