@@ -1,11 +1,76 @@
-.embedim-snow {
-    background-image: initial !important;
-    background-color: white!important;
-}
-
 * {
     font-family: Inter, sans-serif!important;
 }
-cbUpdateNotification alert alert-danger {
-  display: none!important;
+
+#loading {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 0, 0);
+  border-radius: 50%;
+  z-index: 9999;
+}
+
+.spinner {
+  positions: fixed;
+  margin: 6px;
+  border: 5px solid rgba(0, 0, 0, 0.3);
+  border-left-color: #000;
+  animation: spin 1s linear infinite;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.rt-page-container {
+    background-color: rgb(8, 9, 10, 0);
+}
+
+#Kunena div.kblock {
+    background-color: rgb(14, 16, 18, 0);
+}
+
+.rt-main-wrapper {
+    background-color: rgb(14, 16, 18, 0);
+}
+
+#Kunena td.kprofile-left, #Kunena td.kprofile-right {
+    background-color: rgb(24, 26, 29, 0);
+}
+
+div#rt-sidebar-a {
+    box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 20px, rgba(35, 38, 41, 0.15) 0px 1px 0px inset, rgba(35, 38, 41, 0.1) 0px 0px 2px inset;
+    padding: 2px;
+    background: rgba(255, 255, 255, .04);
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.rt-page-container {
+  border: 0;
+  box-shadow:none;
+}
+
+div#rt-mainbody {
+    box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 20px, rgba(35, 38, 41, 0.15) 0px 1px 0px inset, rgba(35, 38, 41, 0.1) 0px 0px 2px inset;
+    border-radius: 5px;
+}
+
+.deeper.parent > a, .item-135 > a, .item-144 > a {
+    background-color: rgb(255, 255, 255, .4)!important;
+  background-image: none!important;
+}
+
+#rt-sidebar-a > div.rt-block.title4.box4.visible-desktop { 
+  background-color: rgba(255, 255, 255, .1);
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 5px inset;
 }
