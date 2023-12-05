@@ -8,20 +8,6 @@
 </div>
 
 <p align="center">
-  <a href="https://www.twitter.com/intent/follow?screen_name=CallumDEV_" target="_blank" rel="noreferrer">
-    <img src="https://img.shields.io/twitter/follow/CallumDEV_?logo=twitter&style=for-the-badge&color=3382ed&labelColor=1c1917" />
-  </a>
- 
- <a href="https://www.github.com/callumok2004" target="_blank" rel="noreferrer">
-    <img src="https://img.shields.io/github/followers/callumok2004?logo=github&style=for-the-badge&color=3382ed&labelColor=1c1917" />
-  </a>
- 
-  <a href="https://www.twitch.tv/callumok2004" target="_blank" rel="noreferrer">
-    <img src="https://img.shields.io/twitch/status/callumok2004?logo=twitchsx&style=for-the-badge&color=3382ed&labelColor=1c1917&label=TWITCH+STATUS" />
-  </a>
-</p>
-
-<p align="center">
   <img src="https://api.statusbadges.me/badge/status/506899274748133376?style=for-the-badge" alt="status">
   <img src="https://api.statusbadges.me/badge/playing/506899274748133376?style=for-the-badge" alt="playing">
   <img src="https://api.statusbadges.me/badge/vscode/506899274748133376?style=for-the-badge" alt="vscode">
@@ -76,40 +62,6 @@
   </a>
   <a href="https://www.figma.com/" target="_blank" rel="noreferrer">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" width="36" height="36" alt="Figma" />
-  </a>
-</p>
-
-<h2 align="center">
-  Support
-</h2>
-
-<div align="center"><a href="https://www.buymeacoffee.com/callumokane"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a></div>
-
-<h2 align="center">
-  Socials
-</h2>
-
-<p align="center">
-  <a href="https://discord.gg/bSjTV3Q4XA" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/discord.svg" width="32" height="32" />
-  </a>
-  <a href="https://www.codesandbox.com/u/callumokane" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/codesandbox.svg" width="32" height="32" />
-  </a>
-  <a href="https://www.github.com/callumok2004" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github.svg" width="32" height="32" />
-  </a>
-  <a href="http://www.instagram.com/callum.o.kane" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/instagram.svg" width="32" height="32" />
-  </a>
-  <a href="https://www.linkedin.com/in/callum-okane-642046234/" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin.svg" width="32" height="32" />
-  </a>
-  <a href="https://www.twitter.com/callumdev_" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/twitter.svg" width="32" height="32" />
-  </a>
-  <a href="https://www.twitch.tv/callumok2004" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/twitch.svg" width="32" height="32" />
   </a>
 </p>
 
