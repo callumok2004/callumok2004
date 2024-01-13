@@ -65,12 +65,6 @@
     "publisher": "mhutchie",
     "repository": "https://github.com/mhutchie/vscode-git-graph.git"
   },
-  "Min Theme": {
-    "version": "1.5.0",
-    "description": "A minimal theme that comes in dark and light.",
-    "publisher": "miguelsolorio",
-    "repository": "https://github.com/misolori/min-theme.git"
-  },
   "JavaScript Debugger": {
     "version": "1.72.1",
     "description": "An extension for debugging Node.js programs and Chrome.",
@@ -112,6 +106,12 @@
     "description": "%scssFormatter.description%",
     "publisher": "sibiraj-s",
     "repository": "https://github.com/sibiraj-s/vscode-scss-formatter.git"
+  },
+  "Min Darker": {
+    "version": "0.0.2",
+    "description": "Darker version of Min Dark theme",
+    "publisher": "St0pien",
+    "repository": "N/A"
   },
   "Lua": {
     "version": "3.7.4",
