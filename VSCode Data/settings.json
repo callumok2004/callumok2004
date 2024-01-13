@@ -32,21 +32,6 @@
   "editor.minimap.showSlider": "always",
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
-  "workbench.colorCustomizations": {
-    "statusBar.background": "#c507ff96",
-    "statusBar.foreground": "#ffffff",
-    "statusBar.noFolderBackground": "#212121",
-    "statusBar.noFolderForeground": "#fff",
-    "statusBar.debuggingBackground": "#ff0000",
-    "statusBar.debuggingForeground": "#fff",
-    "statusBar.debuggingBorder": "#ff0000",
-    "statusBarItem.hoverBackground": "#1AffFF39",
-    "statusBarItem.remoteForeground": "#fff",
-    "statusBarItem.errorBackground": "#ff0000",
-    "statusBarItem.errorForeground": "#fff",
-    "statusBarItem.warningBackground": "#ff3000",
-    "statusBarItem.warningForeground": "#fff",
-  },
   "files.autoSave": "onWindowChange",
   "git.enableSmartCommit": true,
   "indentRainbow.colorOnWhiteSpaceOnly": false,
@@ -77,11 +62,8 @@
   },
   "terminal.integrated.scrollback": 10000,
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "window.title": "${activeEditorShort}${separator}${rootName} • VSCode",
+  "window.title": "${activeEditorShort}${separator}${rootName} • ZARP Gaming",
   "workbench.iconTheme": "material-icon-theme",
-  "[lua]": {
-    "editor.defaultFormatter": "trixnz.vscode-lua"
-  },
   "github.copilot.enable": {
     "*": true,
     "yaml": false,
@@ -149,13 +131,7 @@
     "*.lua": "default",
     "*.jpg": "imagePreview.previewEditor"
   },
-  "[html]": {
-    "editor.defaultFormatter": "j69.ejs-beautify"
-  },
   "diffEditor.maxComputationTime": 0,
-  "errorLens.statusBarIconsAlignment": "right",
-  "errorLens.statusBarMessageAlignment": "right",
-  "workbench.preferredHighContrastColorTheme": "Default Dark+ Experimental",
   "workbench.tree.indent": 8,
   "workbench.tree.renderIndentGuides": "always",
   "workbench.view.alwaysShowHeaderActions": true,
@@ -164,19 +140,28 @@
   "scm.providerCountBadge": "auto",
   "Lua.codeLens.enable": true,
   "extensions.ignoreRecommendations": true,
-  "[kotlin]": {
-    "editor.defaultFormatter": "cstef.kotlin-formatter"
-  },
-  "[kotlinscript]": {
-    "editor.defaultFormatter": "cstef.kotlin-formatter"
-  },
   "gitlens.views.repositories.showIncomingActivity": true,
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.unicodeHighlight.invisibleCharacters": false,
-  "workbench.colorTheme": "Min Dark",
-  "diffEditor.experimental.useVersion2": true,
+  "diffEditor.experimental.showEmptyDecorations": true,
   "diffEditor.experimental.showMoves": true,
   "diffEditor.hideUnchangedRegions.enabled": true,
   "haskell.manageHLS": "PATH",
-  "window.zoomLevel": -0.4
+  "window.zoomLevel": -0.4,
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#2333cc96",
+    "statusBar.foreground": "#ffffff",
+    "statusBar.noFolderBackground": "#212121",
+    "statusBar.noFolderForeground": "#fff",
+    "statusBar.debuggingBackground": "#ff0000",
+    "statusBar.debuggingForeground": "#fff",
+    "statusBar.debuggingBorder": "#ff0000",
+    "statusBarItem.hoverBackground": "#1AffFF39",
+    "statusBarItem.remoteForeground": "#fff",
+    "statusBarItem.errorBackground": "#ff0000",
+    "statusBarItem.errorForeground": "#fff",
+    "statusBarItem.warningBackground": "#ff3000",
+    "statusBarItem.warningForeground": "#fff",
+  },
+  "workbench.colorTheme": "Min Darker"
 }
