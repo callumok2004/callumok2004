@@ -49,14 +49,10 @@
   },
   "files.autoSave": "onWindowChange",
   "git.enableSmartCommit": true,
-  "importSorter.generalConfiguration.sortOnBeforeSave": true,
-  "importSorter.importStringConfiguration.quoteMark": "double",
-  "importSorter.importStringConfiguration.tabSize": 2,
   "indentRainbow.colorOnWhiteSpaceOnly": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "php.validate.executablePath": "C:/php/php.exe",
   "security.workspace.trust.untrustedFiles": "open",
-  "tabnine.experimentalAutoImports": true,
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.fontFamily": "FiraCode Nerd Font",
   "terminal.integrated.profiles.windows": {
@@ -94,15 +90,6 @@
     "typescriptreact": true,
     "php": true
   },
-  "errorLens.fontFamily": "Fira Code",
-  "errorLens.gutterIconsEnabled": true,
-  "errorLens.scrollbarHackEnabled": true,
-  "errorLens.statusBarColorsEnabled": true,
-  "errorLens.statusBarIconsEnabled": true,
-  "errorLens.statusBarMessageEnabled": true,
-  "errorLens.excludePatterns": [
-    "**/*.{lua}"
-  ],
   "files.associations": {
     ".env": "code-text-binary"
   },
@@ -138,138 +125,6 @@
   "discord.lowerDetailsIdling": "https://zarpgaming.com",
   "discord.smallImage": "GitHub - @callumok2004",
   "discord.detailsDebugging": "🧪(DBG) {file_name} • {dir_name} • {workspace}",
-  "sonarlint.disableTelemetry": true,
-  "sonarlint.rules": {
-    "php:S1125": {
-      "level": "off"
-    },
-    "php:S1075": {
-      "level": "off"
-    },
-    "php:S125": {
-      "level": "off"
-    },
-    "php:S121": {
-      "level": "off"
-    },
-    "php:S1192": {
-      "level": "off"
-    },
-    "Web:AvoidCommentedOutCodeCheck": {
-      "level": "off"
-    },
-    "php:S836": {
-      "level": "off"
-    },
-    "Web:ItemTagNotWithinContainerTagCheck": {
-      "level": "off"
-    },
-    "Web:BoldAndItalicTagsCheck": {
-      "level": "off"
-    },
-    "javascript:S1848": {
-      "level": "off"
-    },
-    "typescript:S6353": {
-      "level": "off"
-    },
-    "typescript:S4326": {
-      "level": "off"
-    },
-    "php:S1808": {
-      "level": "off"
-    },
-    "php:S103": {
-      "level": "off"
-    },
-    "php:S4833": {
-      "level": "off"
-    },
-    "php:S2003": {
-      "level": "off"
-    },
-    "php:S1780": {
-      "level": "off"
-    },
-    "php:S1779": {
-      "level": "off"
-    },
-    "php:S113": {
-      "level": "off"
-    },
-    "php:S1784": {
-      "level": "off"
-    },
-    "php:S6353": {
-      "level": "off"
-    },
-    "php:S2681": {
-      "level": "off"
-    },
-    "typescript:S3358": {
-      "level": "off"
-    },
-    "typescript:S2310": {
-      "level": "off"
-    },
-    "typescript:S3776": {
-      "level": "off"
-    },
-    "php:S105": {
-      "level": "off"
-    },
-    "php:S1142": {
-      "level": "off"
-    },
-    "php:S3358": {
-      "level": "off"
-    },
-    "typescript:S1848": {
-      "level": "off"
-    },
-    "typescript:S4624": {
-      "level": "off"
-    },
-    "typescript:S1121": {
-      "level": "off"
-    },
-    "typescript:S4325": {
-      "level": "off"
-    },
-    "php:S4830": {
-      "level": "off"
-    },
-    "php:S116": {
-      "level": "off"
-    },
-    "typescript:S5869": {
-      "level": "off"
-    },
-    "Web:S1827": {
-      "level": "off"
-    },
-    "Web:TableWithoutCaptionCheck": {
-      "level": "off"
-    },
-    "php:S117": {
-      "level": "off"
-    },
-    "typescript:S6481": {
-      "level": "off"
-    },
-    "php:S1131": {
-      "level": "off"
-    },
-    "typescript:S6544": {
-      "level": "off"
-    }
-  },
-  "sonarlint.connectedMode.connections.sonarcloud": [
-    {
-      "organizationKey": "vscode",
-      "connectionId": "vscode"
-    }
-  ],
   "editor.stickyScroll.enabled": true,
   "window.commandCenter": true,
   "git.confirmSync": false,
@@ -307,9 +162,6 @@
   "search.showLineNumbers": true,
   "scm.alwaysShowRepositories": true,
   "scm.providerCountBadge": "auto",
-  "errorLens.excludeBySource": [
-    "sonarlint(Web:S5256)"
-  ],
   "Lua.codeLens.enable": true,
   "extensions.ignoreRecommendations": true,
   "[kotlin]": {
@@ -318,7 +170,6 @@
   "[kotlinscript]": {
     "editor.defaultFormatter": "cstef.kotlin-formatter"
   },
-  "kotlin-formatter.ktlintPath": "C:/Users/callu/OneDrive/Documents/ktlint",
   "gitlens.views.repositories.showIncomingActivity": true,
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.unicodeHighlight.invisibleCharacters": false,
@@ -327,5 +178,5 @@
   "diffEditor.experimental.showMoves": true,
   "diffEditor.hideUnchangedRegions.enabled": true,
   "haskell.manageHLS": "PATH",
-  "window.zoomLevel": 1
+  "window.zoomLevel": -0.4
 }
