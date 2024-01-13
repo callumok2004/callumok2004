@@ -15,14 +15,6 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
-  "deepscan.enable": true,
-  "deepscan.ignorePatterns": [
-    "**/node_modules/**"
-  ],
-  "deepscan.ignoreRules": [
-    "ASSIGN_SAME_VALUE",
-    "MISMATCHED_TYPE_OF_ARG"
-  ],
   "files.autoGuessEncoding": true,
   "discord.detailsEditing": "📁 {file_name} • {dir_name} • {workspace}",
   "discord.lowerDetailsEditing": "📝 Line: {current_line}/{total_lines} • Col: {current_column}",
@@ -90,7 +82,6 @@
   "terminal.integrated.scrollback": 10000,
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "window.title": "${activeEditorShort}${separator}${rootName} • VSCode",
-  "workbench.colorTheme": "Min Dark",
   "workbench.iconTheme": "material-icon-theme",
   "[lua]": {
     "editor.defaultFormatter": "trixnz.vscode-lua"
@@ -103,17 +94,12 @@
     "typescriptreact": true,
     "php": true
   },
-  "JSON-zain.json.autorefresh": true,
-  "rojo.pluginManagement": true,
   "errorLens.fontFamily": "Fira Code",
   "errorLens.gutterIconsEnabled": true,
   "errorLens.scrollbarHackEnabled": true,
   "errorLens.statusBarColorsEnabled": true,
   "errorLens.statusBarIconsEnabled": true,
   "errorLens.statusBarMessageEnabled": true,
-  "template-string-converter.addBracketsToProps": true,
-  "template-string-converter.autoRemoveTemplateString": true,
-  "template-string-converter.quoteType": "double",
   "errorLens.excludePatterns": [
     "**/*.{lua}"
   ],
@@ -123,13 +109,6 @@
   "liveshare.connectionMode": "relay",
   "glualint.linter": "C:\\Users\\callu\\OneDrive\\Documents\\glualint\\glualint.exe",
   "glualint.run": "manual",
-  "template-string-converter.validLanguages": [
-    "svelte",
-    "typescript",
-    "javascript",
-    "typescriptreact",
-    "javascriptreact"
-  ],
   "[dart]": {
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
@@ -140,7 +119,7 @@
     "editor.suggest.snippetsPreventQuickSuggestions": false,
     "editor.suggestSelection": "first",
     "editor.tabCompletion": "onlySnippets",
-    "editor.wordBasedSuggestions": false
+    "editor.wordBasedSuggestions": "off"
   },
   "explorer.fileNesting.patterns": {
     "*.ts": "${capture}.js",
@@ -322,7 +301,7 @@
   "errorLens.statusBarIconsAlignment": "right",
   "errorLens.statusBarMessageAlignment": "right",
   "workbench.preferredHighContrastColorTheme": "Default Dark+ Experimental",
-  "workbench.tree.indent": 12,
+  "workbench.tree.indent": 8,
   "workbench.tree.renderIndentGuides": "always",
   "workbench.view.alwaysShowHeaderActions": true,
   "search.showLineNumbers": true,
@@ -341,5 +320,12 @@
   },
   "kotlin-formatter.ktlintPath": "C:/Users/callu/OneDrive/Documents/ktlint",
   "gitlens.views.repositories.showIncomingActivity": true,
-  "window.zoomLevel": -2
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "workbench.colorTheme": "Min Dark",
+  "diffEditor.experimental.useVersion2": true,
+  "diffEditor.experimental.showMoves": true,
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "haskell.manageHLS": "PATH",
+  "window.zoomLevel": 1
 }
