@@ -5,7 +5,6 @@
 
 	$day = $_GET['day'] ?? "Sunday";
 	$time = $_GET['time'] ?? "6";
-	$ampm = $_GET['ampm'] ?? "pm";
 	$timez = $_GET['timezone'] ?? "Australia/Sydney";
 
 	$day = strtolower($day);
