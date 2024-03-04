@@ -1,9 +1,21 @@
 {
+  "CSS Formatter": {
+    "version": "1.0.2",
+    "description": "Formatter for CSS",
+    "publisher": "aeschli",
+    "repository": "https://github.com/aeschli/vscode-css-formatter"
+  },
   "glua": {
     "version": "1.1.0",
     "description": "GLua language support for Visual Studio Code",
     "publisher": "aStonedPenguin",
     "repository": "N/A"
+  },
+  "Astro": {
+    "version": "2.7.5",
+    "description": "Language support for Astro",
+    "publisher": "astro-build",
+    "repository": "https://github.com/withastro/language-tools.git"
   },
   "PHP Intelephense": {
     "version": "1.10.2",
@@ -11,40 +23,28 @@
     "publisher": "bmewburn",
     "repository": "https://github.com/bmewburn/vscode-intelephense.git"
   },
-  "Dart": {
-    "version": "3.80.0",
-    "description": "Dart language support and debugger for Visual Studio Code.",
-    "publisher": "Dart-Code",
-    "repository": "https://github.com/Dart-Code/Dart-Code.git"
-  },
   "GitLens — Git supercharged": {
-    "version": "14.6.1",
+    "version": "14.8.2",
     "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
     "publisher": "eamodio",
     "repository": "https://github.com/gitkraken/vscode-gitlens.git"
   },
   "GitHub Copilot": {
-    "version": "1.148.648",
+    "version": "1.171.0",
     "description": "Your AI pair programmer",
     "publisher": "GitHub",
     "repository": "N/A"
   },
   "GitHub Copilot Chat": {
-    "version": "0.12.2024011203",
+    "version": "0.14.2024030401",
     "description": "AI chat features powered by Copilot",
     "publisher": "GitHub",
     "repository": "https://github.com/microsoft/vscode-copilot-release"
   },
-  "vscode-glualint": {
-    "version": "0.10.0",
-    "description": "glualint for vscode",
-    "publisher": "goz3rr",
-    "repository": "https://github.com/goz3rr/vscode-glualint.git"
-  },
-  "Haskell": {
-    "version": "2.5.1",
-    "description": "Haskell language support powered by the Haskell Language Server",
-    "publisher": "haskell",
+  "Todo Tree": {
+    "version": "0.0.226",
+    "description": "Show TODO, FIXME, etc. comment tags in a tree view",
+    "publisher": "Gruntfuggly",
     "repository": "N/A"
   },
   "Discord Presence": {
@@ -53,17 +53,17 @@
     "publisher": "icrawl",
     "repository": "https://github.com/iCrawl/discord-vscode.git"
   },
-  "Haskell Syntax Highlighting": {
-    "version": "3.6.0",
-    "description": "Syntax support for the Haskell programming language.",
-    "publisher": "justusadam",
-    "repository": "https://github.com/JustusAdam/language-haskell.git"
-  },
   "Git Graph": {
     "version": "1.30.0",
     "description": "View a Git Graph of your repository, and perform Git actions from the graph.",
     "publisher": "mhutchie",
     "repository": "https://github.com/mhutchie/vscode-git-graph.git"
+  },
+  "SCSS IntelliSense": {
+    "version": "0.10.0",
+    "description": "Advanced autocompletion and refactoring support for SCSS",
+    "publisher": "mrmlnc",
+    "repository": "https://github.com/mrmlnc/vscode-scss"
   },
   "JavaScript Debugger": {
     "version": "1.72.1",
@@ -90,7 +90,7 @@
     "repository": "https://github.com/oderwat/vscode-indent-rainbow.git"
   },
   "Material Icon Theme": {
-    "version": "4.33.0",
+    "version": "4.34.0",
     "description": "Material Design Icons for Visual Studio Code",
     "publisher": "PKief",
     "repository": "https://github.com/PKief/vscode-material-icon-theme.git"
@@ -120,7 +120,7 @@
     "repository": "https://github.com/LuaLS/lua-language-server"
   },
   "GLua Enhanced (Garry's Mod/Gmod Lua)": {
-    "version": "2.5.3",
+    "version": "2.5.4",
     "description": "GLua language support for Visual Studio Code",
     "publisher": "venner",
     "repository": "https://github.com/WilliamVenner/vscode-glua-enhanced.git"
@@ -142,5 +142,11 @@
     "description": "Make TypeScript errors prettier and more human-readable in VSCode",
     "publisher": "YoavBls",
     "repository": "https://github.com/yoavbls/pretty-ts-errors"
+  },
+  "json": {
+    "version": "2.0.2",
+    "description": "Json for Visual Studio Code",
+    "publisher": "ZainChen",
+    "repository": "https://github.com/ZainChen/vscode-json"
   }
 }
