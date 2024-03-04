@@ -163,5 +163,8 @@
     "statusBarItem.warningBackground": "#ff3000",
     "statusBarItem.warningForeground": "#fff",
   },
-  "workbench.colorTheme": "Min Darker"
+  "workbench.colorTheme": "Min Darker",
+  "search.maxResults": null,
+  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.)|--)\\s*($TAGS)",
+  "Lua.hint.await": false
 }
