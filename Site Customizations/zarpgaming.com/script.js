@@ -6,6 +6,7 @@ function sLoad() {
   document.body.style.backgroundPosition = "center";
   document.body.style.backgroundRepeat = "no-repeat";
   document.body.style.backgroundSize = "cover";
+  document.body.removeAttribute("data-darkreader-inline-bgimage")
   
   var av = document.getElementsByClassName("klist-avatar");
   for (i = 0; i < av.length; i++) {
@@ -41,9 +42,6 @@ function loadStyle(FILE_URL, async = true) {
   scriptEle.setAttribute("src", FILE_URL);
   scriptEle.setAttribute("rel", "stylesheet");
   document.body.appendChild(scriptEle);
-  scriptEle.addEventListener("load", () => console.log("File loaded"));
-  scriptEle.addEventListener("error", (ev) => console.log("Error on loading file", ev));
 }
 
 loadStyle("https://fonts.googleapis.com/css2?family=Inter&display=swap")
-
