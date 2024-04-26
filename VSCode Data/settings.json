@@ -32,7 +32,6 @@
   "editor.minimap.showSlider": "always",
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
-  "files.autoSave": "onWindowChange",
   "git.enableSmartCommit": true,
   "indentRainbow.colorOnWhiteSpaceOnly": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
@@ -166,5 +165,10 @@
   "workbench.colorTheme": "Min Darker",
   "search.maxResults": null,
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.)|--)\\s*($TAGS)",
-  "Lua.hint.await": false
+  "Lua.hint.await": false,
+  "git.openRepositoryInParentFolders": "never",
+  "php.completion.namingConvention": "CamelCase",
+  "php.highlight-todo.enable": false,
+  "php.problems.excludeGitIgnore": true,
+  "vscode-mysql.enableTelemetry": false
 }
