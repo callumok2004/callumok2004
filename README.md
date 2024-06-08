@@ -15,3 +15,7 @@
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fcallumok2004&count_bg=%230263A4&title_bg=%23002D53&icon=github.svg&icon_color=%23FFFFFF&title=visits&edge_flat=true)](https://hits.seeyoufarm.com)
 ![Hits](https://hits-app.vercel.app/hits?url=https://github.com/callumok2004)
+
+```math
+\ce{$\unicode[goombafont; color:red; pointer-events: none; z-index: -10; position: fixed; top: 0; left: 0; height: 100vh; object-fit: cover; background-size: cover; width: 130vw; opacity: 0.5; background: url('https://camo.githubusercontent.com/d6c5e8d08b644e2dbfbfc779fc0aecd4352ae30c4582d458b01e294103243949/68747470733a2f2f6d656469612e676d6f6473746f72652e636f6d2f343630782f7363726970745f62616e6e6572732f31633265373933323839326635343465326435323135356234316135663830622e706e67');]{x0000}$}
+
