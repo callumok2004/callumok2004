@@ -12,7 +12,7 @@
     "repository": "N/A"
   },
   "Astro": {
-    "version": "2.8.6",
+    "version": "2.11.0",
     "description": "Language support for Astro",
     "publisher": "astro-build",
     "repository": "https://github.com/withastro/language-tools.git"
@@ -24,7 +24,7 @@
     "repository": "https://github.com/bmewburn/vscode-intelephense.git"
   },
   "GitLens — Git supercharged": {
-    "version": "14.9.1",
+    "version": "15.2.0",
     "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
     "publisher": "eamodio",
     "repository": "https://github.com/gitkraken/vscode-gitlens.git"
@@ -42,7 +42,7 @@
     "repository": "N/A"
   },
   "GitHub Copilot Chat": {
-    "version": "0.15.2024042601",
+    "version": "0.18.2024071601",
     "description": "AI chat features powered by Copilot",
     "publisher": "GitHub",
     "repository": "https://github.com/microsoft/vscode-copilot-release"
@@ -84,7 +84,7 @@
     "repository": "https://github.com/Microsoft/vscode-pwa.git"
   },
   "%extension.liveshare.displayName.title%": {
-    "version": "1.0.5918",
+    "version": "1.0.5936",
     "description": "%extension.liveshare.description.title%",
     "publisher": "ms-vsliveshare",
     "repository": "https://github.com/MicrosoftDocs/live-share"
@@ -102,10 +102,16 @@
     "repository": "https://github.com/oderwat/vscode-indent-rainbow.git"
   },
   "Material Icon Theme": {
-    "version": "5.1.0",
+    "version": "5.6.0",
     "description": "Material Design Icons for Visual Studio Code",
     "publisher": "PKief",
-    "repository": "https://github.com/PKief/vscode-material-icon-theme.git"
+    "repository": "git+https://github.com/material-extensions/vscode-material-icon-theme.git"
+  },
+  "XML": {
+    "version": "0.27.2024053103",
+    "description": "XML Language Support by Red Hat",
+    "publisher": "redhat",
+    "repository": "https://github.com/redhat-developer/vscode-xml"
   },
   "Trailing Spaces": {
     "version": "0.4.1",
@@ -126,7 +132,7 @@
     "repository": "N/A"
   },
   "Lua": {
-    "version": "3.8.3",
+    "version": "3.9.3",
     "description": "Lua Language Server coded by Lua",
     "publisher": "sumneko",
     "repository": "https://github.com/LuaLS/lua-language-server"
@@ -144,7 +150,7 @@
     "repository": "https://github.com/MicrosoftDocs/intellicode"
   },
   "WakaTime": {
-    "version": "24.5.0",
+    "version": "24.6.0",
     "description": "Metrics, insights, and time tracking automatically generated from your programming activity.",
     "publisher": "WakaTime",
     "repository": "https://github.com/wakatime/vscode-wakatime.git"
