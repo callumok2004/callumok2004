@@ -170,5 +170,6 @@
   "php.completion.namingConvention": "CamelCase",
   "php.highlight-todo.enable": false,
   "php.problems.excludeGitIgnore": true,
-  "vscode-mysql.enableTelemetry": false
+  "vscode-mysql.enableTelemetry": false,
+  "redhat.telemetry.enabled": false
 }
