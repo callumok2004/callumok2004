@@ -11,56 +11,56 @@
           "type": "spotify",
           "style": "powerline",
           "powerline_symbol": "\ue0b0",
-          "foreground": "#ffffff",
+          "template": " {{ .Icon }}{{ if ne .Status \"stopped\" }}{{ .Artist }} - {{ .Track }}{{ end }} ",
           "background": "#10602d",
-          "template": " {{ .Icon }}{{ if ne .Status \"stopped\" }}{{ .Artist }} - {{ .Track }}{{ end }} "
+          "foreground": "#ffffff"
         },
         {
           "type": "git",
           "style": "powerline",
           "powerline_symbol": "\ue0b0",
-          "foreground": "#b2cee3",
-          "background": "#196678",
           "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }} \uf692 {{ .StashCount }}{{ end }} ",
           "properties": {
             "fetch_stash_count": true,
             "fetch_upstream_icon": true
-          }
+          },
+          "background": "#196678",
+          "foreground": "#b2cee3"
         },
         {
           "type": "node",
           "style": "powerline",
           "powerline_symbol": "\ue0b0",
-          "foreground": "#000000",
+          "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
           "background": "#88ce76",
-          "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} "
+          "foreground": "#000000"
         },
         {
           "type": "shell",
           "style": "powerline",
           "powerline_symbol": "\ue0b0",
-          "foreground": "#ffffff",
+          "template": " \ufcb5 {{ .Name }} ",
           "background": "#203248",
-          "template": " \ufcb5 {{ .Name }} "
+          "foreground": "#ffffff"
         },
         {
           "type": "root",
           "style": "powerline",
           "powerline_symbol": "\ue0b0",
-          "foreground": "#ffffff",
+          "template": " \uf0e7 ",
           "background": "#ffff66",
-          "template": " \uf0e7 "
+          "foreground": "#ffffff"
         },
         {
           "type": "executiontime",
           "style": "diamond",
-          "foreground": "#ffffff",
-          "background": "#5f26c9",
           "trailing_diamond": "\ue0b4",
           "template": " \ufbab {{ .FormattedMs }}\u2800",
           "properties": {
             "always_enabled": true
-          }
+          },
+          "background": "#5f26c9",
+          "foreground": "#ffffff"
         }
       ]
     },
@@ -71,24 +71,24 @@
         {
           "type": "text",
           "style": "diamond",
-          "foreground": "#000000",
+          "leading_diamond": "\ue0c7\u2593",
           "background": "#ffea00",
-          "leading_diamond": "\ue0c7\u2593"
+          "foreground": "#000000"
         },
         {
           "type": "kubectl",
           "style": "powerline",
-          "foreground": "#000000",
+          "template": " \ufd31{{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} ",
           "background": "#ffea00",
-          "template": " \ufd31{{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
+          "foreground": "#000000"
         },
         {
           "type": "az",
           "style": "powerline",
           "powerline_symbol": "\ue0b0",
-          "foreground": "#000000",
+          "template": " \ufd03 {{ .Name }} ",
           "background": "#008AD7",
-          "template": " \ufd03 {{ .Name }} "
+          "foreground": "#000000"
         }
       ]
     },
@@ -99,23 +99,23 @@
         {
           "type": "os",
           "style": "plain",
-          "foreground": "#26C6DA",
           "leading_diamond": "\ue0c7\u2593 ",
           "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}}<#ffea00> | </>",
           "properties": {
             "windows": "\ue70f"
-          }
+          },
+          "foreground": "#26C6DA"
         },
         {
           "type": "path",
           "style": "powerline",
-          "foreground": "#fafafa",
-          "background": "#2f2f2f",
           "trailing_diamond": "\ue0b0",
           "template": "{{ .Path }} ",
           "properties": {
             "style": "full"
-          }
+          },
+          "background": "#2f2f2f",
+          "foreground": "#fafafa"
         }
       ],
       "newline": true
@@ -127,8 +127,8 @@
         {
           "type": "text",
           "style": "plain",
-          "foreground": "#ffea00",
-          "template": " \u276f "
+          "template": " ❯ ",
+          "foreground": "#ffea00"
         }
       ]
     }
