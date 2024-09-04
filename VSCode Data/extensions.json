@@ -11,38 +11,26 @@
     "publisher": "aStonedPenguin",
     "repository": "N/A"
   },
-  "Astro": {
-    "version": "2.11.0",
-    "description": "Language support for Astro",
-    "publisher": "astro-build",
-    "repository": "https://github.com/withastro/language-tools.git"
-  },
   "PHP Intelephense": {
-    "version": "1.10.4",
+    "version": "1.12.5",
     "description": "PHP code intelligence for Visual Studio Code",
     "publisher": "bmewburn",
     "repository": "https://github.com/bmewburn/vscode-intelephense.git"
   },
   "GitLens — Git supercharged": {
-    "version": "15.2.0",
+    "version": "15.3.1",
     "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
     "publisher": "eamodio",
     "repository": "https://github.com/gitkraken/vscode-gitlens.git"
   },
-  "MySQL": {
-    "version": "0.5.0",
-    "description": "MySQL management tool",
-    "publisher": "formulahendry",
-    "repository": "https://github.com/formulahendry/vscode-mysql.git"
-  },
   "GitHub Copilot": {
-    "version": "1.175.0",
+    "version": "1.227.0",
     "description": "Your AI pair programmer",
     "publisher": "GitHub",
     "repository": "N/A"
   },
   "GitHub Copilot Chat": {
-    "version": "0.18.2024071601",
+    "version": "0.20.2024090402",
     "description": "AI chat features powered by Copilot",
     "publisher": "GitHub",
     "repository": "https://github.com/microsoft/vscode-copilot-release"
@@ -64,6 +52,12 @@
     "description": "Auto-Save files by switching between windows.",
     "publisher": "mcright",
     "repository": "https://github.com/McRight/Auto-Save-VSCode"
+  },
+  "GMRDB": {
+    "version": "0.4.4",
+    "description": "Garry's Mod Remote DeBugger",
+    "publisher": "metaman",
+    "repository": "https://github.com/danielga/vscode-gmrdb.git"
   },
   "Git Graph": {
     "version": "1.30.0",
@@ -102,13 +96,13 @@
     "repository": "https://github.com/oderwat/vscode-indent-rainbow.git"
   },
   "Material Icon Theme": {
-    "version": "5.6.0",
+    "version": "5.10.0",
     "description": "Material Design Icons for Visual Studio Code",
     "publisher": "PKief",
     "repository": "git+https://github.com/material-extensions/vscode-material-icon-theme.git"
   },
   "XML": {
-    "version": "0.27.2024053103",
+    "version": "0.27.2024082510",
     "description": "XML Language Support by Red Hat",
     "publisher": "redhat",
     "repository": "https://github.com/redhat-developer/vscode-xml"
@@ -132,7 +126,7 @@
     "repository": "N/A"
   },
   "Lua": {
-    "version": "3.9.3",
+    "version": "3.10.5",
     "description": "Lua Language Server coded by Lua",
     "publisher": "sumneko",
     "repository": "https://github.com/LuaLS/lua-language-server"
@@ -150,13 +144,13 @@
     "repository": "https://github.com/MicrosoftDocs/intellicode"
   },
   "WakaTime": {
-    "version": "24.6.0",
+    "version": "24.6.2",
     "description": "Metrics, insights, and time tracking automatically generated from your programming activity.",
     "publisher": "WakaTime",
     "repository": "https://github.com/wakatime/vscode-wakatime.git"
   },
   "Pretty TypeScript Errors": {
-    "version": "0.5.4",
+    "version": "0.6.0",
     "description": "Make TypeScript errors prettier and more human-readable in VSCode",
     "publisher": "YoavBls",
     "repository": "https://github.com/yoavbls/pretty-ts-errors"
