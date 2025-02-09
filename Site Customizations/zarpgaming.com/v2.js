@@ -26,7 +26,7 @@ function AppendStyleToClass(className, content, whereTag) {
 
 AddStyle(`
 	.rt-main-wrapper {
-		background: rgba(255, 255, 255, .1);
+		background: rgb(0 0 0 / 10%);
 	}
 
 	.kblock {
@@ -53,6 +53,28 @@ AddStyle(`
     vertical-align: middle;
     background: rgb(69 255 118 / 38%) !important;
     font-size: 8px !important;
+	}
+
+	.kspoiler-wrapper {
+		background-color: rgba(255, 255, 255, .1)!important;
+		border: 1px solid rgba(255, 255, 255, .4);
+		border-radius: 4px;
+		border-left: 5px solid rgba(255, 255, 255, .4);
+		border-right: 5px solid rgba(255, 255, 255, .4);
+		border-top: 1px solid rgba(255, 255, 255, .4);
+	}
+
+	#Kunena div.kmsgtext code, #Kunena div.kmsgtext pre {
+		background: rgba(0, 0, 0, .5);
+		border-radius: 4px;
+		padding: 5px;
+		color: white;
+	}
+
+	.kmsgtext-quote {
+		background: rgba(255, 255, 255, .1)!important;
+		border: 1px solid rgba(255, 255, 255, .4);
+		border-radius: 4px;
 	}
 
 	#kprofilebox > .kbody {
@@ -110,6 +132,38 @@ AddStyle(`
     border-radius: 2px!important;
 	}
 
+	input[type="submit"]:hover, input[type="button"]:hover, input[type="reset"]:hover, button:hover, .kheadbtn a:hover {
+		background: rgb(69 255 118 / 68%)!important;
+	}
+
+	input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="color"], input[type="range"], input[type="file"], textarea {
+		padding: 2px 8px!important;
+		color: white!important;
+		background: rgb(113 113 113 / 38%) !important;
+		border: 1px solid rgba(0, 0, 0, .3)!important;
+		border-radius: 2px!important;
+	}
+
+	input[type="checkbox"], input[type="radio"] {
+		min-width: 15px;
+    min-height: 15px;
+
+		background-color: rgb(255 255 255 / 38%) !important;
+		border: 1px solid rgba(0, 0, 0, .3)!important;
+		border-radius: 2px!important;
+		appearance: none;
+	}
+
+	input[type="checkbox"]:checked, input[type="radio"]:checked {
+		background-color: rgb(69 255 118 / 68%) !important;
+		border: 1px solid rgba(0, 0, 0, .3)!important;
+		border-radius: 2px!important;
+	}
+
+	input[type="checkbox"]:focus, input[type="radio"]:focus {
+		outline: none;
+	}
+
 	select {
 		padding: 2px 8px!important;
 		color: white!important;
@@ -151,10 +205,13 @@ AddStyle(`
 
 	.kbuttonbar-right {
 		background: rgba(255, 255, 255, .2)!important;
+		border-right: 1px solid rgba(0, 0, 0, .5)!important;
+		border: unset!important;
 	}
 
 	#Kunena td {
 		border-bottom: unset!important;
+		border-left: 2px solid rgba(255, 255, 255, .1)!important;
 	}
 
 	.ktopic-views, .ktopic-views-number, .kcol-ktopicreplies, .kcol-ktopicreplies strong {
@@ -162,11 +219,11 @@ AddStyle(`
 	}
 
 	.krow1-stickymsg td {
-		background: rgb(59 53 10 / 58%) !important;
+		background: rgb(89 79 10) !important;
 	}
 
 	.krow2-stickymsg td {
-		background: rgb(59 53 10 / 68%) !important;
+		background: rgb(83 73 5) !important;
 	}
 
 	.krow1 td {
@@ -212,12 +269,42 @@ AddStyle(`
 	.kheader {
 		margin-bottom: 5px;
 	}
+
+	.tabs dt {
+		border: unset!important;
+	}
+
+	.current {
+		background: rgb(97 97 97 / 20%) !important;
+		border: 2px solid rgba(0, 0, 0, .9)!important;
+		color: white!important;
+		border-radius: 2px;
+	}
+
+	.current .kheader {
+		background-color: rgb(97 97 97 / 20%) !important;
+		border: 2px solid rgba(0, 0, 0, .9)!important;
+		color: white!important;
+		border-radius: 2px;
+	}
+
+	.tabs .open {
+		background: rgba(255, 255, 255, .2)!important;
+		border: 1px solid rgba(255, 255, 255, .4);
+		color: white!important;
+	}
+
+	.tabs .closed {
+		background: rgba(255, 255, 255, .1)!important;
+		border: 1px solid rgba(255, 255, 255, .4);
+		color: white!important;
+	}
 `);
 
 AppendStyleToClass('kheader, kmsg-header', `
-	padding: 6px;
+	padding: 8px;
 	border: 2px solid rgba(0, 0, 0, .5);
-	background: rgba(255, 255, 255, .01) !important;
+	background: rgba(255, 255, 255, .05) !important;
 `);
 
 AppendStyleToClass("pagenav", `
@@ -267,6 +354,7 @@ document.querySelectorAll('.ktoggler').forEach(e => e.remove());
 document.querySelectorAll('a[href="/index.php/forum/credits"]').forEach(e => e.parentNode.remove());
 document.querySelectorAll('.krss-block').forEach(e => e.remove());
 document.querySelectorAll('.kfooter').forEach(e => e.remove());
+document.querySelectorAll('.klist-actions-goto').forEach(e => e.remove());
 
 function sLoad() {
 	document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
@@ -315,6 +403,7 @@ function removeImportantFromRule(selector) {
 			for (let rule of rules) {
 				if (rule.selectorText === selector) {
 					rule.style.setProperty("color", "#fff", "");
+					rule.style.setProperty("background", "", "");
 					return;
 				}
 			}
@@ -325,3 +414,4 @@ function removeImportantFromRule(selector) {
 }
 
 removeImportantFromRule("#Kunena .kheader h2, #Kunena .kheader h2 a, #Kunena .kheader h3, #Kunena .kheader h3 a");
+removeImportantFromRule("#Kunena .kdeleted td, #Kunena .kmoved td")
