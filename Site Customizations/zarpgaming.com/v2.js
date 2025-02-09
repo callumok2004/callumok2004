@@ -191,9 +191,8 @@ AddStyle(`
 		color: #00d7ff !important;
 	}
 
-	.kprofile-right {
+	.kprofile-right, .kprofile-left {
 		background: rgba(255, 255, 255, .15)!important;
-		border: 1px solid rgba(0, 0, 0, .5);
 		border-left: 1px solid rgba(0, 0, 0, .5)!important;
 	}
 
@@ -211,6 +210,9 @@ AddStyle(`
 
 	#Kunena td {
 		border-bottom: unset!important;
+	}
+
+	#Kunena td:not(.kbuttonbar-right) {
 		border-left: 2px solid rgba(255, 255, 255, .1)!important;
 	}
 
@@ -355,6 +357,22 @@ document.querySelectorAll('a[href="/index.php/forum/credits"]').forEach(e => e.p
 document.querySelectorAll('.krss-block').forEach(e => e.remove());
 document.querySelectorAll('.kfooter').forEach(e => e.remove());
 document.querySelectorAll('.klist-actions-goto').forEach(e => e.remove());
+
+function ReplaceImage(oldSrc, newSrc, forceWidth = null, forceHeight = null) {
+	document.querySelectorAll(`img[src="${oldSrc}"]`).forEach(e => {
+		e.src = newSrc;
+		if (forceWidth) e.width = forceWidth;
+		if (forceHeight) e.height = forceHeight;
+	});
+}
+ReplaceImage("/components/com_kunena/template/blue_eagle/images/badges/zarpvip.png", "https://i.imgur.com/8U3XGgg.png", 150)
+
+document.querySelectorAll('.klist-actions').forEach(e => {
+	var forum = e.querySelector('.klist-actions-forum');
+	var pages = e.querySelector('.klist-pages-all');
+	if (!forum || !pages) return;
+	if (forum.innerText.trim() === '' && pages.innerText.trim() === '') e.remove();
+});
 
 function sLoad() {
 	document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
