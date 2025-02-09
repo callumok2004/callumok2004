@@ -1,10 +1,12 @@
 function IsProfilePage() { return document.querySelector('.k-profile') !== null; }
-function IsTopicPage() { return document.getElementsByClassName('kmsg-id-right').length > 0; }
+function IsTopicPage() { return document.querySelector('.kmsg-id-right') !== null; }
 function IsIndex() { return document.querySelector('.kfrontstats') !== null; }
 
 console.log('IsProfilePage', IsProfilePage());
 console.log('IsTopicPage', IsTopicPage());
 console.log('IsIndex', IsIndex());
+
+function ReplaceStyle(oldStyle, newStyle) { document.querySelectorAll(`[style="${oldStyle}"]`).forEach(e => e.style.cssText = newStyle); }
 
 function AddStyle(content) {
 	var style = document.createElement('style');
@@ -21,6 +23,34 @@ function AppendStyleToClass(className, content, whereTag) {
 	for (var i = 0; i < elements.length; i++) {
 		if (whereTag && elements[i].tagName.toLowerCase() !== whereTag) continue;
 		elements[i].style.cssText += content;
+	}
+}
+
+function ReplaceImage(oldSrc, newSrc, forceWidth = null, forceHeight = null) {
+	document.querySelectorAll(`img[src="${oldSrc}"]`).forEach(e => {
+		e.src = newSrc;
+		if (forceWidth) e.width = forceWidth;
+		if (forceHeight) e.height = forceHeight;
+	});
+}
+
+function LoadStyle(FILE_URL) {
+	let scriptEle = document.createElement("link");
+	scriptEle.setAttribute("src", FILE_URL);
+	scriptEle.setAttribute("rel", "stylesheet");
+	document.body.appendChild(scriptEle);
+}
+
+function FixForcedColors(selector) {
+	for (let sheet of document.styleSheets) {
+		let rules = sheet.cssRules || sheet.rules;
+		for (let rule of rules) {
+			if (rule.selectorText === selector) {
+				rule.style.setProperty("color", "#fff", "");
+				rule.style.setProperty("background", "", "");
+				return;
+			}
+		}
 	}
 }
 
@@ -91,7 +121,7 @@ AddStyle(`
 		background-color: rgba(255, 255, 255, .1);
 	}
 
-	#Kunena .klist-actions, #Kunena .klist-actions-bottom, #kprofilebox .krow1, #kprofilebox td, .kforum-pathway, .klist-bottom {
+	#Kunena .klist-actions, #Kunena .klist-actions-bottom, #kprofilebox .krow1, #kprofilebox td, .kforum-pathway, .klist-bottom, .kanndesc {
 		background: rgba(255, 255, 255, .05) !important;
 		border: 2px solid rgba(0, 0, 0, .5);
 	}
@@ -328,11 +358,36 @@ if (IsTopicPage()) {
 	headerh1.insertBefore(span, headerh1.firstChild);
 }
 
+document.querySelectorAll('.klist-actions').forEach(e => {
+	var forum = e.querySelector('.klist-actions-forum');
+	var pages = e.querySelector('.klist-pages-all');
+	if (!forum || !pages) return;
+	if (forum.innerText.trim() === '' && pages.innerText.trim() === '') e.remove();
+});
+
+setTimeout(() => document.body.removeAttribute("data-darkreader-inline-bgimage"), 100)
+
+var av = document.getElementsByClassName("klist-avatar");
+for (i = 0; i < av.length; i++) {
+	var arr = /https:\/\/zarpgaming\.com\/media\/kunena\/avatars\/resized\/size36\/users\/(.*)/.exec(av[i].src);
+	if (!arr) continue;
+	av[i].src = "https://zarpgaming.com/media/kunena/avatars/resized/size144/users/" + arr[1];
+}
+
+
+const list = document.getElementsByClassName("item-134 deeper parent")[0]
+if (list && list.getChildren) list.getChildren("ul")[0].innerHTML += `<li class="item-12"><span class="rt-sidebar-arrow"></span><a href="https://zarpgaming.com/index.php/forum/search?childforums=1&show=2">Deleted Posts</a></li>`
+
+document.getElements(".divTablePlayerCount").map(x => {
+	const hasPlayer = String(document.getElement(x).innerHTML).split("/")[0].replace("\n", "") != "0";
+	if (hasPlayer) document.getElement(x).setAttribute("style", "color: green;")
+	else document.getElement(x).setAttribute("style", "color: red;")
+})
+
 var time = document.querySelector('.kfooter-time').innerText;
 var timeDiv = document.createElement('div');
 timeDiv.style = 'color: white; font-size: 12px; margin-top: 10px;';
 timeDiv.innerText = time;
-document.getElementById('rt-mainbody').insertBefore(timeDiv, document.getElementById('rt-mainbody').firstChild);
 timeDiv.style.position = 'absolute';
 timeDiv.style.right = '-10px';
 timeDiv.style.top = '-55px';
@@ -340,6 +395,7 @@ timeDiv.style.padding = '0px 6px';
 timeDiv.style.border = '1px solid rgba(255, 255, 255, .4)';
 timeDiv.style.borderRadius = '2px';
 timeDiv.style.background = 'rgb(41 107 46 / 87%)';
+document.getElementById('rt-mainbody').insertBefore(timeDiv, document.getElementById('rt-mainbody').firstChild);
 
 document.querySelectorAll('iframe[src*="youtube.com"]').forEach(e => {
 	var box = document.createElement('div');
@@ -357,79 +413,15 @@ document.querySelectorAll('a[href="/index.php/forum/credits"]').forEach(e => e.p
 document.querySelectorAll('.krss-block').forEach(e => e.remove());
 document.querySelectorAll('.kfooter').forEach(e => e.remove());
 document.querySelectorAll('.klist-actions-goto').forEach(e => e.remove());
+document.querySelector("#rt-sidebar-a > div.rt-block.fp-menu.title1.rt-small-sidebar-title.nomargintop.nopaddingtop.visible-large > div > div.module-title")?.remove()
+document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
 
-function ReplaceImage(oldSrc, newSrc, forceWidth = null, forceHeight = null) {
-	document.querySelectorAll(`img[src="${oldSrc}"]`).forEach(e => {
-		e.src = newSrc;
-		if (forceWidth) e.width = forceWidth;
-		if (forceHeight) e.height = forceHeight;
-	});
-}
+
+LoadStyle("https://fonts.googleapis.com/css2?family=Inter&display=swap")
+
+FixForcedColors("#Kunena .kheader h2, #Kunena .kheader h2 a, #Kunena .kheader h3, #Kunena .kheader h3 a");
+FixForcedColors("#Kunena .kdeleted td, #Kunena .kmoved td")
+
 ReplaceImage("/components/com_kunena/template/blue_eagle/images/badges/zarpvip.png", "https://i.imgur.com/8U3XGgg.png", 150)
 
-document.querySelectorAll('.klist-actions').forEach(e => {
-	var forum = e.querySelector('.klist-actions-forum');
-	var pages = e.querySelector('.klist-pages-all');
-	if (!forum || !pages) return;
-	if (forum.innerText.trim() === '' && pages.innerText.trim() === '') e.remove();
-});
-
-function sLoad() {
-	document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
-	setTimeout(() => document.body.removeAttribute("data-darkreader-inline-bgimage"), 100)
-
-	var av = document.getElementsByClassName("klist-avatar");
-	for (i = 0; i < av.length; i++) {
-		var arr = /https:\/\/zarpgaming\.com\/media\/kunena\/avatars\/resized\/size36\/users\/(.*)/.exec(av[i].src);
-		if (!arr) continue;
-		av[i].src = "https://zarpgaming.com/media/kunena/avatars/resized/size144/users/" + arr[1];
-	}
-}
-
-function oloaded() {
-	sLoad()
-	document.querySelector("#rt-sidebar-a > div.rt-block.fp-menu.title1.rt-small-sidebar-title.nomargintop.nopaddingtop.visible-large > div > div.module-title")?.remove()
-
-	const list = document.getElementsByClassName("item-134 deeper parent")[0]
-	if (list && list.getChildren)
-		list.getChildren("ul")[0].innerHTML += `<li class="item-12"><span class="rt-sidebar-arrow"></span><a href="https://zarpgaming.com/index.php/forum/search?childforums=1&show=2">Deleted Posts</a></li>`
-
-	if (document.getElements) {
-		document.getElements(".divTablePlayerCount").map(x => {
-			const hasPlayer = String(document.getElement(x).innerHTML).split("/")[0].replace("\n", "") != "0";
-			if (hasPlayer) document.getElement(x).setAttribute("style", "color: green;")
-			else document.getElement(x).setAttribute("style", "color: red;")
-		})
-	}
-}
-oloaded()
-
-
-function loadStyle(FILE_URL, async = true) {
-	let scriptEle = document.createElement("link");
-	scriptEle.setAttribute("src", FILE_URL);
-	scriptEle.setAttribute("rel", "stylesheet");
-	document.body.appendChild(scriptEle);
-}
-
-loadStyle("https://fonts.googleapis.com/css2?family=Inter&display=swap")
-
-function removeImportantFromRule(selector) {
-	for (let sheet of document.styleSheets) {
-		try {
-			let rules = sheet.cssRules || sheet.rules;
-			for (let rule of rules) {
-				if (rule.selectorText === selector) {
-					rule.style.setProperty("color", "#fff", "");
-					rule.style.setProperty("background", "", "");
-					return;
-				}
-			}
-		} catch (e) {
-			console.log("fuck martin")
-		}
-	}
-}
-
-removeImportantFromRule("#Kunena .kheader h2, #Kunena .kheader h2 a, #Kunena .kheader h3, #Kunena .kheader h3 a");
-removeImportantFromRule("#Kunena .kdeleted td, #Kunena .kmoved td")
+ReplaceStyle("color:#000000", "color:#ffffff");
