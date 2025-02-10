@@ -402,7 +402,7 @@ ReplaceStyle("color:#000000", "color:#ffffff");
 if (IsTopicList()) {
 	const list = document.getElementById("kflattable") || document.querySelector(".kflat");
 	const Topics = [];
-	const rows = !list.querySelector(".kcol-ktopictitle") ? [] : list.getElementsByTagName("tr");
+	const rows = !list.querySelector(".kcol-ktopicicon") ? [] : list.getElementsByTagName("tr");
 
 	for (let i = 0; i < rows.length; i++) {
 		const row = rows[i];
