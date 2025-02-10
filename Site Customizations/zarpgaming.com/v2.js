@@ -1,6 +1,7 @@
 function IsProfilePage() { return document.querySelector('.k-profile') !== null; }
 function IsTopicPage() { return document.querySelector('.kmsg-id-right') !== null; }
 function IsIndex() { return document.querySelector('.kfrontstats') !== null; }
+function IsTopicList() { return document.querySelector('#kflattable') !== null || document.querySelector('.kflat') !== null; }
 
 console.log('IsProfilePage', IsProfilePage());
 console.log('IsTopicPage', IsTopicPage());
@@ -19,7 +20,11 @@ function AppendStyleToClass(className, content, whereTag) {
 		className.split(',').forEach(c => AppendStyleToClass(c.trim(), content, whereTag));
 		return;
 	}
-	var elements = document.getElementsByClassName(className);
+
+	var elements
+	if (className.includes('>')) elements = document.querySelectorAll(className)
+	else elements = document.getElementsByClassName(className);
+
 	for (var i = 0; i < elements.length; i++) {
 		if (whereTag && elements[i].tagName.toLowerCase() !== whereTag) continue;
 		elements[i].style.cssText += content;
@@ -35,10 +40,10 @@ function ReplaceImage(oldSrc, newSrc, forceWidth = null, forceHeight = null) {
 }
 
 function LoadStyle(FILE_URL) {
-	let scriptEle = document.createElement("link");
-	scriptEle.setAttribute("src", FILE_URL);
-	scriptEle.setAttribute("rel", "stylesheet");
-	document.body.appendChild(scriptEle);
+	var link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.href = FILE_URL;
+	document.head.appendChild(link);
 }
 
 function FixForcedColors(selector) {
@@ -417,6 +422,7 @@ document.querySelector("#rt-sidebar-a > div.rt-block.fp-menu.title1.rt-small-sid
 document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
 
 
+LoadStyle("https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css")
 LoadStyle("https://fonts.googleapis.com/css2?family=Inter&display=swap")
 
 FixForcedColors("#Kunena .kheader h2, #Kunena .kheader h2 a, #Kunena .kheader h3, #Kunena .kheader h3 a");
@@ -425,3 +431,229 @@ FixForcedColors("#Kunena .kdeleted td, #Kunena .kmoved td")
 ReplaceImage("/components/com_kunena/template/blue_eagle/images/badges/zarpvip.png", "https://i.imgur.com/8U3XGgg.png", 150)
 
 ReplaceStyle("color:#000000", "color:#ffffff");
+
+if (IsTopicList()) {
+	const list = document.getElementById("kflattable") //|| document.querySelector(".kflat");
+	const Topics = [];
+	const rows = list.getElementsByTagName("tr");
+
+	for (let i = 0; i < rows.length; i++) {
+		const row = rows[i];
+		const cols = row.getElementsByTagName("td");
+		if (cols.length !== 5) continue;
+
+		const isSticky = row.className.includes("krow1-stickymsg") || row.className.includes("krow2-stickymsg");
+		const title = cols[2].querySelector("a").innerText;
+		const url = cols[2].querySelector("a").href;
+		const category = cols[2].querySelector(".ktopic-category")?.innerText?.replace("Category: ", "") || "";
+		const icon = cols[1].querySelector("img").src;
+		const created = cols[2].querySelector(".ktopic-posted-time").innerText;
+		const createdBy = cols[2].querySelector(".ktopic-by.ks").innerText
+		const createdByClass = cols[2].querySelector(".ktopic-by.ks > a").className;
+		const createdByUrl = cols[2].querySelector(".ktopic-by.ks > a").href;
+		const views = row.querySelector(".ktopic-views-number").innerText;
+		const replies = Number(cols[0].querySelector("strong").innerText);
+		const lastPostUrl = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(1)").href;
+		const lastPostCreatedBy = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)").innerText;
+		const lastPostCreated = cols[4].querySelector(".klatest-post-info > .ktopic-date").innerText;
+		const lastPostCreatedUrl = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)").href;
+		const lastPostCreatedByClass = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)").className;
+		const lastPostAvatar = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post-avatar > a > img").src;
+
+		Topics.push({
+			title,
+			url,
+			category,
+			icon,
+			created,
+			createdBy,
+			createdByClass,
+			createdByUrl,
+			views,
+			replies,
+			isSticky,
+			lastPost: {
+				url: lastPostUrl,
+				authUrl: lastPostCreatedUrl,
+				created: lastPostCreated,
+				createdBy: lastPostCreatedBy,
+				createdByClass: lastPostCreatedByClass,
+				avatar: lastPostAvatar
+			}
+		});
+	}
+
+	list.outerHTML = `<div id="kflattable"></div>`;
+	const div = document.getElementById("kflattable");
+	function createTopicElement(topic) {
+		const element = document.createElement("div");
+		element.className = `topic ${topic.isSticky ? "zsticky" : ""}`;
+		element.innerHTML = `
+			<div class="ztopic-icon">
+				<img src="${topic.icon}" alt="topic-icon">
+			</div>
+			<div class="ztopic-content">
+				<div class="ztopic-info">
+					<div class="ztopic-title">
+						<a href="${topic.url}">${topic.title}</a>
+					</div>
+					<div class="ztopic-catauth">
+						<div class="ztopic-author">
+							${topic.category ? `<span class="ktopic-category">${topic.category}</span>` : ""}
+							<span>By<span> <a href="${topic.createdByUrl}" class="${topic.createdByClass}">${topic.createdBy.replace("by ", "")}</a>, ${topic.created.replace("Topic started ", "")}
+						</div>
+					</div>
+				</div>
+				<div class="ztopic-lastpost">
+					<div class="ztopic-latest-post">
+						<div>
+							<a href="${topic.lastPost.url}">Last Post</a> by <a href="${topic.lastPost.authUrl}" class="${topic.lastPost.createdByClass}">${topic.lastPost.createdBy}</a>
+						</div>
+						<div class="ztopic-latest-post-time">${topic.lastPost.created}</div>
+					</div>
+					<img src="${topic.lastPost.avatar}" alt="last-post-avatar">
+				</div>
+			</div>
+			<div class="ztopic-stats">
+				<div class="ztopic-views">
+					${topic.views} <i class="far fa-eye"></i>
+				</div>
+				<div class="ztopic-replies">
+					${topic.replies} <i class="fas fa-reply"></i>
+				</div>
+			</div>
+		`;
+
+		return element;
+	}
+
+	Topics.forEach(topic => div.appendChild(createTopicElement(topic)));
+
+	AddStyle(`
+		#kflattable {
+			padding: 5px;
+		}
+
+		.zsticky {
+			background: rgb(75 69 45) !important;
+		}
+
+		.zsticky .ztopic-icon {
+			background: #5b5530!important;
+		}
+
+		.topic {
+			display: flex;
+			flex-direction: row;
+			align-items: stretch;
+			background: #272a31;
+			border-radius: 4px;
+			border-bottom: 1px solid #262f3f!important;
+		}
+
+		.topic:not(:last-child) {
+			margin-bottom: 2px;
+		}
+
+		.ztopic-icon {
+			width: 25px!important;
+			min-width: 25px!important;
+			max-width: 25px!important;
+			padding: 1rem;
+			background-color: #2d374b;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-top-left-radius: 4px;
+			border-bottom-left-radius: 4px;
+		}
+
+		.ztopic-content {
+			padding: 1rem;
+			position: relative;
+			display: flex;
+			flex-direction: row;
+			flex: 1 1 auto!important;
+			align-items: center;
+		}
+
+		.ztopic-info {
+			display: flex;
+			flex-direction: column;
+			flex: 1 1 auto!important;
+		}
+
+		.ztopic-stats {
+			width: 20px!important;
+			padding: 1rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			border-top-right-radius: 4px;
+			border-bottom-right-radius: 4px;
+			gap: 5px;
+			margin-right: 10px;
+		}
+
+		.ztopic-views, .ztopic-replies {
+			font-size: .8rem!important;
+			color: rgba(255, 255, 255, .7);
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+
+		.ztopic-views i, .ztopic-replies i {
+			margin-left: 5px;
+		}
+
+		.ztopic-lastpost {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+
+		.ztopic-lastpost img {
+			height: 50px!important;
+			width: 50px!important;
+			border-radius: 8px;
+		}
+
+		.ztopic-latest-post {
+			margin-right: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			justify-content: center;
+		}
+
+		.ztopic-author {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			margin-top: 5px;
+		}
+
+		.ztopic-author, .ztopic-latest-post-time {
+			font-size: .7rem!important;
+			color: rgba(255, 255, 255, .7);
+		}
+
+		.ktopic-category {
+			background: rgba(255, 255, 255, .2);
+			color: white;
+			padding: 1px 5px;
+			border-radius: 4px;
+			margin-right: 5px;
+			border: 1px solid rgba(255, 255, 255, .2);
+		}
+	`);
+
+	AppendStyleToClass(".ztopic-title > a", `
+		text-decoration: none;
+		font-weight: 500;
+		hyphens: auto;
+		word-break: break-word;
+	`);
+}
