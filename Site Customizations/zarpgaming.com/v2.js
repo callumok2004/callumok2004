@@ -454,7 +454,7 @@ if (IsTopicList()) {
 		if (cols.length !== 5 && cols.length !== 6) continue;
 
 		const isSticky = row.className.includes("krow1-stickymsg") || row.className.includes("krow2-stickymsg");
-		const title = cols[2].querySelector("a").innerText;
+		let title = cols[2].querySelector("a").innerText;
 		const url = cols[2].querySelector("a").href;
 		const category = cols[2].querySelector(".ktopic-category")?.innerText?.replace("Category: ", "") || "";
 		const icon = cols[1].querySelector("img").src;
@@ -473,8 +473,16 @@ if (IsTopicList()) {
 
 		const ModId = cols[5]?.querySelector("input")?.name;
 
+		let newPosts = 0;
+		const newPostsMatch = title.match(/\(\d+\sNEW\)$/);
+		if (newPostsMatch) {
+			newPosts = Number(newPostsMatch[0].replace(/\D/g, ""));
+			title = title.replace(newPostsMatch[0], "");
+		}
+
 		Topics.push({
 			title,
+			newPosts,
 			url,
 			category,
 			icon,
@@ -510,6 +518,7 @@ if (IsTopicList()) {
 				<div class="ztopic-info">
 					<div class="ztopic-title">
 						<a href="${topic.url}">${topic.title}</a>
+						${topic.newPosts ? `<span class="ztopic-new-posts">${topic.newPosts} New Post${topic.newPosts > 1 ? "s" : ""}</span>` : ""}
 					</div>
 					<div class="ztopic-catauth">
 						<div class="ztopic-author">
@@ -669,6 +678,16 @@ if (IsTopicList()) {
 			border-radius: 4px;
 			margin-right: 5px;
 			border: 1px solid rgba(255, 255, 255, .2);
+		}
+
+		.ztopic-new-posts {
+			background: rgb(69 255 118 / 38%);
+			border: 1px solid rgba(255, 255, 255, .1);
+			color: white;
+			padding: 1px 5px;
+			border-radius: 4px;
+			margin-left: 5px;
+			font-size: .7rem;
 		}
 	`);
 
