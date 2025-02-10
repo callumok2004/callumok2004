@@ -428,7 +428,8 @@ if (IsTopicList()) {
 		const lastPostCreated = cols[4].querySelector(".klatest-post-info > .ktopic-date")?.innerText || "Unknown";
 		const lastPostCreatedUrl = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)")?.href;
 		const lastPostCreatedByClass = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)")?.className;
-		const lastPostAvatar = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post-avatar > a > img")?.src;
+		const lastPostAvatar = cols[4].querySelector(".klist-avatar")?.src;
+		const lastPostFrame = cols[4].querySelector(".avatarFrame")?.src;
 
 		const ModId = cols[5]?.querySelector("input")?.name;
 
@@ -461,7 +462,8 @@ if (IsTopicList()) {
 				created: lastPostCreated,
 				createdBy: lastPostCreatedBy,
 				createdByClass: lastPostCreatedByClass,
-				avatar: lastPostAvatar
+				avatar: lastPostAvatar,
+				frame: lastPostFrame
 			},
 			mod: ModId
 		});
@@ -488,7 +490,10 @@ if (IsTopicList()) {
 				</div>
 				<div class="ztopic-latest-post-time">${topic.lastPost.created}</div>
 			</div>
-			<img src="${topic.lastPost.avatar}" alt="last-post-avatar">
+			<div class="ztopic-latest-post-avatar">
+				<img src="${topic.lastPost.avatar}" alt="last-post-avatar">
+				<img src="${topic.lastPost.frame}" alt="last-post-frame" onerror="this.style.display='none'">
+			</div>
 		</div>
 		`
 
@@ -543,6 +548,26 @@ if (IsTopicList()) {
 		.ztopic-t-denied .ztopic-icon {background-color: #9f404089!important;}
 		.zsticky {background: rgb(75 69 45) !important;}
 		.zsticky .ztopic-icon {background: #5b5530!important;}
+
+		.ztopic-latest-post-avatar {
+			position: relative;
+			display: inline-flex;
+			max-width: 36px;
+			max-height: 36px;
+		}
+
+		.ztopic-latest-post-avatar img:last-child {
+			position: absolute;
+			top: -12%;
+			left: -12%;
+			width: calc(100% + 62%)!important;
+			height: calc(100% + 62%)!important;
+			border: unset !important;
+			padding: unset !important;
+			margin: unset !important;
+			max-width: unset !important;
+			max-height: unset !important;
+		}
 
 		.topic {
 			display: flex;
@@ -610,10 +635,10 @@ if (IsTopicList()) {
 			align-items: center;
 		}
 
-		.ztopic-lastpost img {
+		.ztopic-lastpost img:first-child {
 			height: 50px!important;
 			width: 50px!important;
-			border-radius: 8px;
+			border-radius: 3px;
 		}
 
 		.ztopic-latest-post {
