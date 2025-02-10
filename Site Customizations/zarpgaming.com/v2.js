@@ -1,12 +1,7 @@
-function IsProfilePage() { return document.querySelector('.k-profile') !== null; }
 function IsTopicPage() { return document.querySelector('.kmsg-id-right') !== null; }
-function IsIndex() { return document.querySelector('.kfrontstats') !== null; }
 function IsTopicList() { return document.querySelector('#kflattable') !== null || document.querySelector('.kflat') !== null; }
-
-console.log('IsProfilePage', IsProfilePage());
-console.log('IsTopicPage', IsTopicPage());
-console.log('IsIndex', IsIndex());
-console.log('IsTopicList', IsTopicList());
+function HasMessages() { return document.querySelector('.kmsg') !== null; }
+function IsProfilePage() { return document.querySelector('.k-profile') !== null; }
 
 function ReplaceStyle(oldStyle, newStyle) { document.querySelectorAll(`[style="${oldStyle}"]`).forEach(e => e.style.cssText = newStyle); }
 
@@ -71,12 +66,17 @@ AddStyle(`
 		background-color: #394663 !important;
 	}
 
+	#rt-mainbody {padding: 7px!important}
 	.rt-main-wrapper, #rt-mainbody-surround, #rt-bottom {background: #14161c;}
 	.kblock {background: transparent!important;}
 
 	.kcontainer {
 		border: 1px solid rgba(255, 255, 255, .4);
 		color: white;
+	}
+
+	.kblocktable {
+		background: #212735!important;
 	}
 
 	.kbody {
@@ -102,7 +102,18 @@ AddStyle(`
 		border-radius: 4px;
 		border-left: 5px solid rgba(255, 255, 255, .4);
 		border-right: 5px solid rgba(255, 255, 255, .4);
-		border-top: 1px solid rgba(255, 255, 255, .4);
+		border-top: unset!important;
+		border-bottom: unset!important;
+		min-height: unset!important;
+	}
+
+	.kspoiler-header {
+		background: #2d374b!important;
+		border: 1px solid rgba(255, 255, 255, .1);
+		border-radius: 4px;
+		padding: 5px;
+		color: white;
+		margin-top: 5px;
 	}
 
 	#Kunena div.kmsgtext code, #Kunena div.kmsgtext pre {
@@ -223,18 +234,18 @@ AddStyle(`
 	#Kunena a:hover {color: #00d7ff !important;}
 
 	.kprofile-right, .kprofile-left {
-		background: rgba(255, 255, 255, .15)!important;
+		background:rgb(39, 49, 71)!important;
 		border-left: 1px solid rgba(0, 0, 0, .5)!important;
 	}
 
 	.kmessage-right {
-		background: rgba(255, 255, 255, .2)!important;
+		background: #212735!important;
 		border: 1px solid rgba(0, 0, 0, .5);
 		border-right: 1px solid rgba(0, 0, 0, .5)!important;
 	}
 
 	.kbuttonbar-right {
-		background: rgba(255, 255, 255, .2)!important;
+		background: #212735!important;
 		border-right: 1px solid rgba(0, 0, 0, .5)!important;
 		border: unset!important;
 	}
@@ -391,30 +402,33 @@ ReplaceStyle("color:#000000", "color:#ffffff");
 if (IsTopicList()) {
 	const list = document.getElementById("kflattable") || document.querySelector(".kflat");
 	const Topics = [];
-	const rows = list.getElementsByTagName("tr");
+	const rows = !list.querySelector(".kcol-ktopictitle") ? [] : list.getElementsByTagName("tr");
 
 	for (let i = 0; i < rows.length; i++) {
 		const row = rows[i];
-		const cols = row.getElementsByTagName("td");
-		if (cols.length !== 5 && cols.length !== 6) continue;
+		const cols1 = row.getElementsByTagName("td");
+		if (cols1.length !== 5 && cols1.length !== 6) continue;
+
+		let cols = cols1;
+		if (IsProfilePage()) cols = [cols1[0], cols1[0], cols1[2], cols1[2], cols1[3], cols1[5]];
 
 		const isSticky = row.className.includes("krow1-stickymsg") || row.className.includes("krow2-stickymsg");
 		let title = cols[2].querySelector("a").innerText;
 		const url = cols[2].querySelector("a").href;
 		const category = cols[2].querySelector(".ktopic-category")?.innerText?.replace("Category: ", "") || "";
 		const icon = cols[1].querySelector("img").src;
-		const created = cols[2].querySelector(".ktopic-posted-time").innerText;
-		const createdBy = cols[2].querySelector(".ktopic-by.ks").innerText
-		const createdByClass = cols[2].querySelector(".ktopic-by.ks > a").className;
-		const createdByUrl = cols[2].querySelector(".ktopic-by.ks > a").href;
-		const views = row.querySelector(".ktopic-views-number").innerText;
-		const replies = Number(cols[0].querySelector("strong").innerText);
-		const lastPostUrl = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(1)").href;
-		const lastPostCreatedBy = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)").innerText;
-		const lastPostCreated = cols[4].querySelector(".klatest-post-info > .ktopic-date").innerText;
-		const lastPostCreatedUrl = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)").href;
-		const lastPostCreatedByClass = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)").className;
-		const lastPostAvatar = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post-avatar > a > img").src;
+		const created = cols[2].querySelector(".ktopic-posted-time")?.innerText || "Unknown";
+		const createdBy = cols[2].querySelector(".ktopic-by.ks")?.innerText || "Unknown";
+		const createdByClass = cols[2].querySelector(".ktopic-by.ks > a")?.className;
+		const createdByUrl = cols[2].querySelector(".ktopic-by.ks > a")?.href;
+		const views = row.querySelector(".ktopic-views-number")?.innerText || 0;
+		const replies = Number(cols[0].querySelector("strong")?.innerText || 0);
+		const lastPostUrl = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(1)")?.href;
+		const lastPostCreatedBy = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)")?.innerText;
+		const lastPostCreated = cols[4].querySelector(".klatest-post-info > .ktopic-date")?.innerText || "Unknown";
+		const lastPostCreatedUrl = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)")?.href;
+		const lastPostCreatedByClass = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)")?.className;
+		const lastPostAvatar = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post-avatar > a > img")?.src;
 
 		const ModId = cols[5]?.querySelector("input")?.name;
 
@@ -453,7 +467,8 @@ if (IsTopicList()) {
 		});
 	}
 
-	list.outerHTML = `<div id="kflattable"></div>`;
+	if (rows.length > 1) list.outerHTML = `<div id="kflattable"></div>`;
+
 	const div = document.getElementById("kflattable");
 	function createTopicElement(topic) {
 		const element = document.createElement("div");
@@ -468,13 +483,18 @@ if (IsTopicList()) {
 						<a href="${topic.url}">${topic.title}</a>
 						${topic.newPosts ? `<span class="ztopic-new-posts">${topic.newPosts} New Post${topic.newPosts > 1 ? "s" : ""}</span>` : ""}
 					</div>
-					<div class="ztopic-catauth">
-						<div class="ztopic-author">
-							${topic.category ? `<span class="ktopic-category">${topic.category}</span>` : ""}
-							<span>By<span> <a href="${topic.createdByUrl}" class="${topic.createdByClass}">${topic.createdBy.replace("by ", "")}</a>, ${topic.created.replace("Topic started ", "")}
-						</div>
-					</div>
+					`+
+			(IsProfilePage() ? "" : `
+			<div class="ztopic-catauth">
+				<div class="ztopic-author">
+					${topic.category ? `<span class="ktopic-category">${topic.category}</span>` : ""}
+					<span>By<span> <a href="${topic.createdByUrl}" class="${topic.createdByClass}">${topic.createdBy.replace("by ", "")}</a>, ${topic.created.replace("Topic started ", "")}
 				</div>
+			</div>
+			`) + `</div>`;
+
+		if (!IsProfilePage()) {
+			element.innerHTML += `
 				<div class="ztopic-lastpost">
 					<div class="ztopic-latest-post">
 						<div>
@@ -484,7 +504,12 @@ if (IsTopicList()) {
 					</div>
 					<img src="${topic.lastPost.avatar}" alt="last-post-avatar">
 				</div>
-			</div>
+				`
+		}
+		element.innerHTML += `</div>`;
+
+		if (!IsProfilePage()) {
+			element.innerHTML += `
 			<div class="ztopic-stats">
 				<div class="ztopic-views">
 					${topic.views} <i class="far fa-eye"></i>
@@ -493,7 +518,8 @@ if (IsTopicList()) {
 					${topic.replies} <i class="fas fa-reply"></i>
 				</div>
 			</div>
-		`;
+			`;
+		}
 
 		if (topic.mod) {
 			const checkbox = document.createElement("input");
@@ -520,7 +546,7 @@ if (IsTopicList()) {
 			display: flex;
 			flex-direction: row;
 			align-items: stretch;
-			background: #272a31;
+			background: #212735;
 			border-radius: 2px;
 			border: 1px solid rgba(255, 255, 255, .1);
 		}
@@ -635,6 +661,33 @@ if (IsTopicList()) {
 		hyphens: auto;
 		word-break: break-word;
 	`);
+}
+
+if (HasMessages()) {
+
+	AddStyle(`
+		.kmsg-header {
+			margin-bottom: 5px;
+		}
+
+		.kmsg-header:not(:first-child) {
+			margin-top: 5px;
+		}
+
+		.kmsg-header span:nth-child(3) {
+			padding: 0!important;
+			background:rgb(47, 70, 116);
+			border-radius: 4px;
+			color: white;
+			border: 1px solid rgba(255, 255, 255, .1);
+		}
+
+		.kmsg-title-right {
+			margin-left: unset!important;
+			background: unset!important;
+			padding-left: unset!important;
+		}
+	`)
 }
 
 LoadStyle("https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css")
