@@ -471,6 +471,8 @@ if (IsTopicList()) {
 		const lastPostCreatedByClass = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post > a:nth-child(2)").className;
 		const lastPostAvatar = cols[4].querySelector(".klatest-post-info > .ktopic-latest-post-avatar > a > img").src;
 
+		const ModId = cols[5]?.querySelector("input")?.name;
+
 		Topics.push({
 			title,
 			url,
@@ -490,7 +492,8 @@ if (IsTopicList()) {
 				createdBy: lastPostCreatedBy,
 				createdByClass: lastPostCreatedByClass,
 				avatar: lastPostAvatar
-			}
+			},
+			mod: ModId
 		});
 	}
 
@@ -534,6 +537,14 @@ if (IsTopicList()) {
 				</div>
 			</div>
 		`;
+
+		if (topic.mod) {
+			const checkbox = document.createElement("input");
+			checkbox.type = "checkbox";
+			checkbox.className = "ztopic-checkbox kcheck";
+			checkbox.name = topic.mod;
+			element.appendChild(checkbox);
+		}
 
 		return element;
 	}
