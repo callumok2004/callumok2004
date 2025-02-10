@@ -61,7 +61,6 @@ function FixForcedColors(selector) {
 }
 
 AddStyle(`
-
 	ul.menu > li > a {
 		background-image: unset!important;
 		background-color: #2d374b !important;
@@ -72,13 +71,8 @@ AddStyle(`
 		background-color: #394663 !important;
 	}
 
-	.rt-main-wrapper, #rt-mainbody-surround {
-		background: #14161c;
-	}
-
-	.kblock {
-		background: transparent!important;
-	}
+	.rt-main-wrapper, #rt-mainbody-surround, #rt-bottom {background: #14161c;}
+	.kblock {background: transparent!important;}
 
 	.kcontainer {
 		border: 1px solid rgba(255, 255, 255, .4);
@@ -128,21 +122,21 @@ AddStyle(`
 		background: rgba(0, 0, 0, .6);
 		border: 1px solid rgba(255, 255, 255, .4);
 		color: white;
-		border-radius: 4px;
+		border-radius: 2px;
 	}
 
-	#Kunena .klist-times-all, #Kunena .klist-pages-all, #Kunena .klist-times {
+	#Kunena .klist-times-all, #Kunena .klist-pages-all, #Kunena .klist-time, .klist-jump-all {
 		line-height: unset!important;
+		border-left-color: rgba(255, 255, 255, .2)!important;
 	}
 
-	#kprofilebox td {
-		background-color: #2d374b;
-	}
+	#kprofilebox td {background-color: #2d374b;}
+	#kprofilebox .kbody {margin-bottom: unset!important;}
 
 	#Kunena .klist-actions, #Kunena .klist-actions-bottom, #kprofilebox .krow1, #kprofilebox td, .kforum-pathway, .klist-bottom, .kanndesc {
 		background: #2d374b !important;
-		border: 1px solid rgba(0, 0, 0, .5);
-		border-radius: 4px;
+		border: unset;
+		border-radius: 2px;
 	}
 
 	#Kunena .klist-bottom {
@@ -152,13 +146,12 @@ AddStyle(`
 		margin-bottom: 10px;
 	}
 
-	#Kunena div.kblock {
-		border-bottom: unset!important;
-	}
+	#Kunena div.kblock {border-bottom: unset!important;}
+	#Kunena div.kblock.kfrontstats {margin: unset!important;}
 
 	#Kunena .kforum-pathway, #Kunena dl.tabs dt {
-		border-left: 2px solid rgba(0, 0, 0, .5);
-		border-right: 2px solid rgba(0, 0, 0, .5);
+		border-left: unset!important;
+		border-right: unset!important;
 	}
 
 	.kbody, .ksectionbody {
@@ -181,9 +174,7 @@ AddStyle(`
     border-radius: 2px!important;
 	}
 
-	input[type="submit"]:hover, input[type="button"]:hover, input[type="reset"]:hover, button:hover, .kheadbtn a:hover {
-		background: rgb(69 255 118 / 68%)!important;
-	}
+	input[type="submit"]:hover, input[type="button"]:hover, input[type="reset"]:hover, button:hover, .kheadbtn a:hover {background: rgb(69 255 118 / 68%)!important;}
 
 	input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="color"], input[type="range"], input[type="file"], textarea {
 		padding: 2px 8px!important;
@@ -209,9 +200,7 @@ AddStyle(`
 		border-radius: 2px!important;
 	}
 
-	input[type="checkbox"]:focus, input[type="radio"]:focus {
-		outline: none;
-	}
+	input[type="checkbox"]:focus, input[type="radio"]:focus {outline: none;}
 
 	select {
 		padding: 2px 8px!important;
@@ -228,17 +217,10 @@ AddStyle(`
 		line-height: unset!important;
 	}
 
-	.kpagination li:first-child, .kpagination li:first-child a {
-		display: none!important;
-	}
+	.kpagination li:first-child, .kpagination li:first-child a {display: none!important;}
+	.path-element-last {color: white!important;}
 
-	.path-element-last {
-		color: white!important;
-	}
-
-	#Kunena a:hover {
-		color: #00d7ff !important;
-	}
+	#Kunena a:hover {color: #00d7ff !important;}
 
 	.kprofile-right, .kprofile-left {
 		background: rgba(255, 255, 255, .15)!important;
@@ -257,69 +239,30 @@ AddStyle(`
 		border: unset!important;
 	}
 
-	#Kunena td {
-		border-bottom: unset!important;
-		borde-radius: 4px;
+	#Kunena td {border-bottom: unset!important;}
+	.ktopic-views, .ktopic-views-number, .kcol-ktopicreplies, .kcol-ktopicreplies strong {color: white!important;}
+
+	.krow1 td, .krow2 td {
+		background: #2d374b!important;
+		border-radius: 2px;
 	}
 
-	.ktopic-views, .ktopic-views-number, .kcol-ktopicreplies, .kcol-ktopicreplies strong {
-		color: white!important;
+	.kcol-first {
+		border-top-right-radius: 0px!important;
+		border-bottom-right-radius: 0px!important;
 	}
 
-	.krow1-stickymsg td {
-		background: rgb(89 79 10) !important;
+	.kcol-mid {
+		border-top-left-radius: 0px!important;
+		border-bottom-left-radius: 0px!important;
+		border-left: 1px solid rgba(255, 255, 255, .3)!important;
 	}
 
-	.krow2-stickymsg td {
-		background: rgb(83 73 5) !important;
-	}
-
-	.krow1 td {
-		background-color: rgb(113 113 113 / 28%) !important;
-	}
-
-	.krow2 td {
-		background-color: rgb(113 113 113 / 38%) !important;
-	}
-
-	.krow2-blue td {
-		background-color: rgb(46 176 255 / 28%) !important;
-	}
-
-	.krow1-red td {
-		background-color: rgb(221 37 37 / 40%) !important;
-	}
-
-	.krow2-red td {
-		background-color: rgb(221 37 37 / 45%) !important;
-	}
-
-	.krow1-green td {
-		background-color: rgb(37 167 72 / 40%) !important;
-	}
-
-	.krow2-green td {
-		background-color: rgb(37 167 72 / 30%) !important;
-	}
-
-	.krow1-grey td {
-		background-color: rgb(113 113 113 / 28%) !important;
-	}
-
-	.krow2-grey td {
-		background-color: rgb(113 113 113 / 38%) !important;
-	}
-
-	.kmsg-header h2 {
-		background: unset!important;
-	}
-
-	.kheader {
-		margin-bottom: 5px;
-	}
-
-	.tabs dt {
-		border: unset!important;
+	.kmsg-header h2 {background: unset!important;}
+	.kheader {margin-bottom: 5px;}
+	.tabs dt {border: unset!important;}
+	.kpathway {
+		margin: 10px 0px -5px 0px!important;
 	}
 
 	.current {
@@ -353,15 +296,15 @@ AddStyle(`
 
 AppendStyleToClass('kheader, kmsg-header', `
 	padding: 8px;
-	border: 1px solid rgba(0, 0, 0, .5);
+	border: unset;
 	background: #2d374b !important;
-	border-radius: 4px;
+	border-radius: 2px;
 `);
 
 AppendStyleToClass("pagenav", `
 	background: #2d374b !important;
 	border: 1px solid rgba(0, 0, 0, .5);
-	border-radius: 4px;
+	border-radius: 2px;
 	line-height: unset!important;
 	padding: 1px 5px;
 `, 'a');
@@ -397,7 +340,7 @@ for (i = 0; i < av.length; i++) {
 const list = document.getElementsByClassName("item-134 deeper parent")[0]
 if (list && list.getChildren) list.getChildren("ul")[0].innerHTML += `<li class="item-12"><span class="rt-sidebar-arrow"></span><a href="https://zarpgaming.com/index.php/forum/search?childforums=1&show=2">Deleted Posts</a></li>`
 
-document.getElements(".divTablePlayerCount").map(x => {
+document.getElements?.(".divTablePlayerCount").map(x => {
 	const hasPlayer = String(document.getElement(x).innerHTML).split("/")[0].replace("\n", "") != "0";
 	if (hasPlayer) document.getElement(x).setAttribute("style", "color: green;")
 	else document.getElement(x).setAttribute("style", "color: red;")
@@ -434,7 +377,9 @@ document.querySelectorAll('.kfooter').forEach(e => e.remove());
 document.querySelectorAll('.klist-actions-goto').forEach(e => e.remove());
 document.querySelector("#rt-sidebar-a > div.rt-block.fp-menu.title1.rt-small-sidebar-title.nomargintop.nopaddingtop.visible-large > div > div.module-title")?.remove()
 document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
-
+document.querySelectorAll('.kwhoisonline .kheader')[0]?.remove();
+document.querySelectorAll('.kfrontstats .kheader')[0]?.remove();
+document.querySelectorAll('.rt-pages')[0]?.remove();
 
 FixForcedColors("#Kunena .kheader h2, #Kunena .kheader h2 a, #Kunena .kheader h3, #Kunena .kheader h3 a");
 FixForcedColors("#Kunena .kdeleted td, #Kunena .kmoved td")
@@ -480,11 +425,14 @@ if (IsTopicList()) {
 			title = title.replace(newPostsMatch[0], "");
 		}
 
+		const categoryParsed = category.toLowerCase().replace(/[^a-z0-9]/g, "_");
+
 		Topics.push({
 			title,
 			newPosts,
 			url,
 			category,
+			categoryParsed,
 			icon,
 			created,
 			createdBy,
@@ -509,7 +457,7 @@ if (IsTopicList()) {
 	const div = document.getElementById("kflattable");
 	function createTopicElement(topic) {
 		const element = document.createElement("div");
-		element.className = `topic ${topic.isSticky ? "zsticky" : ""}`;
+		element.className = `topic ${topic.isSticky ? "zsticky" : ""} ztopic-t-${topic.categoryParsed}`;
 		element.innerHTML = `
 			<div class="ztopic-icon">
 				<img src="${topic.icon}" alt="topic-icon">
@@ -561,30 +509,23 @@ if (IsTopicList()) {
 	Topics.forEach(topic => div.appendChild(createTopicElement(topic)));
 
 	AddStyle(`
-		#kflattable {
-			padding: 1px;
-		}
-
-		.zsticky {
-			background: rgb(75 69 45) !important;
-		}
-
-		.zsticky .ztopic-icon {
-			background: #5b5530!important;
-		}
+		.ztopic-t-accepted {background-color: #409f5961!important;}
+		.ztopic-t-accepted .ztopic-icon {background-color: #409f5989!important;}
+		.ztopic-t-denied {background-color: #9f404061!important;}
+		.ztopic-t-denied .ztopic-icon {background-color: #9f404089!important;}
+		.zsticky {background: rgb(75 69 45) !important;}
+		.zsticky .ztopic-icon {background: #5b5530!important;}
 
 		.topic {
 			display: flex;
 			flex-direction: row;
 			align-items: stretch;
 			background: #272a31;
-			border-radius: 4px;
-			border-bottom: 1px solid #262f3f!important;
+			border-radius: 2px;
+			border: 1px solid rgba(255, 255, 255, .1);
 		}
 
-		.topic:not(:last-child) {
-			margin-bottom: 2px;
-		}
+		.topic:not(:last-child) {margin-bottom: 3px;}
 
 		.ztopic-icon {
 			width: 25px!important;
@@ -595,8 +536,8 @@ if (IsTopicList()) {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			border-top-left-radius: 4px;
-			border-bottom-left-radius: 4px;
+			border-top-left-radius: 2px;
+			border-bottom-left-radius: 2px;
 		}
 
 		.ztopic-content {
@@ -621,8 +562,6 @@ if (IsTopicList()) {
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			border-top-right-radius: 4px;
-			border-bottom-right-radius: 4px;
 			gap: 5px;
 			margin-right: 10px;
 		}
@@ -635,9 +574,7 @@ if (IsTopicList()) {
 			align-items: center;
 		}
 
-		.ztopic-views i, .ztopic-replies i {
-			margin-left: 5px;
-		}
+		.ztopic-views i, .ztopic-replies i {margin-left: 5px;}
 
 		.ztopic-lastpost {
 			display: flex;
