@@ -6,6 +6,7 @@ function IsTopicList() { return document.querySelector('#kflattable') !== null |
 console.log('IsProfilePage', IsProfilePage());
 console.log('IsTopicPage', IsTopicPage());
 console.log('IsIndex', IsIndex());
+console.log('IsTopicList', IsTopicList());
 
 function ReplaceStyle(oldStyle, newStyle) { document.querySelectorAll(`[style="${oldStyle}"]`).forEach(e => e.style.cssText = newStyle); }
 
@@ -60,8 +61,19 @@ function FixForcedColors(selector) {
 }
 
 AddStyle(`
-	.rt-main-wrapper {
-		background: rgb(0 0 0 / 10%);
+
+	ul.menu > li > a {
+		background-image: unset!important;
+		background-color: #2d374b !important;
+	}
+
+	ul.menu > li.active > a {
+		background-image: unset!important;
+		background-color: #394663 !important;
+	}
+
+	.rt-main-wrapper, #rt-mainbody-surround {
+		background: #14161c;
 	}
 
 	.kblock {
@@ -84,14 +96,14 @@ AddStyle(`
     padding: 4px 4px;
     border-radius: 3px;
     margin-right: 10px;
-    border: 1px solid rgba(255, 255, 255, .1);
+    border: 1px solid #2d374b;
     vertical-align: middle;
     background: rgb(69 255 118 / 38%) !important;
     font-size: 8px !important;
 	}
 
 	.kspoiler-wrapper {
-		background-color: rgba(255, 255, 255, .1)!important;
+		background-color: #2d374b!important;
 		border: 1px solid rgba(255, 255, 255, .4);
 		border-radius: 4px;
 		border-left: 5px solid rgba(255, 255, 255, .4);
@@ -107,7 +119,7 @@ AddStyle(`
 	}
 
 	.kmsgtext-quote {
-		background: rgba(255, 255, 255, .1)!important;
+		background: #2d374b!important;
 		border: 1px solid rgba(255, 255, 255, .4);
 		border-radius: 4px;
 	}
@@ -116,6 +128,7 @@ AddStyle(`
 		background: rgba(0, 0, 0, .6);
 		border: 1px solid rgba(255, 255, 255, .4);
 		color: white;
+		border-radius: 4px;
 	}
 
 	#Kunena .klist-times-all, #Kunena .klist-pages-all, #Kunena .klist-times {
@@ -123,17 +136,18 @@ AddStyle(`
 	}
 
 	#kprofilebox td {
-		background-color: rgba(255, 255, 255, .1);
+		background-color: #2d374b;
 	}
 
 	#Kunena .klist-actions, #Kunena .klist-actions-bottom, #kprofilebox .krow1, #kprofilebox td, .kforum-pathway, .klist-bottom, .kanndesc {
-		background: rgba(255, 255, 255, .05) !important;
-		border: 2px solid rgba(0, 0, 0, .5);
+		background: #2d374b !important;
+		border: 1px solid rgba(0, 0, 0, .5);
+		border-radius: 4px;
 	}
 
 	#Kunena .klist-bottom {
 		padding-bottom: 5px!important;
-		border: 2px solid rgba(0, 0, 0, .5);
+		border: 1px solid rgba(0, 0, 0, .5);
 		margin-top: 5px;
 		margin-bottom: 10px;
 	}
@@ -149,7 +163,7 @@ AddStyle(`
 
 	.kbody, .ksectionbody {
 		background: rgba(255, 255, 255, .01) !important;
-		border: 2px solid rgba(0, 0, 0, .5);
+		border: 1px solid rgba(0, 0, 0, .5);
 		border-width: 0px!important;
 		margin-bottom: 5px;
 	}
@@ -245,10 +259,7 @@ AddStyle(`
 
 	#Kunena td {
 		border-bottom: unset!important;
-	}
-
-	#Kunena td:not(.kbuttonbar-right) {
-		border-left: 2px solid rgba(255, 255, 255, .1)!important;
+		borde-radius: 4px;
 	}
 
 	.ktopic-views, .ktopic-views-number, .kcol-ktopicreplies, .kcol-ktopicreplies strong {
@@ -313,14 +324,14 @@ AddStyle(`
 
 	.current {
 		background: rgb(97 97 97 / 20%) !important;
-		border: 2px solid rgba(0, 0, 0, .9)!important;
+		border: 1px solid rgba(0, 0, 0, .9)!important;
 		color: white!important;
 		border-radius: 2px;
 	}
 
 	.current .kheader {
 		background-color: rgb(97 97 97 / 20%) !important;
-		border: 2px solid rgba(0, 0, 0, .9)!important;
+		border: 1px solid rgba(0, 0, 0, .9)!important;
 		color: white!important;
 		border-radius: 2px;
 	}
@@ -332,20 +343,23 @@ AddStyle(`
 	}
 
 	.tabs .closed {
-		background: rgba(255, 255, 255, .1)!important;
+		background: #2d374b!important;s
 		border: 1px solid rgba(255, 255, 255, .4);
 		color: white!important;
 	}
+
+	.divTable{display:table;width:100%;overflow:hidden}.divTableRow{display:table-row}.divTableCell,.divTableHead{border-bottom:1px solid #9999993f;display:table-cell;padding:3px 4px}.divTableBody{display:table-row-group}.divTableImage{width:16px;height:16px;padding-right:3px}.divTableImageD{padding-right:25px}.divTableSmall{font-size:75%}.divTableon{color:rgb(77, 206, 154)}.divTableoff{color:rgb(222, 72, 72)}.divTableOnline{padding-left:0}.divTablePlayerCount{padding-right:2px}.box4 {box-shadow: 2px 2px 10px rgba(0,0,0,.8)!important;margin: 8px!important;}.divTablePlayerCount {font-weight: 400!important;padding-right:10px;}.divTableCell {font-weight: 800;}.box4 {background: rgb(40, 44, 48);color: #d1d1d1 !important;border-radius: 4px;border: 2px solid rgba(255, 255, 255, .1);}.divTableRow .divTableCell:nth-child(2) {color: #30daf5 !important;}
 `);
 
 AppendStyleToClass('kheader, kmsg-header', `
 	padding: 8px;
-	border: 2px solid rgba(0, 0, 0, .5);
-	background: rgba(255, 255, 255, .05) !important;
+	border: 1px solid rgba(0, 0, 0, .5);
+	background: #2d374b !important;
+	border-radius: 4px;
 `);
 
 AppendStyleToClass("pagenav", `
-	background: rgba(255, 255, 255, .1) !important;
+	background: #2d374b !important;
 	border: 1px solid rgba(0, 0, 0, .5);
 	border-radius: 4px;
 	line-height: unset!important;
@@ -422,9 +436,6 @@ document.querySelector("#rt-sidebar-a > div.rt-block.fp-menu.title1.rt-small-sid
 document.getElementsByClassName("rt-header-border")[0].style.backgroundColor = "rgba(0,0,0,0)";
 
 
-LoadStyle("https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css")
-LoadStyle("https://fonts.googleapis.com/css2?family=Inter&display=swap")
-
 FixForcedColors("#Kunena .kheader h2, #Kunena .kheader h2 a, #Kunena .kheader h3, #Kunena .kheader h3 a");
 FixForcedColors("#Kunena .kdeleted td, #Kunena .kmoved td")
 
@@ -433,14 +444,14 @@ ReplaceImage("/components/com_kunena/template/blue_eagle/images/badges/zarpvip.p
 ReplaceStyle("color:#000000", "color:#ffffff");
 
 if (IsTopicList()) {
-	const list = document.getElementById("kflattable") //|| document.querySelector(".kflat");
+	const list = document.getElementById("kflattable") || document.querySelector(".kflat");
 	const Topics = [];
 	const rows = list.getElementsByTagName("tr");
 
 	for (let i = 0; i < rows.length; i++) {
 		const row = rows[i];
 		const cols = row.getElementsByTagName("td");
-		if (cols.length !== 5) continue;
+		if (cols.length !== 5 && cols.length !== 6) continue;
 
 		const isSticky = row.className.includes("krow1-stickymsg") || row.className.includes("krow2-stickymsg");
 		const title = cols[2].querySelector("a").innerText;
@@ -531,7 +542,7 @@ if (IsTopicList()) {
 
 	AddStyle(`
 		#kflattable {
-			padding: 5px;
+			padding: 1px;
 		}
 
 		.zsticky {
@@ -652,8 +663,12 @@ if (IsTopicList()) {
 
 	AppendStyleToClass(".ztopic-title > a", `
 		text-decoration: none;
-		font-weight: 500;
+		font-weight: 800;
+		font-size: 1rem;
 		hyphens: auto;
 		word-break: break-word;
 	`);
 }
+
+LoadStyle("https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css")
+LoadStyle("https://fonts.googleapis.com/css2?family=Inter&display=swap")
