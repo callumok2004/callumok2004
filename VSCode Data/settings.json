@@ -171,5 +171,28 @@
   "php.highlight-todo.enable": false,
   "php.problems.excludeGitIgnore": true,
   "vscode-mysql.enableTelemetry": false,
-  "redhat.telemetry.enabled": false
+  "redhat.telemetry.enabled": false,
+  "extensions.trustedPublishers": [
+    "aeschli",
+    "astonedpenguin",
+    "bmewburn",
+    "eamodio",
+    "gruntfuggly",
+    "icrawl",
+    "mcright",
+    "mhutchie",
+    "mrmlnc",
+    "naumovs",
+    "oderwat",
+    "pkief",
+    "shardulm94",
+    "sibiraj-s",
+    "st0pien",
+    "sumneko",
+    "venner",
+    "wakatime",
+    "yoavbls",
+    "zainchen"
+  ],
+  "security.promptForLocalFileProtocolHandling": false
 }
