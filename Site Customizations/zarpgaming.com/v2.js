@@ -471,6 +471,27 @@ if (IsTopicList()) {
 
 	const div = document.getElementById("kflattable");
 	function createTopicElement(topic) {
+		const authorPart = `
+		<div class="ztopic-catauth">
+			<div class="ztopic-author">
+				${topic.category ? `<span class="ktopic-category">${topic.category}</span>` : ""}
+				<span>By<span> <a href="${topic.createdByUrl}" class="${topic.createdByClass}">${topic.createdBy.replace("by ", "")}</a>, ${topic.created.replace("Topic started ", "")}
+			</div>
+		</div>
+		`;
+
+		const lastPostPart = `
+		<div class="ztopic-lastpost">
+			<div class="ztopic-latest-post">
+				<div>
+					<a href="${topic.lastPost.url}">Last Post</a> by <a href="${topic.lastPost.authUrl}" class="${topic.lastPost.createdByClass}">${topic.lastPost.createdBy}</a>
+				</div>
+				<div class="ztopic-latest-post-time">${topic.lastPost.created}</div>
+			</div>
+			<img src="${topic.lastPost.avatar}" alt="last-post-avatar">
+		</div>
+		`
+
 		const element = document.createElement("div");
 		element.className = `topic ${topic.isSticky ? "zsticky" : ""} ztopic-t-${topic.categoryParsed}`;
 		element.innerHTML = `
@@ -483,30 +504,11 @@ if (IsTopicList()) {
 						<a href="${topic.url}">${topic.title}</a>
 						${topic.newPosts ? `<span class="ztopic-new-posts">${topic.newPosts} New Post${topic.newPosts > 1 ? "s" : ""}</span>` : ""}
 					</div>
-					`+
-			(IsProfilePage() ? "" : `
-			<div class="ztopic-catauth">
-				<div class="ztopic-author">
-					${topic.category ? `<span class="ktopic-category">${topic.category}</span>` : ""}
-					<span>By<span> <a href="${topic.createdByUrl}" class="${topic.createdByClass}">${topic.createdBy.replace("by ", "")}</a>, ${topic.created.replace("Topic started ", "")}
+					${!IsProfilePage() ? authorPart : ""}
 				</div>
+				${!IsProfilePage() ? lastPostPart : ""}
 			</div>
-			`) + `</div>`;
-
-		if (!IsProfilePage()) {
-			element.innerHTML += `
-				<div class="ztopic-lastpost">
-					<div class="ztopic-latest-post">
-						<div>
-							<a href="${topic.lastPost.url}">Last Post</a> by <a href="${topic.lastPost.authUrl}" class="${topic.lastPost.createdByClass}">${topic.lastPost.createdBy}</a>
-						</div>
-						<div class="ztopic-latest-post-time">${topic.lastPost.created}</div>
-					</div>
-					<img src="${topic.lastPost.avatar}" alt="last-post-avatar">
-				</div>
-				`
-		}
-		element.innerHTML += `</div>`;
+			`
 
 		if (!IsProfilePage()) {
 			element.innerHTML += `
