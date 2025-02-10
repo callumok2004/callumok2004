@@ -180,12 +180,12 @@ AddStyle(`
 	input[type="submit"], input[type="button"], input[type="reset"], button, .kheadbtn a {
 		padding: 2px 8px!important;
     color: white!important;
-    background: rgb(69 255 118 / 38%)!important;
+    background:rgb(63, 135, 45)!important;
     border: 1px solid rgba(0, 0, 0, .3)!important;
     border-radius: 2px!important;
 	}
 
-	input[type="submit"]:hover, input[type="button"]:hover, input[type="reset"]:hover, button:hover, .kheadbtn a:hover {background: rgb(69 255 118 / 68%)!important;}
+	input[type="submit"]:hover, input[type="button"]:hover, input[type="reset"]:hover, button:hover, .kheadbtn a:hover {background: rgb(63, 135, 45)!important;}
 
 	input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="color"], input[type="range"], input[type="file"], textarea {
 		padding: 2px 8px!important;
@@ -206,7 +206,7 @@ AddStyle(`
 	}
 
 	input[type="checkbox"]:checked, input[type="radio"]:checked {
-		background-color: rgb(69 255 118 / 68%) !important;
+		background-color: rgb(63, 135, 45) !important;
 		border: 1px solid rgba(0, 0, 0, .3)!important;
 		border-radius: 2px!important;
 	}
@@ -222,7 +222,7 @@ AddStyle(`
 	}
 
 	.kpagination li span {
-    background: rgb(69 255 118 / 38%)!important;
+    background: rgb(63, 135, 45)!important;
 		border: 1px solid rgba(0, 0, 0, .5)!important;
 		border-radius: 4px!important;
 		line-height: unset!important;
@@ -365,9 +365,9 @@ timeDiv.style.position = 'absolute';
 timeDiv.style.right = '-10px';
 timeDiv.style.top = '-55px';
 timeDiv.style.padding = '0px 6px';
-timeDiv.style.border = '1px solid rgba(255, 255, 255, .4)';
+timeDiv.style.border = '1px solid rgba(255, 255, 255, .2)';
 timeDiv.style.borderRadius = '2px';
-timeDiv.style.background = 'rgb(41 107 46 / 87%)';
+timeDiv.style.background = 'rgb(63, 135, 45)';
 document.getElementById('rt-mainbody').insertBefore(timeDiv, document.getElementById('rt-mainbody').firstChild);
 
 document.querySelectorAll('iframe[src*="youtube.com"]').forEach(e => {
@@ -677,7 +677,7 @@ if (HasMessages()) {
 		}
 
 		.kmsg-header span:nth-child(3) {
-			padding: 0!important;
+			padding: 0px 6px!important;
 			background:rgb(47, 70, 116);
 			border-radius: 4px;
 			color: white;
