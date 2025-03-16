@@ -194,5 +194,24 @@
     "yoavbls",
     "zainchen"
   ],
-  "security.promptForLocalFileProtocolHandling": false
+  "security.promptForLocalFileProtocolHandling": false,
+  "Lua.diagnostics.globalsRegex": [
+    "^.*$"
+  ],
+  "Lua.runtime.nonstandardSymbol": [
+    "//",
+    "||",
+    "!",
+    "!=",
+    "continue",
+    "/**/",
+    "&&"
+  ],
+  "Lua.workspace.preloadFileSize": 5000,
+  "Lua.diagnostics.disable": [
+    "err-comment-prefix",
+    "redundant-parameter",
+    "redundant-return-value"
+  ],
+  "Lua.runtime.version": "Lua 5.1"
 }
