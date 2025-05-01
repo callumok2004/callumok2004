@@ -207,11 +207,13 @@
     "/**/",
     "&&"
   ],
-  "Lua.workspace.preloadFileSize": 5000,
+  "Lua.workspace.preloadFileSize": 500000,
   "Lua.diagnostics.disable": [
     "err-comment-prefix",
     "redundant-parameter",
     "redundant-return-value"
   ],
-  "Lua.runtime.version": "Lua 5.1"
+  "Lua.runtime.version": "Lua 5.1",
+  "Lua.workspace.maxPreload": 500000,
+  "Lua.workspace.useGitIgnore": false
 }
