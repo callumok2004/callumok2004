@@ -35,7 +35,6 @@
   "git.enableSmartCommit": true,
   "indentRainbow.colorOnWhiteSpaceOnly": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "php.validate.executablePath": "C:/php/php.exe",
   "security.workspace.trust.untrustedFiles": "open",
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.fontFamily": "FiraCode Nerd Font",
@@ -65,9 +64,10 @@
   "workbench.iconTheme": "material-icon-theme",
   "github.copilot.enable": {
     "*": true,
-    "yaml": false,
     "plaintext": true,
     "markdown": false,
+    "scminput": false,
+    "yaml": false,
     "typescriptreact": true,
     "php": true
   },
@@ -119,8 +119,6 @@
   "intelephense.diagnostics.embeddedLanguages": false,
   "git.autofetch": true,
   "editor.accessibilitySupport": "off",
-  "php.debug.executablePath": "c:/php/php.exe",
-  "intelephense.runtime": "C:\\Program Files\\nodejs\\node.exe",
   "intelephense.completion.maxItems": 200,
   "editor.insertSpaces": false,
   "[python]": {
@@ -167,6 +165,7 @@
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.)|--)\\s*($TAGS)",
   "Lua.hint.await": false,
   "git.openRepositoryInParentFolders": "never",
+  "git.enableCommitSigning": true,
   "php.completion.namingConvention": "CamelCase",
   "php.highlight-todo.enable": false,
   "php.problems.excludeGitIgnore": true,
@@ -215,5 +214,31 @@
   ],
   "Lua.runtime.version": "Lua 5.1",
   "Lua.workspace.maxPreload": 500000,
-  "Lua.workspace.useGitIgnore": false
+  "Lua.workspace.useGitIgnore": false,
+  "workbench.activityBar.orientation": "vertical",
+  "github.copilot.selectedCompletionModel": "gpt-4o-copilot",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.next": true
+  },
+  "settings.cycle": [
+    {
+      "id": "explorer.excludeGitIgnore",
+      "values": [
+        {
+          "explorer.excludeGitIgnore": true
+        },
+        {
+          "explorer.excludeGitIgnore": false
+        }
+      ]
+    }
+  ],
+  "explorer.excludeGitIgnore": false,
+  "editor.minimap.enabled": true,
+  "Lua.completion.callSnippet": "Both",
+  "Lua.completion.displayContext": 1,
+  "Lua.completion.keywordSnippet": "Both",
+  "Lua.hint.semicolon": "Disable"
 }
