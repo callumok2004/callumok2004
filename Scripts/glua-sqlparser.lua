@@ -839,97 +839,126 @@ function QueryParser.New()
   local self = setmetatable({}, QueryParser)
   self.tokens = {}
   self.currentTokenIndex = 1
+  self.originalQuery = ""
   return self
 end
 
 function QueryParser:Tokenize(query)
   self.tokens = {}
-  query = query:upper()
+  self.originalQuery = query
+  local upperQuery = query:upper()
   local i = 1
   local len = #query
   local maxTokens = 1000
 
-  debugprint("Tokenizing query, length: " .. len)
-
   while i <= len do
     if #self.tokens >= maxTokens then
-      debugprint("Error: Token limit reached (" .. maxTokens .. "). Possible infinite loop.")
+      print("Error: Token limit reached (" .. maxTokens .. "). Possible infinite loop.")
       break
     end
 
-    local char = query:sub(i, i)
+    local char = upperQuery:sub(i, i)
     local matched = false
+    local startPos = i
 
     if char:match("%s") then
-      table.insert(self.tokens, {type = TokenType.WHITESPACE, value = char})
+      table.insert(self.tokens, {
+        type = TokenType.WHITESPACE,
+        value = query:sub(i, i),
+        upperValue = char
+      })
       i = i + 1
       matched = true
-      debugprint("Token " .. #self.tokens .. ": WHITESPACE (" .. char .. ")")
     end
 
     if not matched and (char == "'" or char == '"') then
-      local str = ""
+      local str = char
+      local innerStr = ""
       local quote = char
       i = i + 1
-      while i <= len and query:sub(i, i) ~= quote do
+      while i <= len and upperQuery:sub(i, i) ~= quote do
         str = str .. query:sub(i, i)
+        innerStr = innerStr .. query:sub(i, i)
         i = i + 1
       end
-      i = i + (i <= len and 1 or 0)
-      table.insert(self.tokens, {type = TokenType.STRING, value = str})
+      if i <= len then
+        str = str .. quote
+        i = i + 1
+      end
+      table.insert(self.tokens, {
+        type = TokenType.STRING,
+        value = str,
+        upperValue = innerStr:upper()
+      })
       matched = true
-      debugprint("Token " .. #self.tokens .. ": STRING (" .. str .. ")")
     end
 
     if not matched and char == "`" then
-      local ident = ""
+      local ident = "`"
+      local innerIdent = ""
       i = i + 1
-      while i <= len and query:sub(i, i) ~= "`" do
+      while i <= len and upperQuery:sub(i, i) ~= "`" do
         ident = ident .. query:sub(i, i)
+        innerIdent = innerIdent .. query:sub(i, i)
         i = i + 1
       end
-      i = i + (i <= len and 1 or 0)
-      table.insert(self.tokens, {type = TokenType.IDENTIFIER, value = ident})
+      if i <= len then
+        ident = ident .. "`"
+        i = i + 1
+      end
+      table.insert(self.tokens, {
+        type = TokenType.IDENTIFIER,
+        value = ident,
+        upperValue = innerIdent:upper()
+      })
       matched = true
-      debugprint("Token " .. #self.tokens .. ": IDENTIFIER (" .. ident .. ")")
     end
 
     if not matched and char:match("%d") then
       local num = ""
-      while i <= len and (query:sub(i, i):match("%d") or query:sub(i, i) == ".") do
+      while i <= len and (upperQuery:sub(i, i):match("%d") or upperQuery:sub(i, i) == ".") do
         num = num .. query:sub(i, i)
         i = i + 1
       end
-      table.insert(self.tokens, {type = TokenType.NUMBER, value = num})
+      table.insert(self.tokens, {
+        type = TokenType.NUMBER,
+        value = num,
+        upperValue = num
+      })
       matched = true
-      debugprint("Token " .. #self.tokens .. ": NUMBER (" .. num .. ")")
     end
 
     if not matched and char == "@" then
       local var = "@"
       i = i + 1
-      while i <= len and query:sub(i, i):match("[A-Z0-9_#]") do
+      while i <= len and upperQuery:sub(i, i):match("[A-Z0-9_#]") do
         var = var .. query:sub(i, i)
         i = i + 1
       end
-      table.insert(self.tokens, {type = TokenType.VARIABLE, value = var})
+      table.insert(self.tokens, {
+        type = TokenType.VARIABLE,
+        value = var,
+        upperValue = var:upper()
+      })
       matched = true
-      debugprint("Token " .. #self.tokens .. ": VARIABLE (" .. var .. ")")
     end
 
-    if not matched and char == "%" and i < len and query:sub(i + 1, i + 1):match("[is]") then
-      local placeholder = "%" .. query:sub(i + 1, i + 1)
+    if not matched and char == "%" and i < len and upperQuery:sub(i + 1, i + 1):match("[IS]") then
+      local placeholder = query:sub(i, i + 1)
       i = i + 2
-      table.insert(self.tokens, {type = TokenType.PLACEHOLDER, value = placeholder})
+      table.insert(self.tokens, {
+        type = TokenType.PLACEHOLDER,
+        value = placeholder,
+        upperValue = placeholder:upper()
+      })
       matched = true
-      debugprint("Token " .. #self.tokens .. ": PLACEHOLDER (" .. placeholder .. ")")
     end
 
-    if not matched and (char:match("[=<>!+-/*(),;.]") or (char == ":" and i < len and query:sub(i + 1, i + 1) == "=")) then
+    if not matched and (char:match("[=<>!+-/*(),;.]") or (char == ":" and i < len and upperQuery:sub(i + 1, i + 1) == "=")) then
       local op = char
       local increment = 1
       if i < len then
-        local nextChar = query:sub(i + 1, i + 1)
+        local nextChar = upperQuery:sub(i + 1, i + 1)
         if char == "<" and nextChar == ">" then
           op = "<>"
           increment = 2
@@ -941,33 +970,42 @@ function QueryParser:Tokenize(query)
           increment = 2
         end
       end
+      local origOp = query:sub(startPos, startPos + increment - 1)
       i = i + increment
       local tokenType = (op == "," or op == ";" or op == ".") and TokenType.PUNCTUATION or TokenType.OPERATOR
-      table.insert(self.tokens, {type = tokenType, value = op})
+      table.insert(self.tokens, {
+        type = tokenType,
+        value = origOp,
+        upperValue = op
+      })
       matched = true
-      debugprint("Token " .. #self.tokens .. ": " .. tokenType .. " (" .. op .. ")")
     end
 
     if not matched and char:match("[A-Z0-9_#]") then
       local word = ""
-      while i <= len and query:sub(i, i):match("[A-Z0-9_#]") do
+      while i <= len and upperQuery:sub(i, i):match("[A-Z0-9_#]") do
         word = word .. query:sub(i, i)
         i = i + 1
       end
-      local tokenType = (MySQLKeywords[word] or MySQLFunctions[word]) and TokenType.KEYWORD or TokenType.IDENTIFIER
-      table.insert(self.tokens, {type = tokenType, value = word})
+      local upperWord = word:upper()
+      local tokenType = (MySQLKeywords[upperWord] or MySQLFunctions[upperWord]) and TokenType.KEYWORD or TokenType.IDENTIFIER
+      table.insert(self.tokens, {
+        type = tokenType,
+        value = word,
+        upperValue = upperWord
+      })
       matched = true
-      debugprint("Token " .. #self.tokens .. ": " .. tokenType .. " (" .. word .. ")")
     end
 
     if not matched then
-      debugprint("Warning: Unmatched character at position " .. i .. ": " .. char)
-      table.insert(self.tokens, {type = TokenType.IDENTIFIER, value = char})
+      table.insert(self.tokens, {
+        type = TokenType.IDENTIFIER,
+        value = query:sub(i, i),
+        upperValue = char
+      })
       i = i + 1
     end
   end
-
-  debugprint("Tokenization complete. Total tokens: " .. #self.tokens)
 end
 
 function QueryParser:GetNextToken()
@@ -984,45 +1022,35 @@ function QueryParser:Parse(query)
   local subqueryLevel = 0
   local maxSections = 200
 
-  debugprint("Parsing structure...")
   while self.currentTokenIndex <= #self.tokens do
     if table.Count(structure) >= maxSections then
-      debugprint("Error: Section limit reached (" .. maxSections .. ").")
+      print("Error: Section limit reached (" .. maxSections .. ").")
       break
     end
 
     local token = self:GetNextToken()
     if not token then break end
 
-		local vlu = token.value
+		local tuv = token.upperValue
     if token.type == TokenType.KEYWORD then
-      if vlu == "SELECT" or vlu == "INSERT" or vlu == "UPDATE" or vlu == "DELETE" or vlu == "CREATE" or vlu == "ALTER" or vlu == "DROP" then
-        currentSection = "LEVEL" .. subqueryLevel .. "_" .. vlu
-        structure[currentSection] = {tokens = {}, explanation = MySQLKeywords[vlu] or "Unknown keyword"}
-      elseif currentSection and (vlu == "FROM" or vlu == "WHERE" or vlu == "JOIN" or vlu == "GROUP" or vlu == "HAVING" or vlu == "ORDER" or vlu == "LIMIT") then
-        currentSection = "LEVEL" .. subqueryLevel .. "_" .. vlu
-        structure[currentSection] = {tokens = {}, explanation = MySQLKeywords[vlu] or "Unknown keyword"}
+      if tuv == "SELECT" or tuv == "INSERT" or tuv == "UPDATE" or tuv == "DELETE" or tuv == "CREATE" or tuv == "ALTER" or tuv == "DROP" then
+        currentSection = "LEVEL" .. subqueryLevel .. "_" .. tuv
+        structure[currentSection] = {tokens = {}, explanation = MySQLKeywords[tuv] or "Unknown keyword"}
+      elseif currentSection and (tuv == "FROM" or tuv == "WHERE" or tuv == "JOIN" or tuv == "GROUP" or tuv == "HAVING" or tuv == "ORDER" or tuv == "LIMIT") then
+        currentSection = "LEVEL" .. subqueryLevel .. "_" .. tuv
+        structure[currentSection] = {tokens = {}, explanation = MySQLKeywords[tuv] or "Unknown keyword"}
       end
-      if currentSection then
-        table.insert(structure[currentSection].tokens, token)
-      end
-      debugprint("Parsed section: " .. (currentSection or "none"))
-    elseif token.type == TokenType.OPERATOR and token.value == "(" then
+      if currentSection then table.insert(structure[currentSection].tokens, token) end
+    elseif token.type == TokenType.OPERATOR and tuv == "(" then
       subqueryLevel = subqueryLevel + 1
-      if currentSection then
-        table.insert(structure[currentSection].tokens, token)
-      end
-    elseif token.type == TokenType.OPERATOR and token.value == ")" then
+      if currentSection then table.insert(structure[currentSection].tokens, token) end
+    elseif token.type == TokenType.OPERATOR and tuv == ")" then
       subqueryLevel = math.max(subqueryLevel - 1, 0)
-      if currentSection then
-        table.insert(structure[currentSection].tokens, token)
-      end
+      if currentSection then table.insert(structure[currentSection].tokens, token) end
     elseif currentSection and token.type ~= TokenType.WHITESPACE then
       table.insert(structure[currentSection].tokens, token)
-      debugprint("Parsed token in section: " .. (currentSection or "none"))
     end
   end
-  debugprint("Parsing complete. Sections: " .. table.Count(structure))
   return structure
 end
 
@@ -1034,30 +1062,29 @@ function QueryParser:ParseTemplate(query)
   local subqueryLevel = 0
   local maxTokens = 1000
 
-  debugprint("Parsing template...")
   for i, token in ipairs(self.tokens) do
     if #template >= maxTokens then
-      debugprint("Error: Template token limit reached (" .. maxTokens .. ").")
+      print("Error: Template token limit reached (" .. maxTokens .. ").")
       break
     end
 
     if token.type == TokenType.WHITESPACE then continue end
 
     local category
+		local tuv = token.upperValue
     if token.type == TokenType.KEYWORD then
-      if MySQLFunctions[token.value] then
+      if MySQLFunctions[tuv] then
         category = 8 -- Function
       else
         category = 1 -- Query Parameter
       end
-
-			local vlu = token.value
-      if vlu == "SELECT" or vlu == "INSERT" or vlu == "UPDATE" or vlu == "DELETE" or vlu == "CREATE" or vlu == "ALTER" or vlu == "DROP" then
-        currentSection = vlu
-      elseif vlu == "FROM" or vlu == "WHERE" or vlu == "JOIN" or vlu == "GROUP" or vlu == "HAVING" or vlu == "ORDER" or vlu == "LIMIT" then
-        currentSection = vlu
+      -- Track sections
+      if tuv == "SELECT" or tuv == "INSERT" or tuv == "UPDATE" or tuv == "DELETE" or tuv == "CREATE" or tuv == "ALTER" or tuv == "DROP" then
+        currentSection = tuv
+      elseif tuv == "FROM" or tuv == "WHERE" or tuv == "JOIN" or tuv == "GROUP" or tuv == "HAVING" or tuv == "ORDER" or tuv == "LIMIT" then
+        currentSection = tuv
       end
-      if vlu == "AS" then
+      if tuv == "AS" then
         expectAlias = true
       end
     elseif token.type == TokenType.IDENTIFIER then
@@ -1081,9 +1108,9 @@ function QueryParser:ParseTemplate(query)
       category = 5 -- Numeric Literal
     elseif token.type == TokenType.OPERATOR then
       category = 6 -- Operator
-      if vlu == "(" then
+      if tuv == "(" then
         subqueryLevel = subqueryLevel + 1
-      elseif vlu == ")" then
+      elseif tuv == ")" then
         subqueryLevel = math.max(subqueryLevel - 1, 0)
       end
     elseif token.type == TokenType.PUNCTUATION then
@@ -1093,10 +1120,8 @@ function QueryParser:ParseTemplate(query)
     end
 
     table.insert(template, {token.value, category})
-    debugprint("Template token " .. #template .. ": " .. token.value .. ", Category: " .. category)
   end
 
-  debugprint("Template parsing complete. Tokens: " .. #template)
   return template
 end
 
@@ -1105,7 +1130,7 @@ function QueryParser:Explain(structure)
   for section, data in pairs(structure) do
     local tokens = {}
     for _, token in ipairs(data.tokens) do
-      local desc = token.type == TokenType.KEYWORD and (MySQLKeywords[token.value] or "Unknown keyword") or token.value
+      local desc = token.type == TokenType.KEYWORD and (MySQLKeywords[token.upperValue] or "Unknown keyword") or token.value
       table.insert(tokens, string.format("%s (%s): %s", token.value, token.type, desc))
     end
     table.insert(explanation, string.format("Section: %s\nExplanation: %s\nTokens:\n  %s", section, data.explanation, table.concat(tokens, "\n  ")))
@@ -1119,13 +1144,7 @@ local function TestParser(query)
   debugprint("Testing Parse:")
   local structure = parser:Parse(query)
   debugprint("Query: " .. query)
-  -- debugprint("Parsed Structure:")
-  -- debugprint(parser:Explain(structure))
-  
-  -- debugprint("\nTesting ParseTemplate:")
   local template = parser:ParseTemplate(query)
-  -- debugprint("Iterable Template:")
-	
   for k, v in ipairs(template) do
     local cat = TokenCategories[v[2]] or { name = "Unknown", description = "Unknown category" }
     debugprint(k .. " = {" .. v[1] .. ", " .. v[2] .. " --[[" .. cat.name .. (MySQLKeywords[v[1]] and " ("..MySQLKeywords[v[1]]..")" or "") .. "]]}")
@@ -1153,7 +1172,7 @@ if IsValid(TESTFRAME) then TESTFRAME:Remove() end
 local function CreateTestFrame()
 	local frame = vgui.Create("DFrame")
 	frame:SetSize(800, 600)
-	frame:SetTitle("MySQL Query Parser Test")
+	frame:SetTitle("Query Parser Test")
 	frame:Center()
 	frame:MakePopup()
 
@@ -1161,7 +1180,7 @@ local function CreateTestFrame()
 	inputPanel:SetSize(780, 100)
 	inputPanel:SetPos(10, 30)
 	inputPanel:SetMultiline(true)
-	inputPanel:SetPlaceholderText("Enter your MySQL query here...")
+	inputPanel:SetPlaceholderText("query here")
 
 	local outputPanel = vgui.Create("DScrollPanel", frame)
 	outputPanel:SetSize(780, 460)
@@ -1175,13 +1194,36 @@ local function CreateTestFrame()
 			local structure = parser:Parse(query)
 			local template = parser:ParseTemplate(query)
 
+			local xoff, yoff = 0, 0
+			local maxw = outputPanel:GetWide()
+
 			for k, v in ipairs(template) do
 				local cat = TokenCategories[v[2]] or { name = "Unknown", description = "Unknown category" }
 				local label = outputPanel:Add("DLabel")
-				label:SetText(k .. " = {" .. v[1] .. ", " .. v[2] .. " --[[" .. cat.name .. (MySQLKeywords[v[1]] and " ("..MySQLKeywords[v[1]]..")" or "") .. "]]}")
-				label:Dock(TOP)
-				label:DockMargin(0, 0, 0, 5)
-				label:SetToolTip(cat.description)
+				label:SetText(" " .. v[1] .. " ")
+				label:SetPos(xoff, yoff)
+				label:SetSize(label:GetTextSize(), 20)
+				if v[2] == 1 and not MySQLKeywords[v[1]] then v[1] = v[1]:upper() end
+				label:SetToolTip((v[2] == 1 and (v[1] .. " - " .. (MySQLKeywords[v[1]])) or "Token") .. (cat and ("\n\n" .. (cat.name or "?") .. ": " .. (cat.description or "?")) or ""))
+				label:SetMouseInputEnabled(true)
+				label.hoverlerp = 0
+				label.Paint = function(self, w, h)
+					if self:IsHovered() then
+						self.hoverlerp = Lerp(FrameTime() * 10, self.hoverlerp, 1)
+					else
+						self.hoverlerp = Lerp(FrameTime() * 10, self.hoverlerp, 0)
+					end
+
+					if self.hoverlerp > 0 then
+						draw.RoundedBox(4, 0, 0, w, h, Color(20, 20, 20, 200 * self.hoverlerp))
+					end
+				end
+
+				xoff = xoff + label:GetWide()
+				if xoff + label:GetWide() > maxw then
+					xoff = 0
+					yoff = yoff + 25
+				end
 			end
 		end
 	end
