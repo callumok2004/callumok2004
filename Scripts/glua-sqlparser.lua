@@ -829,7 +829,8 @@ local TokenCategories = {
   [8] = { name = "Function", description = "Built-in MySQL function (e.g., COUNT, SUM)." },
   [9] = { name = "Alias", description = "Alias defined with AS or implied (e.g., dept in SELECT department AS dept)." },
   [10] = { name = "User Variable", description = "MySQL user variable (e.g., @rownum)." },
-  [11] = { name = "Placeholder", description = "Query parameter placeholder (e.g., %i, %s)." }
+  [11] = { name = "Placeholder", description = "Query parameter placeholder (e.g., %i, %s)." },
+  [12] = { name = "Whitespace", description = "Whitespace character (e.g., space, tab, newline)." }
 }
 
 local QueryParser = {}
@@ -862,12 +863,13 @@ function QueryParser:Tokenize(query)
     local startPos = i
 
     if char:match("%s") then
+      local ws = query:sub(i, i)
+      i = i + 1
       table.insert(self.tokens, {
         type = TokenType.WHITESPACE,
-        value = query:sub(i, i),
+        value = ws,
         upperValue = char
       })
-      i = i + 1
       matched = true
     end
 
@@ -1060,7 +1062,7 @@ function QueryParser:ParseTemplate(query)
   local currentSection = nil
   local expectAlias = false
   local subqueryLevel = 0
-  local maxTokens = 1000
+  local maxTokens = 2000
 
   for i, token in ipairs(self.tokens) do
     if #template >= maxTokens then
@@ -1068,7 +1070,9 @@ function QueryParser:ParseTemplate(query)
       break
     end
 
-    if token.type == TokenType.WHITESPACE then continue end
+    if token.type == TokenType.WHITESPACE then
+      if token.value == "\n" then table.insert(template, {token.value, 12}) continue end
+    end
 
     local category
 		local tuv = token.upperValue
@@ -1115,6 +1119,8 @@ function QueryParser:ParseTemplate(query)
       end
     elseif token.type == TokenType.PUNCTUATION then
       category = 7 -- Punctuation
+    elseif token.type == TokenType.WHITESPACE then
+      category = 12
     else
       category = 0 -- Unknown
     end
@@ -1198,9 +1204,15 @@ local function CreateTestFrame()
 			local maxw = outputPanel:GetWide()
 
 			for k, v in ipairs(template) do
+        if v[1] == "\n" and v[2] == 12 then
+          xoff = 0
+          yoff = yoff + draw.GetFontHeight("Default") + 5
+          continue
+        end
+
 				local cat = TokenCategories[v[2]] or { name = "Unknown", description = "Unknown category" }
 				local label = outputPanel:Add("DLabel")
-				label:SetText(" " .. v[1] .. " ")
+				label:SetText(v[2] != 12 and (" " .. v[1] .. " ") or " ")
 				label:SetPos(xoff, yoff)
 				label:SetSize(label:GetTextSize(), 20)
 				if v[2] == 1 and not MySQLKeywords[v[1]] then v[1] = v[1]:upper() end
@@ -1222,7 +1234,7 @@ local function CreateTestFrame()
 				xoff = xoff + label:GetWide()
 				if xoff + label:GetWide() > maxw then
 					xoff = 0
-					yoff = yoff + 25
+					yoff = yoff + draw.GetFontHeight("Default") + 5
 				end
 			end
 		end
