@@ -62,7 +62,7 @@ partial class VMFDupes
 		using StreamReader reader = new(filePath);
 		string? line;
 		string currentBlock = "";
-		bool inSolid = false, inEntity = false;
+		bool inSolid = false, inEntity = false, inVerticesPlus = false;
 		int solidCount = 0, entityCount = 0, totalBlocks = 0;
 
 		using (var tempReader = new StreamReader(filePath))
@@ -80,7 +80,20 @@ partial class VMFDupes
 
 		while ((line = reader.ReadLine()) != null)
 		{
+			if (inVerticesPlus)
+			{
+				if (line.Contains('}')) inVerticesPlus = false;
+				continue;
+			}
+
+			if (line.TrimStart().StartsWith("vertices_plus", StringComparison.OrdinalIgnoreCase))
+			{
+				inVerticesPlus = true;
+				continue;
+			}
+
 			currentBlock += line + "\n";
+
 			if (line.Contains('{')) continue;
 			if (line.Contains('}'))
 			{
@@ -161,6 +174,7 @@ partial class VMFDupes
 				}
 			}
 		}
+
 
 		int blockId = int.Parse(id, CultureInfo.InvariantCulture);
 		if (entityIdToClassname.TryGetValue(blockId, out string? className))
@@ -265,6 +279,12 @@ partial class VMFDupes
 
 			var obj = objects[i];
 			if (processed.Contains(obj.Id) || obj.Origin.ToString() == "(0.00, 0.00, 0.00)")
+			{
+				processed.Add(obj.Id);
+				continue;
+			}
+
+			if (obj.IsHintOrSkip)
 			{
 				processed.Add(obj.Id);
 				continue;
