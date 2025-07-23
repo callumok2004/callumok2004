@@ -82,10 +82,13 @@ async function onMidiConnected(name: string, input: Input, output: Output): Prom
 		console.log(`Fetched ${containers.length} containers`);
 		count_offline = 0;
 
+		const seen = []
 		for (let i = 0; i < containers.length; i++) {
 			const noteId = i + 1;
 			const note = IdToNote[noteId];
 			const state = containers[i] || 0;
+
+			seen.push(note);
 
 			if (state === 0) {
 				console.log(`Container ${noteId} is offline`);
@@ -97,6 +100,17 @@ async function onMidiConnected(name: string, input: Input, output: Output): Prom
 				output.send("noteon", {
 					note: note,
 					velocity: state == 1 ? NOTE_ON : NOTE_OFF,
+					channel: 0 as const
+				});
+			}
+		}
+
+		for (let j = 1; j <= validNotes.length; j++) {
+			if (!seen.includes(IdToNote[j] ?? 0) && noteStates[j] !== -1) {
+				noteStates[j] = -1;
+				output.send("noteon", {
+					note: IdToNote[j],
+					velocity: NOTE_IDLE,
 					channel: 0 as const
 				});
 			}
