@@ -10,6 +10,10 @@ interface Service {
 	command: string
 }
 
+const args = process.argv.slice(2)
+const nameArgIndex = args.indexOf('--name')
+const selectedServiceName = nameArgIndex !== -1 ? args[nameArgIndex + 1] : null
+
 const Config = JSON.parse(fs.readFileSync(ServicesConfig, 'utf8'))
 const Services = Config as Service[]
 
@@ -49,23 +53,35 @@ function StartDockerContainer(service: Service) {
 	})
 }
 
-function RemoveServiceContainers() {
-	console.log('Removing all service containers')
+function RemoveServiceContainer(serviceName: string) {
+	const name = `service-${serviceName}`
 
-	const command = `docker ps -a --filter "name=service-" --format "{{.Names}}" | xargs -r docker rm -f`
+	console.log(`Removing container ${name}`)
+
+	const command = `docker rm -f ${name}`
 
 	return new Promise((resolve, reject) => {
 		exec(command, (err, stdout, stderr) => {
 			if (err) {
-				console.error(`Error removing service containers: ${err}`)
-				reject(err)
+				console.error(`Error removing container ${name}: ${err}`)
+				resolve(null)
 			} else {
-				console.log('Removed all service containers')
+				console.log(`Removed container ${name}`)
 				resolve(stdout)
 			}
 		})
 	})
 }
 
-await RemoveServiceContainers()
-await Promise.all(Services.map(StartDockerContainer))
+if (selectedServiceName) {
+	const service = Services.find(s => s.name === selectedServiceName)
+	if (!service) {
+		console.error(`Service "${selectedServiceName}" not found in ${ServicesConfig}`)
+		process.exit(1)
+	}
+	await RemoveServiceContainer(service.name)
+	await StartDockerContainer(service)
+} else {
+	await Promise.all(Services.map(s => RemoveServiceContainer(s.name)))
+	await Promise.all(Services.map(StartDockerContainer))
+}
