@@ -1,6 +1,12 @@
 {
+  "GitLens — Git supercharged": {
+    "version": "17.6.2",
+    "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
+    "publisher": "eamodio",
+    "repository": "https://github.com/gitkraken/vscode-gitlens.git"
+  },
   "Lua": {
-    "version": "3.13.6",
+    "version": "3.15.0",
     "description": "Lua Language Server coded by Lua",
     "publisher": "sumneko",
     "repository": "https://github.com/LuaLS/lua-language-server"
@@ -18,28 +24,34 @@
     "repository": "N/A"
   },
   "PHP Intelephense": {
-    "version": "1.12.6",
+    "version": "1.14.4",
     "description": "PHP code intelligence for Visual Studio Code",
     "publisher": "bmewburn",
     "repository": "https://github.com/bmewburn/vscode-intelephense.git"
   },
-  "GitLens — Git supercharged": {
-    "version": "16.2.2",
-    "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
-    "publisher": "eamodio",
-    "repository": "https://github.com/gitkraken/vscode-gitlens.git"
+  "PHP Profiler": {
+    "version": "1.62.17969",
+    "description": "Support for PHP (Xdebug) profiling files and inspecting them.",
+    "publisher": "DEVSENSE",
+    "repository": "https://github.com/DEVSENSE/phptools-docs"
   },
   "GitHub Copilot": {
-    "version": "1.254.1278",
+    "version": "1.371.1785",
     "description": "Your AI pair programmer",
     "publisher": "GitHub",
     "repository": "N/A"
   },
   "GitHub Copilot Chat": {
-    "version": "0.25.2025020703",
+    "version": "0.33.2025102701",
     "description": "AI chat features powered by Copilot",
     "publisher": "GitHub",
-    "repository": "https://github.com/microsoft/vscode-copilot-release"
+    "repository": "https://github.com/microsoft/vscode-copilot-chat"
+  },
+  "%displayName%": {
+    "version": "0.2.5",
+    "description": "%description%",
+    "publisher": "tht13",
+    "repository": "https://github.com/tht13/html-preview-vscode"
   },
   "Todo Tree": {
     "version": "0.0.226",
@@ -48,7 +60,7 @@
     "repository": "N/A"
   },
   "Discord Presence": {
-    "version": "5.8.0",
+    "version": "5.9.2",
     "description": "Update your discord status with a rich presence.",
     "publisher": "icrawl",
     "repository": "https://github.com/iCrawl/discord-vscode.git"
@@ -71,6 +83,18 @@
     "publisher": "mrmlnc",
     "repository": "https://github.com/mrmlnc/vscode-scss"
   },
+  "C#": {
+    "version": "2.96.3",
+    "description": "Base language support for C#",
+    "publisher": "ms-dotnettools",
+    "repository": "https://github.com/dotnet/vscode-csharp"
+  },
+  ".NET Install Tool": {
+    "version": "2.3.9",
+    "description": "This extension installs and manages different versions of the .NET SDK and Runtime.",
+    "publisher": "ms-dotnettools",
+    "repository": "https://github.com/dotnet/vscode-dotnet-runtime.git"
+  },
   "JavaScript Debugger": {
     "version": "1.72.1",
     "description": "An extension for debugging Node.js programs and Chrome.",
@@ -78,7 +102,7 @@
     "repository": "https://github.com/Microsoft/vscode-pwa.git"
   },
   "%extension.liveshare.displayName.title%": {
-    "version": "1.0.5948",
+    "version": "1.0.5959",
     "description": "%extension.liveshare.description.title%",
     "publisher": "ms-vsliveshare",
     "repository": "https://github.com/MicrosoftDocs/live-share"
@@ -96,7 +120,7 @@
     "repository": "https://github.com/oderwat/vscode-indent-rainbow.git"
   },
   "Material Icon Theme": {
-    "version": "5.19.0",
+    "version": "5.28.0",
     "description": "Material Design Icons for Visual Studio Code",
     "publisher": "PKief",
     "repository": "git+https://github.com/material-extensions/vscode-material-icon-theme.git"
@@ -108,7 +132,7 @@
     "repository": "https://github.com/shardulm94/vscode-trailingspaces.git"
   },
   "SCSS Formatter": {
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "%scssFormatter.description%",
     "publisher": "sibiraj-s",
     "repository": "https://github.com/sibiraj-s/vscode-scss-formatter.git"
@@ -132,13 +156,13 @@
     "repository": "https://github.com/MicrosoftDocs/intellicode"
   },
   "WakaTime": {
-    "version": "25.0.0",
+    "version": "25.4.0",
     "description": "Metrics, insights, and time tracking automatically generated from your programming activity.",
     "publisher": "WakaTime",
     "repository": "https://github.com/wakatime/vscode-wakatime.git"
   },
   "PHP Debug": {
-    "version": "1.35.0",
+    "version": "1.37.0",
     "description": "Debug support for PHP with Xdebug",
     "publisher": "xdebug",
     "repository": "https://github.com/xdebug/vscode-php-debug.git"
@@ -148,11 +172,5 @@
     "description": "Make TypeScript errors prettier and more human-readable in VSCode",
     "publisher": "YoavBls",
     "repository": "https://github.com/yoavbls/pretty-ts-errors"
-  },
-  "json": {
-    "version": "2.0.2",
-    "description": "Json for Visual Studio Code",
-    "publisher": "ZainChen",
-    "repository": "https://github.com/ZainChen/vscode-json"
   }
 }
