@@ -24,7 +24,6 @@
   "editor.cursorWidth": 5,
   "editor.fontFamily": "'Fira Code'",
   "editor.fontLigatures": true,
-  "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
   "editor.linkedEditing": true,
   "editor.minimap.maxColumn": 100,
@@ -35,6 +34,7 @@
   "git.enableSmartCommit": true,
   "indentRainbow.colorOnWhiteSpaceOnly": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
+  "php.validate.executablePath": "C:/xampp/php/php.exe",
   "security.workspace.trust.untrustedFiles": "open",
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.fontFamily": "FiraCode Nerd Font",
@@ -69,7 +69,8 @@
     "scminput": false,
     "yaml": false,
     "typescriptreact": true,
-    "php": true
+    "php": true,
+    "glua": true
   },
   "files.associations": {
     ".env": "code-text-binary"
@@ -119,6 +120,8 @@
   "intelephense.diagnostics.embeddedLanguages": false,
   "git.autofetch": true,
   "editor.accessibilitySupport": "off",
+  "php.debug.executablePath": "c:/xampp/php/php.exe",
+  "intelephense.runtime": "C:\\Program Files\\nodejs\\node.exe",
   "intelephense.completion.maxItems": 200,
   "editor.insertSpaces": false,
   "[python]": {
@@ -135,7 +138,6 @@
   "search.showLineNumbers": true,
   "scm.alwaysShowRepositories": true,
   "scm.providerCountBadge": "auto",
-  "Lua.codeLens.enable": true,
   "extensions.ignoreRecommendations": true,
   "gitlens.views.repositories.showIncomingActivity": true,
   "diffEditor.ignoreTrimWhitespace": false,
@@ -161,11 +163,10 @@
     "statusBarItem.warningForeground": "#fff",
   },
   "workbench.colorTheme": "Min Darker",
-  "search.maxResults": null,
+  "search.maxResults": 250000,
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.)|--)\\s*($TAGS)",
   "Lua.hint.await": false,
   "git.openRepositoryInParentFolders": "never",
-  "git.enableCommitSigning": true,
   "php.completion.namingConvention": "CamelCase",
   "php.highlight-todo.enable": false,
   "php.problems.excludeGitIgnore": true,
@@ -206,39 +207,41 @@
     "/**/",
     "&&"
   ],
+  "Lua.completion.enable": true,
   "Lua.workspace.preloadFileSize": 500000,
   "Lua.diagnostics.disable": [
     "err-comment-prefix",
     "redundant-parameter",
-    "redundant-return-value"
+    "undefined-global",
+    "err-c-long-comment",
+    "duplicate-set-field",
+    "redundant-return-value",
+    "err-esc"
   ],
+  "Lua.runtime.special": {
+    "include": "dofile",
+    "IncludeCS": "dofile"
+  },
   "Lua.runtime.version": "Lua 5.1",
   "Lua.workspace.maxPreload": 500000,
   "Lua.workspace.useGitIgnore": false,
-  "workbench.activityBar.orientation": "vertical",
-  "github.copilot.selectedCompletionModel": "gpt-4o-copilot",
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/dist": true,
-    "**/.next": true
-  },
-  "settings.cycle": [
-    {
-      "id": "explorer.excludeGitIgnore",
-      "values": [
-        {
-          "explorer.excludeGitIgnore": true
-        },
-        {
-          "explorer.excludeGitIgnore": false
-        }
-      ]
-    }
+  "intelephense.environment.includePaths": [
+    "."
   ],
-  "explorer.excludeGitIgnore": false,
-  "editor.minimap.enabled": true,
+  "intelephense.files.maxSize": 10000000,
   "Lua.completion.callSnippet": "Both",
   "Lua.completion.displayContext": 1,
   "Lua.completion.keywordSnippet": "Both",
-  "Lua.hint.semicolon": "Disable"
+  "Lua.hint.semicolon": "Disable",
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "security.allowedUNCHosts": [
+    "pi"
+  ],
+  "github.copilot.selectedCompletionModel": "",
+  "Lua.codeLens.enable": true,
+  "Lua.completion.autoRequire": false,
+  "Lua.format.enable": false,
+  "Lua.semantic.enable": false,
+  "Lua.semantic.annotation": false,
+  "Lua.semantic.variable": false
 }
