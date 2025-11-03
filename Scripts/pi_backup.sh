@@ -23,7 +23,7 @@ mkdir -p "$BACKUP_DIR" "$COMPRESS_DIR"
 for SRC in "${BACKUP_SRC[@]}"; do
     if [ -d "$SRC" ]; then
         log "Backing up $SRC to $BACKUP_DIR"
-        rsync -a --delete --exclude=usb_share/ --exclude=backup_* --verbose "$SRC/" "$BACKUP_DIR/$(basename $SRC)/" >> "$LOG_FILE" 2>&1
+        rsync -a --delete --exclude=usb_share/ --exclude=backup_* --exclude='*.mp4' --verbose "$SRC/" "$BACKUP_DIR/$(basename $SRC)/" >> "$LOG_FILE" 2>&1
         if [ $? -eq 0 ]; then
             log "Backup of $SRC completed successfully"
             ARCHIVE_FILE="$COMPRESS_DIR/$(basename $SRC)_$(date +%Y%m%d).tar.gz"
@@ -31,7 +31,6 @@ for SRC in "${BACKUP_SRC[@]}"; do
             tar -czf "$ARCHIVE_FILE" -C "$BACKUP_DIR" "$(basename $SRC)" >> "$LOG_FILE" 2>&1
             if [ $? -eq 0 ]; then
                 log "Compression of $SRC to $ARCHIVE_FILE completed successfully"
-                # Remove uncompressed backup to save space
                 rm -rf "$BACKUP_DIR/$(basename $SRC)"
                 log "Removed uncompressed backup for $SRC"
             else
@@ -55,6 +54,7 @@ find "$MOUNT_POINT" -type d -name "backup_*" -empty -delete -print | while read 
 done
 
 log "OS Backup script completed"
+
 log "HA Backup starting"
 
 CONTAINER_NAME="homeassistant"
