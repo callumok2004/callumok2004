@@ -111,7 +111,7 @@ partial class VMFDupes
 				else if (inEntity)
 				{
 					entityCount++;
-					ProcessEntity(blockSpan, blockString, objects);
+					ProcessEntity(blockString, objects);
 					inEntity = false;
 				}
 				currentBlock = "";
@@ -191,7 +191,7 @@ partial class VMFDupes
 		});
 	}
 
-	static void ProcessEntity(ReadOnlySpan<char> blockContent, string blockString, List<ObjectInfo> objects)
+	static void ProcessEntity(string blockString, List<ObjectInfo> objects)
 	{
 		var idMatch = idreg().Match(blockString);
 		if (!idMatch.Success) return;
@@ -343,6 +343,33 @@ partial class VMFDupes
 			Console.WriteLine($"Total duplicate sets: {grouped.Count}");
 			Console.WriteLine($"Total objects in duplicate sets: {grouped.Sum(g => g.Objects.Count)}");
 		}
+
+		// Because VIDE simply refuses to find all infodecals. shit sucks ass
+		//var infodecalMaterials = new HashSet<string>();
+		//foreach (var obj in objects)
+		//{
+		//	if (obj.Type == "entity" && obj.SpecificType.Equals("infodecal", StringComparison.OrdinalIgnoreCase))
+		//	{
+		//		Console.WriteLine($"Found infodecal entity ID {obj.Id}.");
+		//		if (obj.KeyValues != null && obj.KeyValues.TryGetValue("texture", out string? material) && material != null)
+		//		{
+		//			infodecalMaterials.Add(material);
+		//		}
+		//	}
+		//}
+
+		//if (infodecalMaterials.Count > 0)
+		//{
+		//	Console.WriteLine("\nUnique 'infodecal' materials found:");
+		//	foreach (var mat in infodecalMaterials.OrderBy(m => m))
+		//	{
+		//		Console.WriteLine($"{mat}.vmt");
+		//	}
+		//}
+		//else
+		//{
+		//	Console.WriteLine("\nNo 'infodecal' entities with materials found.");
+		//}
 	}
 
 	static void ReportPropStaticDynamicConflicts(List<ObjectInfo> objects)
