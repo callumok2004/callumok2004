@@ -1,12 +1,12 @@
 {
   "GitLens — Git supercharged": {
-    "version": "17.6.2",
+    "version": "17.8.1",
     "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
     "publisher": "eamodio",
     "repository": "https://github.com/gitkraken/vscode-gitlens.git"
   },
   "Lua": {
-    "version": "3.15.0",
+    "version": "3.16.2",
     "description": "Lua Language Server coded by Lua",
     "publisher": "sumneko",
     "repository": "https://github.com/LuaLS/lua-language-server"
@@ -24,25 +24,37 @@
     "repository": "N/A"
   },
   "PHP Intelephense": {
-    "version": "1.14.4",
+    "version": "1.16.3",
     "description": "PHP code intelligence for Visual Studio Code",
     "publisher": "bmewburn",
     "repository": "https://github.com/bmewburn/vscode-intelephense.git"
   },
+  "XAML Styler": {
+    "version": "1.4.0",
+    "description": "XAML Styler is used to format XAML source code based on a set of styling rules. This tool can help you/your team maintain a better XAML coding style as well as a much better XAML readability.",
+    "publisher": "dabbinavo",
+    "repository": "https://github.com/dabbinavo/vscode-xamlstyler"
+  },
   "PHP Profiler": {
-    "version": "1.62.17969",
+    "version": "1.63.18172",
     "description": "Support for PHP (Xdebug) profiling files and inspecting them.",
     "publisher": "DEVSENSE",
     "repository": "https://github.com/DEVSENSE/phptools-docs"
   },
+  "Highlight": {
+    "version": "1.9.0",
+    "description": "Advanced text highlighter based on regexes. Useful for todos, annotations, colors etc.",
+    "publisher": "fabiospampinato",
+    "repository": "https://github.com/fabiospampinato/vscode-highlight.git"
+  },
   "GitHub Copilot": {
-    "version": "1.371.1785",
+    "version": "1.388.0",
     "description": "Your AI pair programmer",
     "publisher": "GitHub",
     "repository": "N/A"
   },
   "GitHub Copilot Chat": {
-    "version": "0.33.2025102701",
+    "version": "0.36.2025121901",
     "description": "AI chat features powered by Copilot",
     "publisher": "GitHub",
     "repository": "https://github.com/microsoft/vscode-copilot-chat"
@@ -65,6 +77,12 @@
     "publisher": "icrawl",
     "repository": "https://github.com/iCrawl/discord-vscode.git"
   },
+  "Ionide for F#": {
+    "version": "7.30.0",
+    "description": "F# Language Support, powered by FsAutoComplete",
+    "publisher": "Ionide",
+    "repository": "https://github.com/ionide/ionide-vscode-fsharp.git"
+  },
   "Auto-Save on Window Change": {
     "version": "1.0.3",
     "description": "Auto-Save files by switching between windows.",
@@ -84,16 +102,64 @@
     "repository": "https://github.com/mrmlnc/vscode-scss"
   },
   "C#": {
-    "version": "2.96.3",
+    "version": "2.111.2",
     "description": "Base language support for C#",
     "publisher": "ms-dotnettools",
     "repository": "https://github.com/dotnet/vscode-csharp"
   },
+  "Polyglot Notebooks": {
+    "version": "1.0.6617031",
+    "description": "%description.package%",
+    "publisher": "ms-dotnettools",
+    "repository": "https://github.com/dotnet/interactive"
+  },
+  ".NET Extension Pack": {
+    "version": "1.0.13",
+    "description": "The ultimate collection of extensions for working with .NET in VS Code!",
+    "publisher": "ms-dotnettools",
+    "repository": "https://github.com/dotnet/vscode-dotnet-pack.git"
+  },
   ".NET Install Tool": {
-    "version": "2.3.9",
+    "version": "3.0.0",
     "description": "This extension installs and manages different versions of the .NET SDK and Runtime.",
     "publisher": "ms-dotnettools",
     "repository": "https://github.com/dotnet/vscode-dotnet-runtime.git"
+  },
+  "Jupyter": {
+    "version": "2025.10.2025121801",
+    "description": "Jupyter notebook support, interactive programming and computing that supports Intellisense, debugging and more.",
+    "publisher": "ms-toolsai",
+    "repository": "https://github.com/Microsoft/vscode-jupyter"
+  },
+  "Jupyter Keymap": {
+    "version": "1.1.2",
+    "description": "Jupyter keymaps for notebooks",
+    "publisher": "ms-toolsai",
+    "repository": "https://github.com/Microsoft/vscode-jupyter-keymap"
+  },
+  "Jupyter Notebook Renderers": {
+    "version": "1.3.2025062701",
+    "description": "Renderers for Jupyter Notebooks (with plotly, vega, gif, png, svg, jpeg and other such outputs)",
+    "publisher": "ms-toolsai",
+    "repository": "https://github.com/Microsoft/vscode-notebook-renderers"
+  },
+  "Jupyter Cell Tags": {
+    "version": "0.1.9",
+    "description": "Jupyter Cell Tags support for VS Code",
+    "publisher": "ms-toolsai",
+    "repository": "https://github.com/Microsoft/vscode-jupyter-cell-tags"
+  },
+  "Jupyter Slide Show": {
+    "version": "0.1.6",
+    "description": "Jupyter Slide Show support for VS Code",
+    "publisher": "ms-toolsai",
+    "repository": "https://github.com/Microsoft/vscode-jupyter-slideshow"
+  },
+  "C/C++": {
+    "version": "1.30.0",
+    "description": "C/C++ IntelliSense, debugging, and code browsing.",
+    "publisher": "ms-vscode",
+    "repository": "git+https://github.com/Microsoft/vscode-cpptools.git"
   },
   "JavaScript Debugger": {
     "version": "1.72.1",
@@ -120,7 +186,7 @@
     "repository": "https://github.com/oderwat/vscode-indent-rainbow.git"
   },
   "Material Icon Theme": {
-    "version": "5.28.0",
+    "version": "5.30.0",
     "description": "Material Design Icons for Visual Studio Code",
     "publisher": "PKief",
     "repository": "git+https://github.com/material-extensions/vscode-material-icon-theme.git"
@@ -156,13 +222,13 @@
     "repository": "https://github.com/MicrosoftDocs/intellicode"
   },
   "WakaTime": {
-    "version": "25.4.0",
+    "version": "25.5.1",
     "description": "Metrics, insights, and time tracking automatically generated from your programming activity.",
     "publisher": "WakaTime",
     "repository": "https://github.com/wakatime/vscode-wakatime.git"
   },
   "PHP Debug": {
-    "version": "1.37.0",
+    "version": "1.39.1",
     "description": "Debug support for PHP with Xdebug",
     "publisher": "xdebug",
     "repository": "https://github.com/xdebug/vscode-php-debug.git"
