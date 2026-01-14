@@ -1,12 +1,12 @@
 {
   "GitLens — Git supercharged": {
-    "version": "17.8.1",
+    "version": "17.9.0",
     "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
     "publisher": "eamodio",
     "repository": "https://github.com/gitkraken/vscode-gitlens.git"
   },
   "Lua": {
-    "version": "3.16.2",
+    "version": "3.16.4",
     "description": "Lua Language Server coded by Lua",
     "publisher": "sumneko",
     "repository": "https://github.com/LuaLS/lua-language-server"
@@ -35,17 +35,35 @@
     "publisher": "dabbinavo",
     "repository": "https://github.com/dabbinavo/vscode-xamlstyler"
   },
+  "Composer": {
+    "version": "1.65.18327",
+    "description": "All-in-One composer integration, quick actions, commands, automatic installation, tasks, code lenses, diagnostics, and composer.json IntelliSense.",
+    "publisher": "DEVSENSE",
+    "repository": "https://github.com/DEVSENSE/phptools-docs"
+  },
+  "IntelliPHP - AI Autocomplete for PHP": {
+    "version": "0.12.17700",
+    "description": "AI-assisted development for PHP.",
+    "publisher": "DEVSENSE",
+    "repository": "https://github.com/DEVSENSE/phptools-docs"
+  },
+  "PHP": {
+    "version": "1.65.18327",
+    "description": "All-in-One PHP support - IntelliSense, Debug, Formatter, Code Lenses, Code Fixes, Linting, Refactoring, PHPUnit Tests, Web Server, and more.",
+    "publisher": "DEVSENSE",
+    "repository": "https://github.com/DEVSENSE/phptools-docs"
+  },
   "PHP Profiler": {
-    "version": "1.63.18172",
+    "version": "1.65.18327",
     "description": "Support for PHP (Xdebug) profiling files and inspecting them.",
     "publisher": "DEVSENSE",
     "repository": "https://github.com/DEVSENSE/phptools-docs"
   },
   "Highlight": {
-    "version": "1.9.0",
+    "version": "2.1.0",
     "description": "Advanced text highlighter based on regexes. Useful for todos, annotations, colors etc.",
     "publisher": "fabiospampinato",
-    "repository": "https://github.com/fabiospampinato/vscode-highlight.git"
+    "repository": "N/A"
   },
   "GitHub Copilot": {
     "version": "1.388.0",
@@ -54,7 +72,7 @@
     "repository": "N/A"
   },
   "GitHub Copilot Chat": {
-    "version": "0.36.2025121901",
+    "version": "0.37.2026011403",
     "description": "AI chat features powered by Copilot",
     "publisher": "GitHub",
     "repository": "https://github.com/microsoft/vscode-copilot-chat"
@@ -107,12 +125,6 @@
     "publisher": "ms-dotnettools",
     "repository": "https://github.com/dotnet/vscode-csharp"
   },
-  "Polyglot Notebooks": {
-    "version": "1.0.6617031",
-    "description": "%description.package%",
-    "publisher": "ms-dotnettools",
-    "repository": "https://github.com/dotnet/interactive"
-  },
   ".NET Extension Pack": {
     "version": "1.0.13",
     "description": "The ultimate collection of extensions for working with .NET in VS Code!",
@@ -125,38 +137,8 @@
     "publisher": "ms-dotnettools",
     "repository": "https://github.com/dotnet/vscode-dotnet-runtime.git"
   },
-  "Jupyter": {
-    "version": "2025.10.2025121801",
-    "description": "Jupyter notebook support, interactive programming and computing that supports Intellisense, debugging and more.",
-    "publisher": "ms-toolsai",
-    "repository": "https://github.com/Microsoft/vscode-jupyter"
-  },
-  "Jupyter Keymap": {
-    "version": "1.1.2",
-    "description": "Jupyter keymaps for notebooks",
-    "publisher": "ms-toolsai",
-    "repository": "https://github.com/Microsoft/vscode-jupyter-keymap"
-  },
-  "Jupyter Notebook Renderers": {
-    "version": "1.3.2025062701",
-    "description": "Renderers for Jupyter Notebooks (with plotly, vega, gif, png, svg, jpeg and other such outputs)",
-    "publisher": "ms-toolsai",
-    "repository": "https://github.com/Microsoft/vscode-notebook-renderers"
-  },
-  "Jupyter Cell Tags": {
-    "version": "0.1.9",
-    "description": "Jupyter Cell Tags support for VS Code",
-    "publisher": "ms-toolsai",
-    "repository": "https://github.com/Microsoft/vscode-jupyter-cell-tags"
-  },
-  "Jupyter Slide Show": {
-    "version": "0.1.6",
-    "description": "Jupyter Slide Show support for VS Code",
-    "publisher": "ms-toolsai",
-    "repository": "https://github.com/Microsoft/vscode-jupyter-slideshow"
-  },
   "C/C++": {
-    "version": "1.30.0",
+    "version": "1.30.1",
     "description": "C/C++ IntelliSense, debugging, and code browsing.",
     "publisher": "ms-vscode",
     "repository": "git+https://github.com/Microsoft/vscode-cpptools.git"
@@ -166,12 +148,6 @@
     "description": "An extension for debugging Node.js programs and Chrome.",
     "publisher": "ms-vscode",
     "repository": "https://github.com/Microsoft/vscode-pwa.git"
-  },
-  "%extension.liveshare.displayName.title%": {
-    "version": "1.0.5959",
-    "description": "%extension.liveshare.description.title%",
-    "publisher": "ms-vsliveshare",
-    "repository": "https://github.com/MicrosoftDocs/live-share"
   },
   "Color Highlight": {
     "version": "2.8.0",
@@ -209,6 +185,12 @@
     "publisher": "St0pien",
     "repository": "N/A"
   },
+  "Svelte for VS Code": {
+    "version": "109.12.1",
+    "description": "Svelte language support for VS Code",
+    "publisher": "svelte",
+    "repository": "https://github.com/sveltejs/language-tools.git"
+  },
   "GLua Enhanced (Garry's Mod/Gmod Lua)": {
     "version": "2.5.4",
     "description": "GLua language support for Visual Studio Code",
@@ -220,6 +202,12 @@
     "description": "%extension.description%",
     "publisher": "VisualStudioExptTeam",
     "repository": "https://github.com/MicrosoftDocs/intellicode"
+  },
+  "Vue (Official)": {
+    "version": "3.2.2",
+    "description": "Language Support for Vue",
+    "publisher": "Vue",
+    "repository": "https://github.com/vuejs/language-tools.git"
   },
   "WakaTime": {
     "version": "25.5.1",
@@ -234,7 +222,7 @@
     "repository": "https://github.com/xdebug/vscode-php-debug.git"
   },
   "Pretty TypeScript Errors": {
-    "version": "0.6.1",
+    "version": "0.7.0",
     "description": "Make TypeScript errors prettier and more human-readable in VSCode",
     "publisher": "YoavBls",
     "repository": "https://github.com/yoavbls/pretty-ts-errors"
