@@ -22,7 +22,7 @@
   "editor.cursorBlinking": "expand",
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.cursorWidth": 5,
-  "editor.fontFamily": "'Fira Code'",
+  // "editor.fontFamily": "'Fira Code'",
   "editor.fontLigatures": true,
   "editor.inlineSuggest.enabled": true,
   "editor.linkedEditing": true,
@@ -98,7 +98,8 @@
     "tsconfig.json": "tsconfig.*.json",
     "package.json": "package-lock.json, yarn.lock",
     "*.d.ts": "${capture}.d.ts",
-    ".env.*": ".env.${capture}"
+    ".env.*": ".env.${capture}",
+    "*.cpp": "${capture}.h, ${capture}.hpp"
   },
   "explorer.fileNesting.enabled": true,
   "gitlens.detectNestedRepositories": true,
@@ -329,5 +330,6 @@
       }
     ]
   },
-  "debug.onTaskErrors": "abort"
+  "debug.onTaskErrors": "abort",
+  "svelte.enable-ts-plugin": true,
 }
