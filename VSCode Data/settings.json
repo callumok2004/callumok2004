@@ -70,7 +70,9 @@
     "yaml": false,
     "typescriptreact": true,
     "php": true,
-    "glua": true
+    "glua": true,
+    "csharp": true,
+    "javascript": true
   },
   "files.associations": {
     ".env": "code-text-binary"
@@ -147,7 +149,7 @@
   "diffEditor.experimental.showMoves": true,
   "diffEditor.hideUnchangedRegions.enabled": true,
   "haskell.manageHLS": "PATH",
-  "window.zoomLevel": 1.4,
+  "window.zoomLevel": 1.5,
   "workbench.colorCustomizations": {
     "statusBar.background": "#2333cc96",
     "statusBar.foreground": "#ffffff",
@@ -332,4 +334,15 @@
   },
   "debug.onTaskErrors": "abort",
   "svelte.enable-ts-plugin": true,
+  "chat.tools.terminal.outputLocation": "chat",
+  "editor.minimap.size": "fill",
+  "editor.aiStats.enabled": false,
+  "githubPullRequests.createOnPublishBranch": "never",
+  "update.statusBar": "actionable",
+  "csharp.inlayHints.enableInlayHintsForImplicitVariableTypes": true,
+  "git.addAICoAuthor": "off",
+  "continue.enableTabAutocomplete": true,
+  "gluals.completion.autoRequire": false,
+  "claudeCode.preferredLocation": "sidebar",
+  "csharp.suppressProjectJsonWarning": true,
 }
