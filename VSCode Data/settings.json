@@ -71,11 +71,13 @@
     "typescriptreact": true,
     "php": true,
     "glua": true,
-    "csharp": true,
+    "csharp": false,
     "javascript": true
   },
   "files.associations": {
-    ".env": "code-text-binary"
+    ".env": "code-text-binary",
+    "*.fs": "glsl",
+    "*.vs": "glsl"
   },
   "liveshare.connectionMode": "relay",
   "glualint.linter": "C:\\Users\\callu\\OneDrive\\Documents\\glualint\\glualint.exe",
@@ -345,4 +347,13 @@
   "gluals.completion.autoRequire": false,
   "claudeCode.preferredLocation": "sidebar",
   "csharp.suppressProjectJsonWarning": true,
+  "githubPullRequests.pullBranch": "never",
+  "php.problems.exclude": {
+    "**/*": [
+      "PHP2439"
+    ]
+  },
+  "workbench.startupEditor": "none",
+  "dotnet.projects.enableFileBasedPrograms": false,
+  "terminal.integrated.initialHint": false,
 }
