@@ -443,6 +443,23 @@
             flex: 0 0 auto !important;
         }
         .histbutton:hover { background: rgba(255,255,255,0.18) !important; }
+        /* header variant: sits inline next to Invite Reviewers */
+        .histbutton-inline {
+            width: auto !important;
+            margin-top: 0 !important;
+            margin-left: 8px !important;
+            vertical-align: middle !important;
+            display: inline-block !important;
+        }
+        /* last-resort host: no header, no sidebar -- pin it so it still exists */
+        .histbutton-floating {
+            position: fixed !important;
+            top: 10px !important;
+            right: 12px !important;
+            width: auto !important;
+            margin-top: 0 !important;
+            z-index: 150 !important;
+        }
 
         .sharebutton {
             width: 100% !important;
@@ -542,21 +559,23 @@
             letter-spacing: 0 !important;
             color: rgba(255,255,255,0.4) !important;
         }
-        .histsub {
-            display: flex !important;
+        /* One grid for ALL rows (cells are direct children, no per-row wrapper):
+           the name and numbers columns then size to the widest row, so every
+           bar starts and ends at the same x regardless of digit count. */
+        .histsub-grid {
+            display: grid !important;
+            grid-template-columns: auto 1fr auto !important;
             align-items: center !important;
-            gap: 8px !important;
-            padding: 2px 0 !important;
+            column-gap: 8px !important;
+            row-gap: 4px !important;
             font-size: 12px !important;
             color: #fff !important;
         }
         .histsub-name {
-            flex: 0 0 44px !important;
             font-weight: bold !important;
             font-family: monospace !important;
         }
         .histsub-bar {
-            flex: 1 1 auto !important;
             display: flex !important;
             height: 8px !important;
             border-radius: 2px !important;
@@ -568,10 +587,13 @@
         .histsub-bar .b-unc { background: #b8b8b8 !important; }
         .histsub-bar .b-no  { background: #3d8b40 !important; }
         .histsub-nums {
-            flex: 0 0 auto !important;
             font-family: monospace !important;
             font-size: 11px !important;
             color: rgba(255,255,255,0.75) !important;
+            text-align: right !important;
+            white-space: nowrap !important;
+            /* same-width digits, so the column doesn't jitter between rows */
+            font-variant-numeric: tabular-nums !important;
         }
         .histsub-nums b { color: #ff6b6b !important; }
         .histsub-nums i { color: #b8b8b8 !important; font-style: normal !important; }
@@ -1881,8 +1903,8 @@
         const subRows = SUBS.map((s, i) => {
             const [yes, unc, no] = st.subs[i];
             const t = yes + unc + no || 1;
-            return '<div class="histsub">' +
-                '<span class="histsub-name">' + esc(SHORT_NAME[i]) + '</span>' +
+            // no row wrapper: these three land straight in .histsub-grid
+            return '<span class="histsub-name">' + esc(SHORT_NAME[i]) + '</span>' +
                 '<span class="histsub-bar">' +
                 '<i class="b-yes" style="width:' + (yes * 100 / t) + '%"></i>' +
                 '<i class="b-unc" style="width:' + (unc * 100 / t) + '%"></i>' +
@@ -1890,8 +1912,7 @@
                 '</span>' +
                 '<span class="histsub-nums">' +
                 '<b>' + yes + '</b> yes · <i>' + unc + '</i> unc · <s>' + no + '</s> no' +
-                '</span>' +
-                '</div>';
+                '</span>';
         }).join('');
 
         const comboRows = st.combos.map(c =>
@@ -1907,7 +1928,7 @@
             '<span class="histsum-note">' + st.labelled + ' labelled' +
             (st.bad ? ' · ' + st.bad + ' bad clip' + (st.bad === 1 ? '' : 's') : '') +
             '</span></div>' +
-            subRows +
+            '<div class="histsub-grid">' + subRows + '</div>' +
             '</div>' +
             '<div class="histsum">' +
             '<div class="histsum-title">Per verdict combination ' +
@@ -2031,16 +2052,62 @@
         col.appendChild(btn);
     }
 
-    function ensureHistoryButton() {
+    // Sits beside "Invite Reviewers" in the page header, so the log is reachable
+    // from every page rather than only from a task with a verdict column. Falls
+    // back to the verdict column if the header isn't rendered.
+    // The log is useful with no clip loaded at all (out of tasks, invite page,
+    // any page on the site), so this must never depend on the player, the
+    // verdict column or the clip bounds. Preference order, best first:
+    //   1. right after "Invite Reviewers"
+    //   2. the page header itself
+    //   3. the verdict column
+    //   4. pinned to the viewport, so it exists even on a bare page
+    // Note the invite link can sit inside .top-section, which killJunk deletes;
+    // anchoring there would take the button with it, so that case is rejected.
+    function historyButtonHost() {
+        const invite = document.querySelector('a.invitebutton');
+        if (invite && invite.isConnected && !invite.closest('.top-section')) {
+            return { after: invite, cls: ' histbutton-inline' };
+        }
+        const header = document.querySelector('.PageHeader');
+        if (header) return { into: header, cls: ' histbutton-inline' };
         const col = document.querySelector('.verdict-column');
-        if (!col || col.querySelector('.histbutton')) return;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'histbutton';
-        btn.textContent = '🕘 Review history';
-        btn.title = 'Everything you have labeled, grouped by source VOD';
-        btn.addEventListener('click', buildHistoryPopup);
-        col.appendChild(btn);
+        if (col) return { into: col, cls: '' };
+        if (document.body) return { into: document.body, cls: ' histbutton-floating' };
+        return null;
+    }
+
+    function ensureHistoryButton() {
+        const host = historyButtonHost();
+        if (!host) return;
+        const id = host.after ? 'invite' : (host.into.className || 'body');
+
+        let btn = document.querySelector('.histbutton');
+        if (btn && btn.dataset.host === id && btn.isConnected) return;
+
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = '🕘 Review history';
+            btn.title = 'Everything you have labeled, grouped by source VOD';
+            btn.addEventListener('click', buildHistoryPopup);
+        }
+        // re-parent rather than rebuild, so a late-rendering header promotes the
+        // button off whatever fallback it landed on without losing its listener
+        btn.className = 'histbutton' + host.cls;
+        btn.dataset.host = id;
+        if (host.after) host.after.insertAdjacentElement('afterend', btn);
+        else host.into.appendChild(btn);
+    }
+
+    function yoink() {
+        const logout = document.querySelector('a[href*="/oauth/logout"]');
+        const p = logout && logout.closest('p');
+        if (!p || p.dataset.nameHidden) return;
+        p.dataset.nameHidden = '1';
+        Array.from(p.childNodes).forEach(n => {
+            if (n.nodeType === 3) n.textContent = '';
+        });
     }
 
     // ---- one-click verdict presets ---------------------------------------
@@ -2456,6 +2523,7 @@
     function tick() {
         step('unsizePlayer', unsizePlayer);
         step('killJunk', killJunk);
+        step('yoink', yoink);
         step('stripLabelPrefix', stripLabelPrefix);
         step('ensureClipBar', ensureClipBar);
         step('ensureResizer', ensureResizer);
@@ -2474,13 +2542,24 @@
         step('moveFooterButtons', moveFooterButtons);
     }
 
-    document.addEventListener('DOMContentLoaded', tick);
-    window.addEventListener('load', () => {
+    function boot() {
         tick();
         // video.js finishes wiring up slightly after load
         setTimeout(tick, 200);
         setTimeout(tick, 1000);
-    });
+    }
+
+    // If the document is already parsed when we run -- late injection, a manual
+    // re-run, or a bfcache restore -- DOMContentLoaded and load have both
+    // already fired, so neither listener will ever call tick(). On a page with
+    // no player nothing mutates either, so the observer never fires and the
+    // script does nothing at all until something else disturbs the DOM.
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tick);
+        window.addEventListener('load', boot);
+    } else {
+        boot();
+    }
 
     new MutationObserver(tick).observe(document.documentElement, {
         childList: true,
