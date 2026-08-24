@@ -525,6 +525,81 @@
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
         }
+        /* ---- overview summaries at the top of the popup ---- */
+        .histsum { margin-bottom: 14px !important; }
+        .histsum-title {
+            font-size: 11px !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            color: rgba(255,255,255,0.55) !important;
+            margin-bottom: 6px !important;
+        }
+        .histsum-note {
+            font-size: 11px !important;
+            font-weight: normal !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+            color: rgba(255,255,255,0.4) !important;
+        }
+        .histsub {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 2px 0 !important;
+            font-size: 12px !important;
+            color: #fff !important;
+        }
+        .histsub-name {
+            flex: 0 0 44px !important;
+            font-weight: bold !important;
+            font-family: monospace !important;
+        }
+        .histsub-bar {
+            flex: 1 1 auto !important;
+            display: flex !important;
+            height: 8px !important;
+            border-radius: 2px !important;
+            overflow: hidden !important;
+            background: rgba(255,255,255,0.08) !important;
+        }
+        .histsub-bar i { display: block !important; height: 100% !important; }
+        .histsub-bar .b-yes { background: #ff6b6b !important; }
+        .histsub-bar .b-unc { background: #b8b8b8 !important; }
+        .histsub-bar .b-no  { background: #3d8b40 !important; }
+        .histsub-nums {
+            flex: 0 0 auto !important;
+            font-family: monospace !important;
+            font-size: 11px !important;
+            color: rgba(255,255,255,0.75) !important;
+        }
+        .histsub-nums b { color: #ff6b6b !important; }
+        .histsub-nums i { color: #b8b8b8 !important; font-style: normal !important; }
+        .histsub-nums s { color: #6bd47a !important; text-decoration: none !important; }
+
+        .histcombo {
+            display: flex !important;
+            align-items: baseline !important;
+            gap: 8px !important;
+            padding: 2px 0 !important;
+            font-size: 12px !important;
+            color: rgba(255,255,255,0.85) !important;
+        }
+        .histcombo-count {
+            flex: 0 0 46px !important;
+            text-align: right !important;
+            font-family: monospace !important;
+            font-weight: bold !important;
+            color: #fff !important;
+        }
+        .histcombo-pct {
+            flex: 0 0 42px !important;
+            font-family: monospace !important;
+            font-size: 11px !important;
+            color: rgba(255,255,255,0.5) !important;
+        }
+        .histcombo-label { flex: 1 1 auto !important; }
+
         .histrow {
             display: flex !important;
             align-items: baseline !important;
@@ -599,6 +674,7 @@
         .preset-legit { background: #3d8b40 !important; }
         .preset-wh    { background: #d3841a !important; }
         .preset-hvh   { background: #b03030 !important; }
+        .preset-bot   { background: #7a4bbf !important; }
 
         /* keep the modal usable on top of everything */
         .modaloverlay { z-index: 100 !important; }
@@ -1749,8 +1825,100 @@
             .slice(0, HISTORY_POPUP_GROUPS);
     }
 
+    // Overview stats run over the WHOLE log, not just the groups the popup
+    // renders, so the counts don't silently change as older VODs fall off the
+    // display cap.
+    const LONG_NAME = ['aim', 'wallhack', 'bhop', 'bot'];
+
+    // '2100' -> "aim, uncertain wallhack, not bhop, not bot"
+    function describeCode(code) {
+        if (code === 'b') return 'bad clip';
+        const parts = SUBS.map((_, i) => {
+            const c = String(code)[i];
+            const n = LONG_NAME[i] || SUBS[i];
+            return c === '2' ? n : (c === '1' ? 'uncertain ' + n : 'not ' + n);
+        });
+        return parts.join(', ');
+    }
+
+    function historyStats() {
+        const h = loadHistory();
+        // per-subproblem tallies: [yes, uncertain, no] for each of SUBS
+        const subs = SUBS.map(() => [0, 0, 0]);
+        const combos = {};
+        let total = 0, bad = 0;
+
+        Object.keys(h).forEach(k => {
+            h[k].forEach(a => {
+                const code = a[3];
+                total++;
+                combos[code] = (combos[code] || 0) + 1;
+                if (code === 'b') { bad++; return; }
+                SUBS.forEach((_, i) => {
+                    const c = String(code)[i];
+                    if (c === '2') subs[i][0]++;
+                    else if (c === '1') subs[i][1]++;
+                    else if (c === '0') subs[i][2]++;
+                });
+            });
+        });
+
+        return {
+            total: total,
+            bad: bad,
+            labelled: total - bad,
+            subs: subs,
+            combos: Object.keys(combos)
+                .map(code => ({ code: code, n: combos[code] }))
+                .sort((a, b) => b.n - a.n)
+        };
+    }
+
+    function renderStats(st) {
+        if (!st.total) return '';
+        const pct = n => st.total ? Math.round(n * 1000 / st.total) / 10 : 0;
+
+        const subRows = SUBS.map((s, i) => {
+            const [yes, unc, no] = st.subs[i];
+            const t = yes + unc + no || 1;
+            return '<div class="histsub">' +
+                '<span class="histsub-name">' + esc(SHORT_NAME[i]) + '</span>' +
+                '<span class="histsub-bar">' +
+                '<i class="b-yes" style="width:' + (yes * 100 / t) + '%"></i>' +
+                '<i class="b-unc" style="width:' + (unc * 100 / t) + '%"></i>' +
+                '<i class="b-no"  style="width:' + (no * 100 / t) + '%"></i>' +
+                '</span>' +
+                '<span class="histsub-nums">' +
+                '<b>' + yes + '</b> yes · <i>' + unc + '</i> unc · <s>' + no + '</s> no' +
+                '</span>' +
+                '</div>';
+        }).join('');
+
+        const comboRows = st.combos.map(c =>
+            '<div class="histcombo">' +
+            '<span class="histcombo-count">' + c.n + '</span>' +
+            '<span class="histcombo-pct">' + pct(c.n) + '%</span>' +
+            '<span class="histcombo-label">' + esc(describeCode(c.code)) + '</span>' +
+            '</div>'
+        ).join('');
+
+        return '<div class="histsum">' +
+            '<div class="histsum-title">Per label ' +
+            '<span class="histsum-note">' + st.labelled + ' labelled' +
+            (st.bad ? ' · ' + st.bad + ' bad clip' + (st.bad === 1 ? '' : 's') : '') +
+            '</span></div>' +
+            subRows +
+            '</div>' +
+            '<div class="histsum">' +
+            '<div class="histsum-title">Per verdict combination ' +
+            '<span class="histsum-note">' + st.combos.length + ' distinct</span></div>' +
+            comboRows +
+            '</div>';
+    }
+
     function buildHistoryPopup() {
         const groups = historyGroups();
+        const stats = historyStats();
         const total = groups.reduce((n, g) => n + g.items.length, 0);
 
         const overlay = document.createElement('div');
@@ -1758,11 +1926,14 @@
         overlay.innerHTML =
             '<div class="histpopup">' +
             '<div class="histpopup-head">' +
-            '<span>Review history — ' + total + ' review' + (total === 1 ? '' : 's') +
-            ' across ' + groups.length + ' VOD' + (groups.length === 1 ? '' : 's') + '</span>' +
+            '<span>Review history — ' + stats.total + ' review' + (stats.total === 1 ? '' : 's') +
+            (stats.total > total
+                ? ' (' + total + ' shown, newest ' + groups.length + ' VODs)'
+                : ' across ' + groups.length + ' VOD' + (groups.length === 1 ? '' : 's')) + '</span>' +
             '<span class="histpopup-close">X</span>' +
             '</div>' +
             '<div class="histpopup-body">' +
+            renderStats(stats) +
             (groups.length ? groups.map(g =>
                 '<div class="histgroup' + (g.current ? ' is-current' : '') + '">' +
                 '<div class="histgroup-head">' +
@@ -1892,6 +2063,12 @@
             cls: 'preset-hvh',
             title: 'Aim assist, wall hack, auto bhop, not bot',
             set: { aimassist: 'positive', wallhack: 'positive', autobhop: 'positive', bot: 'negative' }
+        },
+        {
+            name: 'BOT',
+            cls: 'preset-bot',
+            title: 'Aim assist, bot player, wall hack uncertain, not auto bhop',
+            set: { aimassist: 'positive', wallhack: 'skip', autobhop: 'negative', bot: 'positive' }
         }
     ];
 
