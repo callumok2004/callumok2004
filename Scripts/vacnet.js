@@ -622,6 +622,85 @@
         }
         .histcombo-label { flex: 1 1 auto !important; }
 
+        /* ---- trends over time ---- */
+        .histgrain {
+            font-size: 11px !important;
+            /* .histsum-title uppercases its contents; the dropdown shouldn't be */
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+            color: #fff !important;
+            background: rgba(255,255,255,0.14) !important;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+            border-radius: 3px !important;
+            cursor: pointer !important;
+            margin-left: 6px !important;
+        }
+        .histgrain option { color: #000 !important; }
+
+        .trendgrid {
+            display: grid !important;
+            grid-template-columns: auto 1fr auto !important;
+            align-items: center !important;
+            column-gap: 8px !important;
+            row-gap: 3px !important;
+            font-size: 12px !important;
+        }
+        .trend-name {
+            font-family: monospace !important;
+            font-weight: bold !important;
+            color: #fff !important;
+        }
+        .trend-bars {
+            display: flex !important;
+            align-items: flex-end !important;
+            gap: 2px !important;
+            height: 22px !important;
+        }
+        .trend-bars span {
+            flex: 1 1 0 !important;
+            min-width: 2px !important;
+            border-radius: 1px !important;
+            background: rgba(255,255,255,0.30) !important;
+        }
+        .trend-bars span.hot { background: #ff6b6b !important; }
+        .trend-bars span.cool { background: #6bd47a !important; }
+        .trend-bars span.warn { background: #f5a623 !important; }
+        .trend-bars span.dim  { background: #b8b8b8 !important; }
+        .trend-bars span.vol  { background: #7ec2ff !important; }
+        .trend-bars span.empty { background: rgba(255,255,255,0.07) !important; }
+        .trend-val {
+            font-family: monospace !important;
+            font-size: 11px !important;
+            font-variant-numeric: tabular-nums !important;
+            text-align: right !important;
+            white-space: nowrap !important;
+            color: rgba(255,255,255,0.75) !important;
+        }
+        .trend-axis {
+            grid-column: 2 !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            font-size: 10px !important;
+            color: rgba(255,255,255,0.4) !important;
+            margin-top: 2px !important;
+        }
+
+        .deltagrid {
+            display: grid !important;
+            grid-template-columns: auto auto auto auto !important;
+            column-gap: 10px !important;
+            row-gap: 2px !important;
+            font-size: 12px !important;
+            font-variant-numeric: tabular-nums !important;
+        }
+        .deltagrid > span { font-family: monospace !important; }
+        .delta-head { color: rgba(255,255,255,0.4) !important; font-size: 10px !important; }
+        .delta-name { font-weight: bold !important; color: #fff !important; }
+        .delta-num { text-align: right !important; color: rgba(255,255,255,0.75) !important; }
+        .delta-up { text-align: right !important; color: #ff6b6b !important; }
+        .delta-down { text-align: right !important; color: #6bd47a !important; }
+        .delta-flat { text-align: right !important; color: rgba(255,255,255,0.35) !important; }
+
         .histrow {
             display: flex !important;
             align-items: baseline !important;
@@ -1937,9 +2016,209 @@
             '</div>';
     }
 
+    // ---- trends over time -------------------------------------------------
+    // Labels overlap (one clip can be AIM + WH + BOT at once), so these are
+    // INDEPENDENT rates per bucket, never a stack summing to 100% -- stacking
+    // would silently double-count multi-label clips.
+    const GRAIN_KEY = 'vacnetTrendGrain';
+    const TREND_BUCKETS = 24;   // most recent N buckets shown
+    const DELTA_RECENT = 200;   // "recent" window for the shift table
+
+    function startOfWeek(d) {
+        const x = new Date(d);
+        x.setHours(0, 0, 0, 0);
+        x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); // Monday
+        return x;
+    }
+
+    const GRAINS = [
+        {
+            id: 'hour', label: 'hour',
+            floor: ts => { const d = new Date(ts); d.setMinutes(0, 0, 0); return d; },
+            text: d => d.getHours() + ':00',
+            span: 3600e3
+        },
+        {
+            id: 'day', label: 'day',
+            floor: ts => { const d = new Date(ts); d.setHours(0, 0, 0, 0); return d; },
+            text: d => (d.getMonth() + 1) + '/' + d.getDate(),
+            span: 86400e3
+        },
+        {
+            id: 'week', label: 'week',
+            floor: ts => startOfWeek(ts),
+            text: d => (d.getMonth() + 1) + '/' + d.getDate(),
+            span: 7 * 86400e3
+        },
+        {
+            id: 'month', label: 'month',
+            floor: ts => { const d = new Date(ts); d.setDate(1); d.setHours(0, 0, 0, 0); return d; },
+            text: d => (d.getMonth() + 1) + '/' + String(d.getFullYear()).slice(2),
+            span: 30 * 86400e3
+        }
+    ];
+
+    function chosenGrain() {
+        let saved = null;
+        try { saved = localStorage.getItem(GRAIN_KEY); } catch (e) { /* storage blocked */ }
+        return GRAINS.find(g => g.id === saved) || GRAINS[1]; // day
+    }
+
+    // every entry from every VOD, oldest first, tagged with its VOD key
+    function allEntries() {
+        const h = loadHistory();
+        const out = [];
+        Object.keys(h).forEach(k => {
+            h[k].forEach(a => {
+                const e = decodeEntry(a);
+                e.vod = k;
+                out.push(e);
+            });
+        });
+        return out.sort((a, b) => a.ts - b.ts);
+    }
+
+    // tallies shared by the trend bars and the delta table
+    function tally(entries) {
+        const t = { n: entries.length, bad: 0, clean: 0, uncertain: 0, pos: [0, 0, 0, 0], vods: {} };
+        entries.forEach(e => {
+            t.vods[e.vod] = 1;
+            if (e.code === 'b') { t.bad++; return; }
+            const s = String(e.code);
+            let anyPos = false, anyUnc = false;
+            SUBS.forEach((_, i) => {
+                if (s[i] === '2') { t.pos[i]++; anyPos = true; }
+                else if (s[i] === '1') anyUnc = true;
+            });
+            if (anyUnc) t.uncertain++;
+            if (!anyPos && !anyUnc) t.clean++;
+        });
+        t.vodCount = Object.keys(t.vods).length;
+        return t;
+    }
+
+    function trendBuckets(grain) {
+        const entries = allEntries();
+        if (!entries.length) return [];
+        const map = new Map();
+        entries.forEach(e => {
+            const d = grain.floor(e.ts);
+            const k = d.getTime();
+            if (!map.has(k)) map.set(k, { at: d, items: [] });
+            map.get(k).items.push(e);
+        });
+        return Array.from(map.values())
+            .sort((a, b) => a.at - b.at)
+            .slice(-TREND_BUCKETS)
+            .map(b => {
+                const t = tally(b.items);
+                return { at: b.at, t: t };
+            });
+    }
+
+    function renderTrends(grain) {
+        const buckets = trendBuckets(grain);
+        if (buckets.length < 2) {
+            return '<div class="histpopup-empty">Not enough history yet — keep reviewing and this fills in.</div>';
+        }
+
+        // rate() returns null for a bucket with no reviews, so an idle bucket
+        // reads as "no data" rather than as a genuine 0%
+        const rows = [
+            { name: 'AIM', cls: 'hot', rate: t => t.n && t.pos[0] / t.n },
+            { name: 'WH', cls: 'hot', rate: t => t.n && t.pos[1] / t.n },
+            { name: 'BH', cls: 'hot', rate: t => t.n && t.pos[2] / t.n },
+            { name: 'BOT', cls: 'hot', rate: t => t.n && t.pos[3] / t.n },
+            { name: 'clean', cls: 'cool', rate: t => t.n && t.clean / t.n },
+            { name: 'unsure', cls: 'dim', rate: t => t.n && t.uncertain / t.n },
+            { name: 'bad', cls: 'warn', rate: t => t.n && t.bad / t.n }
+        ];
+
+        const body = rows.map(r => {
+            const vals = buckets.map(b => (b.t.n ? r.rate(b.t) : null));
+            const last = vals[vals.length - 1];
+            const bars = buckets.map((b, i) => {
+                const v = vals[i];
+                if (v === null) {
+                    return '<span class="empty" style="height:2px" title="' +
+                        esc(grain.text(b.at) + ' · no reviews') + '"></span>';
+                }
+                return '<span class="' + r.cls + '" style="height:max(2px,' + (v * 100) + '%)" title="' +
+                    esc(grain.text(b.at) + ' · ' + Math.round(v * 100) + '% of ' + b.t.n) + '"></span>';
+            }).join('');
+            return '<span class="trend-name">' + esc(r.name) + '</span>' +
+                '<span class="trend-bars">' + bars + '</span>' +
+                '<span class="trend-val">' + (last === null ? '—' : Math.round(last * 100) + '%') + '</span>';
+        }).join('');
+
+        // absolute volume, scaled to its own max -- the rate rows say nothing
+        // about whether a spike came from 3 clips or 300
+        const maxN = Math.max.apply(null, buckets.map(b => b.t.n)) || 1;
+        const volBars = buckets.map(b =>
+            '<span class="vol" style="height:max(2px,' + (b.t.n * 100 / maxN) + '%)" title="' +
+            esc(grain.text(b.at) + ' · ' + b.t.n + ' reviews · ' + b.t.vodCount + ' VODs') + '"></span>'
+        ).join('');
+
+        return '<div class="trendgrid">' +
+            '<span class="trend-name">count</span>' +
+            '<span class="trend-bars">' + volBars + '</span>' +
+            '<span class="trend-val">' + buckets[buckets.length - 1].t.n + '</span>' +
+            body +
+            '<span></span>' +
+            '<span class="trend-axis"><span>' + esc(grain.text(buckets[0].at)) + '</span>' +
+            '<span>' + esc(grain.text(buckets[buckets.length - 1].at)) + '</span></span>' +
+            '<span></span>' +
+            '</div>';
+    }
+
+    function renderDelta() {
+        const entries = allEntries();
+        if (entries.length < DELTA_RECENT / 2) return '';
+        const all = tally(entries);
+        const recent = tally(entries.slice(-DELTA_RECENT));
+        const rows = [
+            { name: 'AIM', get: t => t.pos[0] },
+            { name: 'WH', get: t => t.pos[1] },
+            { name: 'BH', get: t => t.pos[2] },
+            { name: 'BOT', get: t => t.pos[3] },
+            { name: 'clean', get: t => t.clean },
+            { name: 'unsure', get: t => t.uncertain },
+            { name: 'bad', get: t => t.bad }
+        ];
+        const cells = rows.map(r => {
+            const a = all.n ? r.get(all) * 100 / all.n : 0;
+            const b = recent.n ? r.get(recent) * 100 / recent.n : 0;
+            const d = b - a;
+            // 1.5pp of slack, so ordinary sampling noise doesn't read as a trend
+            const cls = d > 1.5 ? 'delta-up' : (d < -1.5 ? 'delta-down' : 'delta-flat');
+            const sign = d > 0 ? '+' : '';
+            return '<span class="delta-name">' + esc(r.name) + '</span>' +
+                '<span class="delta-num">' + b.toFixed(1) + '%</span>' +
+                '<span class="delta-num">' + a.toFixed(1) + '%</span>' +
+                '<span class="' + cls + '">' + sign + d.toFixed(1) + '</span>';
+        }).join('');
+        return '<div class="deltagrid">' +
+            '<span class="delta-head"></span>' +
+            '<span class="delta-head" style="text-align:right">last ' + recent.n + '</span>' +
+            '<span class="delta-head" style="text-align:right">all ' + all.n + '</span>' +
+            '<span class="delta-head" style="text-align:right">shift</span>' +
+            cells +
+            '</div>';
+    }
+
+    function trendSection(grain) {
+        return '<div class="histsum-title">Rate per ' + esc(grain.label) +
+            '<select class="histgrain">' +
+            GRAINS.map(g => '<option value="' + g.id + '"' +
+                (g.id === grain.id ? ' selected' : '') + '>' + g.label + '</option>').join('') +
+            '</select></div>' +
+            renderTrends(grain);
+    }
+
     function buildHistoryPopup() {
         const groups = historyGroups();
         const stats = historyStats();
+        const deltaHtml = renderDelta();
         const total = groups.reduce((n, g) => n + g.items.length, 0);
 
         const overlay = document.createElement('div');
@@ -1955,6 +2234,11 @@
             '</div>' +
             '<div class="histpopup-body">' +
             renderStats(stats) +
+            '<div class="histsum histtrends">' + trendSection(chosenGrain()) + '</div>' +
+            (deltaHtml ? '<div class="histsum">' +
+                '<div class="histsum-title">Recent shift ' +
+                '<span class="histsum-note">percentage points vs. all-time</span></div>' +
+                deltaHtml + '</div>' : '') +
             (groups.length ? groups.map(g =>
                 '<div class="histgroup' + (g.current ? ' is-current' : '') + '">' +
                 '<div class="histgroup-head">' +
@@ -1988,6 +2272,14 @@
         }
         overlay.addEventListener('click', e => {
             if (e.target === overlay || e.target.classList.contains('histpopup-close')) close();
+        });
+        // redraw only the trends block, so changing grain doesn't scroll the
+        // whole popup back to the top
+        overlay.addEventListener('change', e => {
+            if (!e.target.classList.contains('histgrain')) return;
+            try { localStorage.setItem(GRAIN_KEY, e.target.value); } catch (err) { /* storage blocked */ }
+            const grain = GRAINS.find(g => g.id === e.target.value) || GRAINS[1];
+            overlay.querySelector('.histtrends').innerHTML = trendSection(grain);
         });
         document.addEventListener('keydown', onKey);
         document.body.appendChild(overlay);
