@@ -328,6 +328,13 @@
         .cliphistory-verdict.seen-clean     { color: #6bd47a !important; }
         .cliphistory-verdict.seen-uncertain { color: #b8b8b8 !important; }
         .cliphistory-verdict.seen-bad       { color: #c39bf0 !important; }
+        /* per-part colours, so one verdict can mix confirmed and uncertain */
+        .v-yes { color: #ff6b6b !important; }
+        .v-unc { color: #b8b8b8 !important; }
+        .v-no  { color: #6bd47a !important; }
+        .cliphistory-verdict .v-yes + .v-unc,
+        .cliphistory-verdict .v-yes + .v-yes,
+        .cliphistory-verdict .v-unc + .v-unc { margin-left: 5px !important; }
         .cliphistory-seg {
             flex: 1 1 auto !important;
             font-family: monospace !important;
@@ -509,8 +516,96 @@
             border-bottom: 1px solid rgba(255,255,255,0.15) !important;
         }
         .histpopup-close { cursor: pointer !important; padding: 0 6px !important; }
-        .histpopup-body { overflow-y: auto !important; padding: 10px 14px 14px 14px !important; }
+        .histpopup-body {
+            overflow-y: auto !important;
+            padding: 10px 14px 14px 14px !important;
+            scrollbar-width: thin !important;                        /* Firefox */
+            scrollbar-color: rgba(255,255,255,0.28) transparent !important;
+        }
+        .histpopup-body::-webkit-scrollbar { width: 10px !important; }
+        .histpopup-body::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.25) !important;
+            border-radius: 5px !important;
+        }
+        .histpopup-body::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.25) !important;
+            border: 2px solid transparent !important;
+            background-clip: padding-box !important;
+            border-radius: 5px !important;
+        }
+        .histpopup-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(245,166,35,0.75) !important;
+            background-clip: padding-box !important;
+        }
+        .histsentinel { height: 1px !important; }
         .histpopup-empty { color: rgba(255,255,255,0.6) !important; padding: 20px 0 !important; }
+
+        /* ---- clips sub-header + tabs ---- */
+        .histclips-head {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            margin: 4px 0 8px 0 !important;
+            padding-top: 10px !important;
+            border-top: 1px solid rgba(255,255,255,0.15) !important;
+        }
+        .histshown {
+            margin-left: auto !important;   /* pinned right, off the tabs' flow */
+            flex: 0 0 auto !important;
+            font-variant-numeric: tabular-nums !important;
+            white-space: nowrap !important;
+        }
+        .histtab {
+            flex: 0 0 auto !important;
+            font-size: 11px !important;
+            padding: 3px 9px !important;
+            border-radius: 10px !important;
+            cursor: pointer !important;
+            color: rgba(255,255,255,0.6) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+        }
+        .histtab:hover { color: #fff !important; }
+        .histtab.is-on {
+            color: #1b1f23 !important;
+            background: #f5a623 !important;
+            border-color: #f5a623 !important;
+            font-weight: bold !important;
+        }
+
+        /* ---- reviewed segments, drawn across the whole VOD ---- */
+        .histtimeline {
+            position: relative !important;
+            height: 8px !important;
+            margin: 3px 8px 6px 0 !important;
+            border-radius: 2px !important;
+            background: rgba(255,255,255,0.10) !important;
+        }
+        .histtimeline i {
+            position: absolute !important;
+            top: 0 !important; bottom: 0 !important;
+            border-radius: 2px !important;
+            min-width: 2px !important;
+        }
+        .histtimeline i.seen-guilty    { background: #b03030 !important; }
+        .histtimeline i.seen-clean     { background: #3d8b40 !important; }
+        .histtimeline i.seen-uncertain { background: #8a8a8a !important; }
+        .histtimeline i.seen-bad       { background: #7a4fb5 !important; }
+        /* estimated scale (pre-duration entries): hatched, so it doesn't read
+           as a real position within the VOD */
+        .histtimeline.is-approx {
+            background-image: repeating-linear-gradient(45deg,
+                rgba(255,255,255,0.08) 0 4px, rgba(255,255,255,0) 4px 8px) !important;
+        }
+        .histgroup-scale {
+            font-size: 10px !important;
+            color: rgba(255,255,255,0.35) !important;
+        }
+        .histmore {
+            padding: 10px !important;
+            text-align: center !important;
+            font-size: 11px !important;
+            color: rgba(255,255,255,0.4) !important;
+        }
 
         /* one block per source VOD, so repeats read as a group */
         .histgroup {
@@ -1646,7 +1741,9 @@
         }
     }
 
-    // [task, start*10, len*10, code, minutesSinceEpoch, tok] -> usable object
+    // [task, start*10, len*10, code, minutesSinceEpoch, tok, vodSeconds] -> object.
+    // vodSeconds was added later, so it is absent on older entries -- everything
+    // reading it must cope with 0.
     function decodeEntry(a) {
         const tok = unpackToken(a[5]);
         return {
@@ -1655,6 +1752,7 @@
             len: a[2] / 10,
             code: a[3],
             ts: a[4] * 60000,
+            dur: a[6] || 0,
             url: tok ? 'https://www.counter-strike.net/vacnet/view?s=' + tok : null
         };
     }
@@ -1696,7 +1794,9 @@
             Math.round(bounds.len * 10),
             codeOverride || encodeLabels(labels),
             Math.round(Date.now() / 60000),
-            packToken(currentViewToken())
+            packToken(currentViewToken()),
+            // whole-VOD length, so the history can draw segments to scale later
+            Math.round((pageVideoEl() || {}).duration || 0) || 0
         ];
         const at = task ? list.findIndex(e => e[0] === task) : -1;
         if (at >= 0) list[at] = entry; else list.push(entry);
@@ -1739,9 +1839,19 @@
             if (c === '2') guilty.push(name);
             else if (c === '1') skip.push(name);
         });
-        if (guilty.length) return { text: guilty.join(' + '), cls: 'seen-guilty' };
-        if (skip.length) return { text: 'uncertain: ' + skip.join(', '), cls: 'seen-uncertain' };
-        return { text: 'clean', cls: 'seen-clean' };
+        // Show confirmed AND uncertain together, each part coloured on its own
+        // ("WH + BOT · ?AIM"); negatives are implied by absence. `text` is the
+        // plain version for title= tooltips, `html` the coloured one for markup.
+        if (!guilty.length && !skip.length) {
+            return { text: 'clean', cls: 'seen-clean', html: '<span class="v-no">clean</span>' };
+        }
+        const parts = guilty.map(n => ({ n: n, c: 'v-yes' }))
+            .concat(skip.map(n => ({ n: '?' + n, c: 'v-unc' })));
+        return {
+            text: parts.map(p => p.n).join(' '),
+            cls: guilty.length ? 'seen-guilty' : 'seen-uncertain',
+            html: parts.map(p => '<span class="' + p.c + '">' + esc(p.n) + '</span>').join('')
+        };
     }
 
     function ago(ts) {
@@ -1775,7 +1885,7 @@
                     ? '<a href="' + esc(e.url) + '" target="_blank" rel="noreferrer">#' + esc(e.task) + '</a>'
                     : '#' + esc(e.task);
                 return '<div class="cliphistory-row">' +
-                    '<span class="cliphistory-verdict ' + s.cls + '">' + esc(s.text) + '</span>' +
+                    '<span class="cliphistory-verdict ' + s.cls + '">' + s.html + '</span>' +
                     '<span class="cliphistory-seg">' + esc(seg) + '</span>' +
                     '<span class="cliphistory-meta">' + esc(ago(e.ts)) + ' · ' + task + '</span>' +
                     '</div>';
@@ -1869,6 +1979,7 @@
                 len: en - s,
                 cls: sum.cls,
                 verdict: sum.text,
+                html: sum.html,
                 share: (en - s) / b.len, // how much of THIS clip you've already seen
                 ts: e.ts,
                 task: e.task,
@@ -1896,7 +2007,7 @@
                     ? '<a href="' + esc(o.url) + '" target="_blank" rel="noreferrer">#' + esc(o.task) + '</a>'
                     : '#' + esc(o.task);
                 return '<div class="overlapwarn-row">' +
-                    '<span class="cliphistory-verdict ' + o.cls + '">' + esc(o.verdict) + '</span>' +
+                    '<span class="cliphistory-verdict ' + o.cls + '">' + o.html + '</span>' +
                     '<span class="overlapwarn-share">' + Math.round(o.share * 100) + '% of this clip</span>' +
                     '<span class="cliphistory-meta">' + esc(ago(o.ts)) + ' · ' + task + '</span>' +
                     '</div>';
@@ -1907,8 +2018,9 @@
     // ---- full history popup ----------------------------------------------
     // Everything logged, newest first, grouped by VOD so repeat visits to the
     // same source video read as one block rather than scattered rows.
-    const HISTORY_POPUP_GROUPS = 150;
-
+    // No cap here: the list renders incrementally, so the old 150-group limit
+    // (which existed only to keep the eager DOM build cheap) just truncated
+    // data the lazy loader could never reach.
     function historyGroups() {
         const h = loadHistory();
         const cur = currentVodKey();
@@ -1922,8 +2034,7 @@
                     current: k === cur
                 };
             })
-            .sort((a, b) => b.latest - a.latest)
-            .slice(0, HISTORY_POPUP_GROUPS);
+            .sort((a, b) => b.latest - a.latest);
     }
 
     // Overview stats run over the WHOLE log, not just the groups the popup
@@ -1966,6 +2077,7 @@
 
         return {
             total: total,
+            vods: Object.keys(h).length,
             bad: bad,
             labelled: total - bad,
             subs: subs,
@@ -2215,11 +2327,74 @@
             renderTrends(grain);
     }
 
+    // ---- clip list --------------------------------------------------------
+    const LIST_FIRST = 50;  // groups rendered up front
+    const LIST_MORE = 10;   // appended each time you near the bottom
+
+    const SORTS = [
+        { id: 'recent', label: 'newest', fn: (a, b) => b.latest - a.latest },
+        { id: 'oldest', label: 'oldest', fn: (a, b) => a.latest - b.latest },
+        { id: 'most', label: 'most reviewed', fn: (a, b) => b.items.length - a.items.length || b.latest - a.latest },
+        { id: 'guilty', label: 'most guilty', fn: (a, b) => guiltyCount(b) - guiltyCount(a) || b.latest - a.latest }
+    ];
+
+    function guiltyCount(g) {
+        return g.items.filter(e => String(e.code).indexOf('2') >= 0).length;
+    }
+
+    // Segments drawn to scale across the whole VOD. Entries logged before the
+    // duration field exists fall back to the furthest point reviewed, which is
+    // a lower bound, not the real length -- flagged hatched so it isn't read as
+    // a true position.
+    function groupTimeline(g) {
+        const known = Math.max.apply(null, g.items.map(e => e.dur || 0));
+        const reach = Math.max.apply(null, g.items.map(e => e.start + e.len));
+        const span = known || reach;
+        if (!(span > 0)) return '';
+        const bars = g.items.map(e => {
+            const s = summarize(e.code);
+            return '<i class="' + s.cls + '" style="left:' + (e.start * 100 / span) +
+                '%;width:' + Math.max(0.4, e.len * 100 / span) + '%" title="' +
+                esc(s.text + ' · ' + e.start.toFixed(1) + 's → ' +
+                    (e.start + e.len).toFixed(1) + 's · ' + ago(e.ts)) + '"></i>';
+        }).join('');
+        return '<div class="histtimeline' + (known ? '' : ' is-approx') + '" title="' +
+            esc(known ? 'VOD length ' + fmt(known, known)
+                      : 'VOD length unknown — scaled to furthest point reviewed') +
+            '">' + bars + '</div>';
+    }
+
+    function groupHtml(g) {
+        return '<div class="histgroup' + (g.current ? ' is-current' : '') +
+            (g.items.length > 1 ? ' is-repeat' : '') + '">' +
+            '<div class="histgroup-head">' +
+            '<span class="histgroup-id" title="VOD ' + esc(g.key) + '">' +
+            esc(vodName(g.key)) + '</span>' +
+            '<span class="histgroup-count">' + g.items.length + '×</span>' +
+            (g.current ? '<span class="histgroup-now">watching now</span>' : '') +
+            '</div>' +
+            groupTimeline(g) +
+            g.items.map(e => {
+                const s = summarize(e.code);
+                const seg = e.start.toFixed(1) + 's → ' + (e.start + e.len).toFixed(1) + 's';
+                const task = e.url
+                    ? '<a href="' + esc(e.url) + '" target="_blank" rel="noreferrer" ' +
+                      'title="task #' + esc(e.task) + '">view</a>'
+                    : '<span class="histrow-notask" title="task #' + esc(e.task) +
+                      '">no link</span>';
+                return '<div class="histrow">' +
+                    '<span class="cliphistory-verdict ' + s.cls + '">' + s.html + '</span>' +
+                    '<span class="cliphistory-seg">' + esc(seg) + '</span>' +
+                    '<span class="cliphistory-meta">' + esc(ago(e.ts)) + ' · ' + task + '</span>' +
+                    '</div>';
+            }).join('') +
+            '</div>';
+    }
+
     function buildHistoryPopup() {
         const groups = historyGroups();
         const stats = historyStats();
         const deltaHtml = renderDelta();
-        const total = groups.reduce((n, g) => n + g.items.length, 0);
 
         const overlay = document.createElement('div');
         overlay.className = 'histpopup-overlay';
@@ -2227,9 +2402,7 @@
             '<div class="histpopup">' +
             '<div class="histpopup-head">' +
             '<span>Review history — ' + stats.total + ' review' + (stats.total === 1 ? '' : 's') +
-            (stats.total > total
-                ? ' (' + total + ' shown, newest ' + groups.length + ' VODs)'
-                : ' across ' + groups.length + ' VOD' + (groups.length === 1 ? '' : 's')) + '</span>' +
+            ' across ' + stats.vods + ' VOD' + (stats.vods === 1 ? '' : 's') + '</span>' +
             '<span class="histpopup-close">X</span>' +
             '</div>' +
             '<div class="histpopup-body">' +
@@ -2239,31 +2412,79 @@
                 '<div class="histsum-title">Recent shift ' +
                 '<span class="histsum-note">percentage points vs. all-time</span></div>' +
                 deltaHtml + '</div>' : '') +
-            (groups.length ? groups.map(g =>
-                '<div class="histgroup' + (g.current ? ' is-current' : '') + '">' +
-                '<div class="histgroup-head">' +
-                '<span class="histgroup-id">VOD ' + esc(g.key) + '</span>' +
-                '<span class="histgroup-count">' + g.items.length + '×</span>' +
-                (g.current ? '<span class="histgroup-now">watching now</span>' : '') +
-                '</div>' +
-                g.items.map(e => {
-                    const s = summarize(e.code);
-                    const seg = e.start.toFixed(1) + 's → ' + (e.start + e.len).toFixed(1) + 's';
-                    const task = e.url
-                        ? '<a href="' + esc(e.url) + '" target="_blank" rel="noreferrer">#' + esc(e.task) + '</a>'
-                        : '<span class="histrow-notask">#' + esc(e.task) + '</span>';
-                    return '<div class="histrow">' +
-                        '<span class="cliphistory-verdict ' + s.cls + '">' + esc(s.text) + '</span>' +
-                        '<span class="cliphistory-seg">' + esc(seg) + '</span>' +
-                        '<span class="cliphistory-meta">' + esc(ago(e.ts)) + ' · ' + task + '</span>' +
-                        '</div>';
-                }).join('') +
-                '</div>'
-            ).join('') : '<div class="histpopup-empty">Nothing logged yet.</div>') +
+            '<div class="histclips-head">' +
+            '<span class="histsum-title" style="margin:0">Clips</span>' +
+            '<span class="histtab is-on" data-tab="all">All</span>' +
+            '<span class="histtab" data-tab="repeat">Seen more than once</span>' +
+            '<select class="histgrain histsort">' +
+            SORTS.map(s => '<option value="' + s.id + '">' + s.label + '</option>').join('') +
+            '</select>' +
+            // last, and pushed right: the count changes on every append, so it
+            // must not sit upstream of the tabs in the flex flow
+            '<span class="histshown histsum-note"></span>' +
+            '</div>' +
+            '<div class="histlist">' +
+            (groups.length ? '' : '<div class="histpopup-empty">Nothing logged yet.</div>') +
+            '</div>' +
+            '<div class="histsentinel"></div>' +
             '</div>' +
             '</div>';
 
+        // ---- incremental list rendering ----
+        // 150 groups built eagerly is a lot of DOM for a list you mostly scroll
+        // the top of; render a screenful and extend as you approach the bottom.
+        const list = overlay.querySelector('.histlist');
+        let shown = 0;
+        let curSort = SORTS[0].id;
+        let curTab = 'all';
+        // The filter drives WHICH groups get loaded, not which loaded ones are
+        // visible -- hiding them with CSS meant "seen more than once" could only
+        // ever show the repeats that happened to be inside the loaded slice.
+        let order = groups.slice();
+
+        function appendMore(n) {
+            const slice = order.slice(shown, shown + n);
+            if (!slice.length) return;
+            list.insertAdjacentHTML('beforeend', slice.map(groupHtml).join(''));
+            shown += slice.length;
+            const count = overlay.querySelector('.histshown');
+            if (count) {
+                count.textContent = shown >= order.length
+                    ? shown + ' VODs'
+                    : shown + ' of ' + order.length + ' VODs';
+            }
+        }
+        // Loading purely on scroll stalls whenever the rendered groups don't
+        // overflow the container -- most obviously under the repeats filter,
+        // where most of what we appended is display:none and there is nothing
+        // left to scroll. Keep topping up until it actually overflows.
+        function topUp() {
+            const body = overlay.querySelector('.histpopup-body');
+            let guard = 0;
+            while (shown < order.length &&
+                   body.scrollHeight <= body.clientHeight + 400 &&
+                   guard++ < 50) {
+                appendMore(LIST_MORE);
+            }
+        }
+        function resetList(sortId, tab) {
+            curSort = sortId || curSort;
+            curTab = tab || curTab;
+            const s = SORTS.find(x => x.id === curSort) || SORTS[0];
+            order = groups
+                .filter(g => curTab !== 'repeat' || g.items.length > 1)
+                .sort(s.fn);
+            list.innerHTML = order.length
+                ? ''
+                : '<div class="histpopup-empty">No VODs seen more than once yet.</div>';
+            shown = 0;
+            appendMore(LIST_FIRST);
+            topUp();
+        }
+        appendMore(LIST_FIRST);
+
         function close() {
+            io.disconnect();
             overlay.remove();
             document.removeEventListener('keydown', onKey);
         }
@@ -2273,16 +2494,40 @@
         overlay.addEventListener('click', e => {
             if (e.target === overlay || e.target.classList.contains('histpopup-close')) close();
         });
+        // tab filtering is pure CSS on the body, so switching never rebuilds or
+        // rescrolls the list
+        overlay.addEventListener('click', e => {
+            const tab = e.target.closest && e.target.closest('.histtab');
+            if (!tab) return;
+            overlay.querySelectorAll('.histtab').forEach(t => t.classList.remove('is-on'));
+            tab.classList.add('is-on');
+            resetList(null, tab.dataset.tab);
+            overlay.querySelector('.histpopup-body').scrollTop = 0;
+        });
         // redraw only the trends block, so changing grain doesn't scroll the
         // whole popup back to the top
         overlay.addEventListener('change', e => {
+            if (e.target.classList.contains('histsort')) {
+                resetList(e.target.value);
+                return;
+            }
             if (!e.target.classList.contains('histgrain')) return;
             try { localStorage.setItem(GRAIN_KEY, e.target.value); } catch (err) { /* storage blocked */ }
             const grain = GRAINS.find(g => g.id === e.target.value) || GRAINS[1];
             overlay.querySelector('.histtrends').innerHTML = trendSection(grain);
         });
+        // Scroll events are coalesced and dropped under fast scrolling, which is
+        // why a scrollTop threshold only fired a couple of times. An observer on
+        // a sentinel below the list re-fires whenever it is still visible after
+        // an append, so it keeps extending until the list outruns the viewport.
+        const sentinel = overlay.querySelector('.histsentinel');
+        const io = new IntersectionObserver(hits => {
+            if (hits.some(h => h.isIntersecting)) appendMore(LIST_MORE);
+        }, { root: overlay.querySelector('.histpopup-body'), rootMargin: '400px' });
+        io.observe(sentinel);
         document.addEventListener('keydown', onKey);
         document.body.appendChild(overlay);
+        topUp(); // heights are only measurable once it's in the document
     }
 
     // ---- share the current clip ------------------------------------------
