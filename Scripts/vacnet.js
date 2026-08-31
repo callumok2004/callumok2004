@@ -581,6 +581,8 @@
             height: 8px !important;
             border-radius: 2px !important;
             background: rgba(255,255,255,0.10) !important;
+            /* belt and braces: no bar can escape its lane, whatever the maths */
+            overflow: hidden !important;
         }
         .histtimeline i {
             position: absolute !important;
@@ -796,6 +798,53 @@
         }
         .histgrain option, .histsort option, .histlayout option { color: #000 !important; }
         .histsort { flex: 0 0 auto !important; }
+
+        /* ---- time spent ---- */
+        .histsum-warn {
+            font-size: 10px !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            color: #f5a623 !important;
+            border: 1px solid rgba(245,166,35,0.5) !important;
+            border-radius: 3px !important;
+            padding: 1px 6px !important;
+        }
+        .histsum-caveat {
+            font-size: 11px !important;
+            line-height: 1.45 !important;
+            color: rgba(255,255,255,0.5) !important;
+            margin-bottom: 8px !important;
+        }
+        .timegrid {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+        }
+        .timecell {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1px !important;
+            padding: 7px 9px !important;
+            background: rgba(255,255,255,0.04) !important;
+            border-radius: 3px !important;
+        }
+        /* leading ~ on every figure, so a number can't be read as exact even at
+           a glance without the caveat text */
+        .timeval::before { content: '~' !important; opacity: 0.45 !important; }
+        .timeval {
+            font-size: 17px !important;
+            font-weight: bold !important;
+            font-family: monospace !important;
+            color: #fff !important;
+            font-variant-numeric: tabular-nums !important;
+        }
+        .timelabel {
+            font-size: 10px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            color: rgba(255,255,255,0.45) !important;
+        }
 
         /* ---- custom tooltip ---- */
         .vactip {
@@ -2402,6 +2451,79 @@
         };
     }
 
+    // ---- time spent -------------------------------------------------------
+    // Two different quantities, both worth showing:
+    //   footage -- sum of clip lengths. Exact, but a floor: it assumes exactly
+    //              one pass per clip when you usually loop them several times.
+    //   active  -- wall-clock time actually at the desk, summed from the gaps
+    //              between consecutive submits. Gaps longer than SESSION_GAP are
+    //              breaks, not review time, so they're excluded.
+    const SESSION_GAP = 5 * 60000; // ms; longer than this starts a new session
+
+    function fmtDur(ms) {
+        const s = Math.round(ms / 1000);
+        if (s < 60) return s + 's';
+        const m = Math.round(s / 60);
+        if (m < 60) return m + 'm';
+        const h = Math.floor(m / 60);
+        return h + 'h ' + (m % 60) + 'm';
+    }
+
+    function timeStats() {
+        const entries = allEntries(); // oldest first
+        const footage = entries.reduce((n, e) => n + e.len, 0) * 1000;
+        let active = 0, sessions = 0;
+        const gaps = [];
+        for (let i = 0; i < entries.length; i++) {
+            if (i === 0) { sessions++; continue; }
+            const gap = entries[i].ts - entries[i - 1].ts;
+            if (gap > SESSION_GAP || gap < 0) { sessions++; continue; }
+            active += gap;
+            gaps.push(gap);
+        }
+        gaps.sort((a, b) => a - b);
+        const median = gaps.length ? gaps[Math.floor(gaps.length / 2)] : 0;
+        // the last clip of each session contributes no trailing gap, so it would
+        // otherwise count as zero time -- credit it the median instead
+        active += sessions * median;
+        return {
+            n: entries.length,
+            footage: footage,
+            active: active,
+            sessions: sessions,
+            median: median
+        };
+    }
+
+    function renderTime() {
+        const t = timeStats();
+        if (!t.n) return '';
+        const cell = (label, value, tip) =>
+            '<div class="timecell" data-tip="' + esc(tip) + '">' +
+            '<span class="timeval">' + esc(value) + '</span>' +
+            '<span class="timelabel">' + esc(label) + '</span></div>';
+
+        return '<div class="histsum">' +
+            '<div class="histsum-title">Time spent ' +
+            '<span class="histsum-warn">rough estimate</span></div>' +
+            '<div class="histsum-caveat">' +
+            'Nothing here is measured — the log only stores one minute-resolution ' +
+            'timestamp per submit, so all of this is inferred from the gaps between ' +
+            'them. Anything under a minute per clip rounds to nothing, idle time with ' +
+            'the tab open looks identical to reviewing, and gaps over ' +
+            (SESSION_GAP / 60000) + 'm are assumed to be breaks. Treat it as a ' +
+            'ballpark that can be badly wrong.' +
+            '</div>' +
+            '<div class="timegrid">' +
+            cell('at the desk', fmtDur(t.active),
+                'Summed gaps between consecutive submits, excluding breaks. ' +
+                'Timestamps are minute-resolution, so this is approximate.') +
+            cell('footage', fmtDur(t.footage),
+                'Total length of every clip reviewed — a floor, since it counts ' +
+                'one pass per clip and you usually loop them.') +
+            '</div></div>';
+    }
+
     const COMBO_HEAD = 8; // combinations shown before the "more" toggle
 
     function renderStats(st) {
@@ -2772,8 +2894,13 @@
     // a lower bound, not the real length -- flagged hatched so it isn't read as
     // a true position.
     function groupTimeline(g) {
-        const known = Math.max.apply(null, g.items.map(e => e.dur || 0));
+        const stored = Math.max.apply(null, g.items.map(e => e.dur || 0));
         const reach = Math.max.apply(null, g.items.map(e => e.start + e.len));
+        // A duration shorter than the furthest point reviewed is impossible, so
+        // it's a bad read -- video.js can report a partial duration if the submit
+        // lands before metadata settles. Fall back to reach and mark it estimated
+        // rather than letting bars render past 100% and out of the card.
+        const known = stored >= reach ? stored : 0;
         const span = known || reach;
         if (!(span > 0)) return '';
         // Greedy interval packing: each segment goes in the first lane whose last
@@ -2885,6 +3012,7 @@
             '<span class="histpopup-close">X</span>' +
             '</div>' +
             '<div class="histpopup-body">' +
+            renderTime() +
             renderStats(stats) +
             '<div class="histsum histtrends">' +
             trendSection(chosenGrain(), chosenLayout()) + '</div>' +
