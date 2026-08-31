@@ -332,6 +332,7 @@
         .v-yes { color: #ff6b6b !important; }
         .v-unc { color: #b8b8b8 !important; }
         .v-no  { color: #6bd47a !important; }
+        .v-bad { color: #c39bf0 !important; }
         .cliphistory-verdict .v-yes + .v-unc,
         .cliphistory-verdict .v-yes + .v-yes,
         .cliphistory-verdict .v-unc + .v-unc { margin-left: 5px !important; }
@@ -541,42 +542,43 @@
         .histpopup-empty { color: rgba(255,255,255,0.6) !important; padding: 20px 0 !important; }
 
         /* ---- clips sub-header + tabs ---- */
+        /* the clips header is a card too, but flush with the list below it so
+           the two read as one section */
         .histclips-head {
             display: flex !important;
             align-items: center !important;
             gap: 8px !important;
-            margin: 4px 0 8px 0 !important;
-            padding-top: 10px !important;
-            border-top: 1px solid rgba(255,255,255,0.15) !important;
+            margin: 18px 0 0 0 !important;
+            padding: 9px 12px !important;
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(255,255,255,0.09) !important;
+            border-radius: 4px 4px 0 0 !important;
         }
+        .histlist {
+            padding: 10px 12px 2px 12px !important;
+            border: 1px solid rgba(255,255,255,0.09) !important;
+            border-top: none !important;
+            border-radius: 0 0 4px 4px !important;
+        }
+        .histlist:empty { display: none !important; }
         .histshown {
             margin-left: auto !important;   /* pinned right, off the tabs' flow */
             flex: 0 0 auto !important;
             font-variant-numeric: tabular-nums !important;
             white-space: nowrap !important;
         }
-        .histtab {
-            flex: 0 0 auto !important;
-            font-size: 11px !important;
-            padding: 3px 9px !important;
-            border-radius: 10px !important;
-            cursor: pointer !important;
-            color: rgba(255,255,255,0.6) !important;
-            border: 1px solid rgba(255,255,255,0.2) !important;
-        }
-        .histtab:hover { color: #fff !important; }
-        .histtab.is-on {
-            color: #1b1f23 !important;
-            background: #f5a623 !important;
-            border-color: #f5a623 !important;
-            font-weight: bold !important;
-        }
 
         /* ---- reviewed segments, drawn across the whole VOD ---- */
         .histtimeline {
+            margin: 4px 0 7px 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2px !important;
+        }
+        /* one row per packed lane; overlapping reviews land on separate rows */
+        .histlane {
             position: relative !important;
             height: 8px !important;
-            margin: 3px 8px 6px 0 !important;
             border-radius: 2px !important;
             background: rgba(255,255,255,0.10) !important;
         }
@@ -585,67 +587,113 @@
             top: 0 !important; bottom: 0 !important;
             border-radius: 2px !important;
             min-width: 2px !important;
+            /* an outline makes adjacent/abutting segments individually countable */
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.55) !important;
         }
+        /* amber edge marks a VOD where passes actually overlap */
+        .histtimeline.has-overlap .histlane {
+            box-shadow: inset 2px 0 0 rgba(245,166,35,0.55) !important;
+        }
+        /* the union of every pass, sitting above the per-pass lanes */
+        .histlane.is-combined {
+            height: 10px !important;
+            box-shadow: inset 2px 0 0 #f5a623 !important;
+        }
+        /* every per-pass lane, not just the one directly after the combined row
+           -- `+` only ever matched the first, which is why one lane looked odd */
+        .histtimeline .histlane:not(.is-combined) { opacity: 0.75 !important; }
         .histtimeline i.seen-guilty    { background: #b03030 !important; }
         .histtimeline i.seen-clean     { background: #3d8b40 !important; }
         .histtimeline i.seen-uncertain { background: #8a8a8a !important; }
         .histtimeline i.seen-bad       { background: #7a4fb5 !important; }
         /* estimated scale (pre-duration entries): hatched, so it doesn't read
            as a real position within the VOD */
-        .histtimeline.is-approx {
+        .histtimeline.is-approx .histlane {
             background-image: repeating-linear-gradient(45deg,
                 rgba(255,255,255,0.08) 0 4px, rgba(255,255,255,0) 4px 8px) !important;
         }
-        .histgroup-scale {
-            font-size: 10px !important;
-            color: rgba(255,255,255,0.35) !important;
-        }
-        .histmore {
-            padding: 10px !important;
-            text-align: center !important;
-            font-size: 11px !important;
-            color: rgba(255,255,255,0.4) !important;
-        }
 
-        /* one block per source VOD, so repeats read as a group */
+        /* one card per source VOD, matching the stats panels above */
         .histgroup {
-            margin-bottom: 12px !important;
-            padding: 6px 0 6px 10px !important;
-            border-left: 3px solid rgba(255,255,255,0.25) !important;
-            background: rgba(255,255,255,0.03) !important;
+            margin-bottom: 10px !important;
+            /* right padding matters: without it the "view" link sat on the edge */
+            padding: 7px 11px 4px 11px !important;
+            background: rgba(255,255,255,0.035) !important;
+            border: 1px solid rgba(255,255,255,0.09) !important;
+            border-left: 3px solid rgba(255,255,255,0.22) !important;
+            border-radius: 4px !important;
         }
-        .histgroup.is-current { border-left-color: #f5a623 !important; background: rgba(245,166,35,0.08) !important; }
+        .histgroup:last-child { margin-bottom: 4px !important; }
+        .histgroup.is-current {
+            border-left-color: #f5a623 !important;
+            border-color: rgba(245,166,35,0.35) !important;
+            border-left-color: #f5a623 !important;
+            background: rgba(245,166,35,0.07) !important;
+        }
+        /* the last row's rule would double up with the card border */
+        .histgroup .histrow:last-child { border-bottom: none !important; }
         .histgroup-head {
             display: flex !important;
-            align-items: baseline !important;
-            gap: 10px !important;
-            margin-bottom: 4px !important;
+            align-items: center !important;
+            gap: 8px !important;
+            margin-bottom: 2px !important;
         }
         .histgroup-id {
             font-family: monospace !important;
             font-size: 12px !important;
-            color: rgba(255,255,255,0.65) !important;
-        }
-        .histgroup-count {
-            font-size: 12px !important;
             font-weight: bold !important;
-            color: #fff !important;
+            color: rgba(255,255,255,0.8) !important;
+        }
+        /* pill, like the other counts in the popup */
+        .histgroup-count {
+            font-size: 10px !important;
+            font-weight: bold !important;
+            color: rgba(255,255,255,0.75) !important;
+            background: rgba(255,255,255,0.10) !important;
+            border-radius: 8px !important;
+            padding: 1px 7px !important;
         }
         .histgroup-now {
-            font-size: 11px !important;
-            color: #f5a623 !important;
+            font-size: 9px !important;
+            font-weight: bold !important;
+            color: #1b1f23 !important;
+            background: #f5a623 !important;
+            border-radius: 8px !important;
+            padding: 1px 7px !important;
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
         }
         /* ---- overview summaries at the top of the popup ---- */
-        .histsum { margin-bottom: 14px !important; }
+        /* each block is its own card: without the panel and the gap they ran
+           together into one undifferentiated column */
+        .histsum {
+            margin-bottom: 14px !important;
+            padding: 10px 12px !important;
+            background: rgba(255,255,255,0.035) !important;
+            border: 1px solid rgba(255,255,255,0.09) !important;
+            border-radius: 4px !important;
+        }
         .histsum-title {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
             font-size: 11px !important;
             font-weight: bold !important;
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
             color: rgba(255,255,255,0.55) !important;
-            margin-bottom: 6px !important;
+            margin-bottom: 8px !important;
+            padding-bottom: 6px !important;
+            border-bottom: 1px solid rgba(255,255,255,0.09) !important;
+        }
+        /* inline label inside a control row -- the rule would cut across the
+           row rather than under a heading (inline style can't win here: the
+           border-bottom above is !important) */
+        .histsum-title.is-plain {
+            margin: 0 !important;
+            padding: 0 !important;
+            border-bottom: none !important;
+            flex: 0 0 auto !important;
         }
         .histsum-note {
             font-size: 11px !important;
@@ -716,11 +764,27 @@
             color: rgba(255,255,255,0.5) !important;
         }
         .histcombo-label { flex: 1 1 auto !important; }
-
-        /* ---- trends over time ---- */
-        .histgrain {
+        .histcombo-rest { display: none !important; }
+        .histcombo-rest.is-open { display: block !important; }
+        .histcombo-toggle {
+            margin-top: 4px !important;
+            padding: 2px 8px !important;
             font-size: 11px !important;
-            /* .histsum-title uppercases its contents; the dropdown shouldn't be */
+            color: rgba(255,255,255,0.6) !important;
+            background: transparent !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            border-radius: 10px !important;
+            cursor: pointer !important;
+        }
+        .histcombo-toggle:hover {
+            color: #fff !important;
+            border-color: rgba(255,255,255,0.45) !important;
+        }
+
+        /* dropdowns in section headers (trend grain, clip sort) */
+        .histgrain, .histsort, .histlayout {
+            font-size: 11px !important;
+            /* .histsum-title uppercases its contents; dropdowns shouldn't be */
             text-transform: none !important;
             letter-spacing: 0 !important;
             color: #fff !important;
@@ -730,13 +794,101 @@
             cursor: pointer !important;
             margin-left: 6px !important;
         }
-        .histgrain option { color: #000 !important; }
+        .histgrain option, .histsort option, .histlayout option { color: #000 !important; }
+        .histsort { flex: 0 0 auto !important; }
 
+        /* ---- custom tooltip ---- */
+        .vactip {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            z-index: 300 !important;   /* above the history popup */
+            max-width: 320px !important;
+            padding: 5px 9px !important;
+            font-size: 12px !important;
+            font-family: sans-serif !important;
+            line-height: 1.35 !important;
+            color: #fff !important;
+            background: #101316 !important;
+            border: 1px solid rgba(245,166,35,0.55) !important;
+            border-radius: 4px !important;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.7) !important;
+            pointer-events: none !important;   /* never eat the hover it describes */
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        /* no delay in, brief fade out, so sweeping across cells feels instant */
+        .vactip.is-on { opacity: 1 !important; visibility: visible !important; }
+
+        /* ---- segmented control ---- */
+        .trend-head {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            flex-wrap: wrap !important;
+        }
+        .seg {
+            position: relative !important;
+            /* equal-width columns: the indicator is exactly 1/n, so it can only
+               line up if every button is too. With flex the bold "on" label was
+               wider than the others and everything drifted. */
+            display: inline-grid !important;
+            grid-auto-flow: column !important;
+            grid-auto-columns: 1fr !important;
+            padding: 2px !important;
+            /* card language: 4px radius and the same hairline the panels use,
+               rather than a saturated pill that fought everything around it */
+            border: 1px solid rgba(255,255,255,0.09) !important;
+            border-radius: 4px !important;
+            background: rgba(0,0,0,0.22) !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+        /* the sliding pill: one slot wide, moved by transform so it animates */
+        .seg-ind {
+            position: absolute !important;
+            top: 2px !important;
+            bottom: 2px !important;
+            left: 2px !important;
+            width: calc((100% - 4px) / var(--seg-n)) !important;
+            border-radius: 3px !important;
+            /* a raised surface rather than a colour block; the amber now lives
+               in the active label, which is enough signal at this size */
+            background: rgba(255,255,255,0.12) !important;
+            box-shadow: inset 0 0 0 1px rgba(245,166,35,0.35) !important;
+            transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            pointer-events: none !important;
+        }
+        .seg-btn {
+            position: relative !important;
+            z-index: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 3px 11px !important;
+            font-size: 11px !important;
+            /* bold at ALL times, with the inactive ones merely dimmed: switching
+               weight on selection would reflow the label inside its cell */
+            font-weight: bold !important;
+            font-family: inherit !important;
+            line-height: 1.5 !important;
+            white-space: nowrap !important;
+            color: rgba(255,255,255,0.55) !important;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 3px !important;
+            cursor: pointer !important;
+            transition: color 0.18s ease !important;
+        }
+        .seg-btn:hover { color: rgba(255,255,255,0.9) !important; }
+        .seg-btn.is-on { color: #f5a623 !important; }
+
+        /* ---- trends over time ---- */
         .trendgrid {
             display: grid !important;
-            grid-template-columns: auto 1fr auto !important;
+            grid-template-columns: var(--trend-lead) 1fr var(--trend-tail) !important;
             align-items: center !important;
-            column-gap: 8px !important;
+            column-gap: var(--trend-gap) !important;
             row-gap: 3px !important;
             font-size: 12px !important;
         }
@@ -757,12 +909,121 @@
             border-radius: 1px !important;
             background: rgba(255,255,255,0.30) !important;
         }
-        .trend-bars span.hot { background: #ff6b6b !important; }
-        .trend-bars span.cool { background: #6bd47a !important; }
-        .trend-bars span.warn { background: #f5a623 !important; }
-        .trend-bars span.dim  { background: #b8b8b8 !important; }
-        .trend-bars span.vol  { background: #7ec2ff !important; }
-        .trend-bars span.empty { background: rgba(255,255,255,0.07) !important; }
+        /* Fixed side columns so the volume strip and the tick row line up with
+           the chart cells -- with auto-sized columns they drifted per layout. */
+        .histtrends-body { --trend-lead: 46px; --trend-tail: 62px; --trend-gap: 8px; }
+
+        /* volume strip, shared by every layout */
+        .trend-vol {
+            display: flex !important;
+            align-items: flex-end !important;
+            gap: 2px !important;
+            height: 14px !important;
+            margin: 0 calc(var(--trend-tail) + var(--trend-gap)) 5px
+                    calc(var(--trend-lead) + var(--trend-gap)) !important;
+        }
+        /* tick labels: one slot per bucket, matching the row gap exactly */
+        .trend-ticks {
+            display: flex !important;
+            gap: 2px !important;
+            margin: 3px calc(var(--trend-tail) + var(--trend-gap)) 0
+                    calc(var(--trend-lead) + var(--trend-gap)) !important;
+        }
+        .trend-ticks span {
+            flex: 1 1 0 !important;
+            min-width: 2px !important;
+            position: relative !important;
+        }
+        .trend-ticks b {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            font-size: 10px !important;
+            font-weight: normal !important;
+            font-family: monospace !important;
+            white-space: nowrap !important;
+            color: rgba(255,255,255,0.45) !important;
+        }
+        /* the final tick would overflow the right edge, so hang it inward */
+        .trend-ticks span:last-child b { left: auto !important; right: 0 !important; }
+        /* faint stem tying each label to its column */
+        .trend-ticks b::before {
+            content: '' !important;
+            position: absolute !important;
+            top: -3px !important;
+            left: 0 !important;
+            width: 1px !important;
+            height: 3px !important;
+            background: rgba(255,255,255,0.25) !important;
+        }
+        .trend-ticks span:last-child b::before { left: auto !important; right: 0 !important; }
+        .trend-vol span {
+            flex: 1 1 0 !important;
+            min-width: 2px !important;
+            border-radius: 1px !important;
+            background: rgba(126,194,255,0.55) !important;
+        }
+        .trend-axis2 {
+            display: flex !important;
+            justify-content: space-between !important;
+            font-size: 10px !important;
+            color: rgba(255,255,255,0.4) !important;
+            margin-top: 3px !important;
+        }
+
+        /* --- heatmap --- */
+        .heatgrid {
+            display: grid !important;
+            grid-template-columns: var(--trend-lead) 1fr var(--trend-tail) !important;
+            align-items: center !important;
+            column-gap: var(--trend-gap) !important;
+            row-gap: 3px !important;
+            font-size: 12px !important;
+        }
+        .heatrow { display: flex !important; gap: 2px !important; height: 14px !important; }
+        .heatrow i {
+            flex: 1 1 0 !important;
+            min-width: 2px !important;
+            border-radius: 2px !important;
+            display: block !important;
+        }
+
+        /* --- line chart --- */
+        .linewrap {
+            position: relative !important;
+            margin: 2px calc(var(--trend-tail) + var(--trend-gap)) 4px
+                    calc(var(--trend-lead) + var(--trend-gap)) !important;
+        }
+        .linechart {
+            display: block !important;
+            width: 100% !important;
+            height: 90px !important;
+            overflow: visible !important;
+        }
+        .line-max {
+            position: absolute !important;
+            top: -2px !important;
+            left: 0 !important;
+            font-size: 10px !important;
+            font-family: monospace !important;
+            color: rgba(255,255,255,0.4) !important;
+            pointer-events: none !important;
+        }
+        .trend-legend {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 4px 12px !important;
+            font-size: 11px !important;
+            color: rgba(255,255,255,0.7) !important;
+        }
+        .trend-legend span { display: flex !important; align-items: center !important; gap: 4px !important; }
+        .trend-legend i {
+            width: 9px !important;
+            height: 3px !important;
+            border-radius: 2px !important;
+            display: block !important;
+        }
+
         .trend-val {
             font-family: monospace !important;
             font-size: 11px !important;
@@ -770,14 +1031,6 @@
             text-align: right !important;
             white-space: nowrap !important;
             color: rgba(255,255,255,0.75) !important;
-        }
-        .trend-axis {
-            grid-column: 2 !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            font-size: 10px !important;
-            color: rgba(255,255,255,0.4) !important;
-            margin-top: 2px !important;
         }
 
         .deltagrid {
@@ -804,7 +1057,12 @@
             font-size: 13px !important;
             border-bottom: 1px solid rgba(255,255,255,0.06) !important;
         }
-        .histrow a { color: #7ec2ff !important; }
+        .histrow a {
+            color: #7ec2ff !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid rgba(126,194,255,0.35) !important;
+        }
+        .histrow a:hover { color: #fff !important; border-bottom-color: #fff !important; }
         .histrow-notask { color: rgba(255,255,255,0.4) !important; }
 
         /* ---- one-click verdict presets ---- */
@@ -1115,7 +1373,7 @@
             (opts.marks ? '<div class="clipbar-marks"></div>' : '') +
             (opts.showRegion ? '<div class="clipbar-region"></div>' : '') +
             (opts.overlaps ? '<div class="clipbar-overlaps"></div>' : '') +
-            (opts.showEvent ? '<div class="clipbar-event" title="Detection event"></div>' : '') +
+            (opts.showEvent ? '<div class="clipbar-event" data-tip="Detection event"></div>' : '') +
             '<div class="clipbar-fill"></div>' +
             '<div class="clipbar-handle"></div>' +
             '</div>' +
@@ -1180,7 +1438,7 @@
                 if (marksBox.dataset.sig !== sig) {
                     marksBox.dataset.sig = sig;
                     marksBox.innerHTML = list.map(m =>
-                        '<div class="clipbar-mark ' + m.cls + '" title="' + esc(m.title) + '" ' +
+                        '<div class="clipbar-mark ' + m.cls + '" data-tip="' + esc(m.title) + '" ' +
                         'style="left:' + ((m.start - start) / len) * 100 + '%;' +
                         'width:max(2px,' + (m.len / len) * 100 + '%)"></div>'
                     ).join('');
@@ -1194,7 +1452,7 @@
                     lapsBox.dataset.sig = sig;
                     lapsBox.innerHTML = laps.map(o =>
                         '<div class="clipbar-overlap ' + o.cls + '" ' +
-                        'title="' + esc('already reviewed: ' + o.verdict + ' · ' + ago(o.ts)) + '" ' +
+                        'data-tip="' + esc('already reviewed: ' + o.verdict + ' · ' + ago(o.ts)) + '" ' +
                         'style="left:' + ((o.start - start) / len) * 100 + '%;' +
                         'width:max(2px,' + (o.len / len) * 100 + '%)"></div>'
                     ).join('');
@@ -1652,14 +1910,21 @@
     // repeat shows what you decided before and which parts you've already seen.
     // Storage is deliberately terse -- localStorage is ~5MB for the whole origin
     // and this grows forever. Layout:
-    //   { v:2, c:{ <16 hex of vod hash>: [ [task, start*10, len*10, code, minutes, tok] ] } }
+    //   { v:2, c:{ <16 hex of vod hash>: [ [task, start*10, len*10, code, minutes, tok, dur] ] } }
     // where `code` is one char per subproblem (0 = not, 1 = uncertain, 2 = yes)
-    // or "b" for a bad-clip report, and `tok` is the /vacnet/view?s= token
-    // base64-packed (48 hex chars -> 32). The token can't be derived from the
-    // task id, so it has to be kept verbatim if the history is to link anywhere.
+    // or "b" for a bad-clip report, `tok` is the /vacnet/view?s= token
+    // base64-packed (48 hex chars -> 32), and `dur` is the whole VOD's length in
+    // seconds. The token can't be derived from the task id, so it has to be kept
+    // verbatim if the history is to link anywhere.
+    // `dur` was appended after v2 shipped: absent on older entries, which read
+    // as undefined rather than breaking, so no version bump was needed. Anything
+    // consuming it must treat 0 as "unknown" (see groupTimeline).
     const HISTORY_KEY = 'vacnetClipHistory';
     const HISTORY_VER = 2;
-    // ~60 bytes per entry all-in, so 20k VODs is ~1.2MB of a ~5MB budget.
+    // ~65 bytes per entry all-in, so 20k VODs is ~1.3MB of a ~5MB budget -- and
+    // that assumes one entry each; the per-VOD cap allows 50. A pathological log
+    // (20k VODs x 50) would blow the quota, but saveHistory() sheds the oldest
+    // quarter and retries, so it degrades instead of silently failing.
     // At a few hundred clips a session this is years of headroom.
     const HISTORY_MAX_VODS = 20000;
     const HISTORY_MAX_PER_VOD = 50;
@@ -1831,7 +2096,15 @@
     }
 
     function summarize(code) {
-        if (code === 'b') return { text: 'bad clip', cls: 'seen-bad' };
+        // every branch must carry `html` -- the markup sites use it directly, so
+        // a missing one renders the string "undefined"
+        if (code === 'b') {
+            return {
+                text: 'bad clip',
+                cls: 'seen-bad',
+                html: '<span class="v-bad">bad clip</span>'
+            };
+        }
         const guilty = [];
         const skip = [];
         String(code).split('').forEach((c, i) => {
@@ -1860,6 +2133,48 @@
         if (s < 5400) return Math.round(s / 60) + 'm ago';
         if (s < 172800) return Math.round(s / 3600) + 'h ago';
         return Math.round(s / 86400) + 'd ago';
+    }
+
+    // ---- custom tooltips --------------------------------------------------
+    // Native title= waits ~1s, can't be styled, and renders in the OS theme.
+    // One delegated listener + one floating node covers every [data-tip] in the
+    // script, including markup that doesn't exist yet.
+    let tipEl = null;
+    function ensureTooltips() {
+        if (document.documentElement.dataset.vacnetTips || !document.body) return;
+        document.documentElement.dataset.vacnetTips = '1';
+
+        tipEl = document.createElement('div');
+        tipEl.className = 'vactip';
+        document.body.appendChild(tipEl);
+
+        function place(e) {
+            const pad = 12;
+            const r = tipEl.getBoundingClientRect();
+            // flip toward whichever side has room, so it never leaves the viewport
+            let x = e.clientX + pad;
+            let y = e.clientY + pad;
+            if (x + r.width > window.innerWidth - 4) x = e.clientX - r.width - pad;
+            if (y + r.height > window.innerHeight - 4) y = e.clientY - r.height - pad;
+            tipEl.style.transform = 'translate(' + Math.max(4, x) + 'px,' + Math.max(4, y) + 'px)';
+        }
+
+        document.addEventListener('mouseover', e => {
+            const t = e.target.closest && e.target.closest('[data-tip]');
+            if (!t) return;
+            tipEl.textContent = t.getAttribute('data-tip');
+            tipEl.classList.add('is-on');
+            place(e);
+        }, true);
+        document.addEventListener('mousemove', e => {
+            if (tipEl.classList.contains('is-on')) place(e);
+        }, true);
+        document.addEventListener('mouseout', e => {
+            const t = e.target.closest && e.target.closest('[data-tip]');
+            if (t) tipEl.classList.remove('is-on');
+        }, true);
+        // scrolling moves the anchor out from under the cursor
+        document.addEventListener('scroll', () => tipEl.classList.remove('is-on'), true);
     }
 
     function esc(s) {
@@ -1949,7 +2264,7 @@
         el.innerHTML =
             '<span class="vodname-label">Now watching</span>' +
             '<span class="vodname-name">' + esc(name) + '</span>' +
-            '<span class="vodname-id" title="VOD ' + esc(key) + '">' + esc(key.slice(0, 8)) + '</span>' +
+            '<span class="vodname-id" data-tip="VOD ' + esc(key) + '">' + esc(key.slice(0, 8)) + '</span>' +
             (seen ? '<span class="vodname-seen">seen ' + seen + '×</span>' : '');
     }
 
@@ -2087,6 +2402,8 @@
         };
     }
 
+    const COMBO_HEAD = 8; // combinations shown before the "more" toggle
+
     function renderStats(st) {
         if (!st.total) return '';
         const pct = n => st.total ? Math.round(n * 1000 / st.total) / 10 : 0;
@@ -2106,13 +2423,22 @@
                 '</span>';
         }).join('');
 
-        const comboRows = st.combos.map(c =>
+        // Up to 81 combinations exist; showing them all buries the clip list, so
+        // only the meaningful head is open by default.
+        const row = c =>
             '<div class="histcombo">' +
             '<span class="histcombo-count">' + c.n + '</span>' +
             '<span class="histcombo-pct">' + pct(c.n) + '%</span>' +
             '<span class="histcombo-label">' + esc(describeCode(c.code)) + '</span>' +
-            '</div>'
-        ).join('');
+            '</div>';
+        const head = st.combos.slice(0, COMBO_HEAD);
+        const tail = st.combos.slice(COMBO_HEAD);
+        const comboRows = head.map(row).join('') +
+            (tail.length
+                ? '<div class="histcombo-rest">' + tail.map(row).join('') + '</div>' +
+                  '<button type="button" class="histcombo-toggle">+ ' + tail.length +
+                  ' more combination' + (tail.length === 1 ? '' : 's') + '</button>'
+                : '');
 
         return '<div class="histsum">' +
             '<div class="histsum-title">Per label ' +
@@ -2228,59 +2554,140 @@
             });
     }
 
-    function renderTrends(grain) {
+    // One colour per series, shared by all three layouts so a label reads the
+    // same whichever you pick.
+    const TREND_ROWS = [
+        { name: 'AIM', color: '#ff6b6b', rate: t => t.pos[0] / t.n },
+        { name: 'WH', color: '#f5a623', rate: t => t.pos[1] / t.n },
+        { name: 'BH', color: '#7ec2ff', rate: t => t.pos[2] / t.n },
+        { name: 'BOT', color: '#c39bf0', rate: t => t.pos[3] / t.n },
+        { name: 'clean', color: '#6bd47a', rate: t => t.clean / t.n },
+        { name: 'unsure', color: '#b8b8b8', rate: t => t.uncertain / t.n },
+        { name: 'bad', color: '#7a4fb5', rate: t => t.bad / t.n }
+    ];
+
+    const LAYOUT_KEY = 'vacnetTrendLayout';
+    const LAYOUTS = [
+        { id: 'heat', label: 'heatmap' },
+        { id: 'lines', label: 'lines' },
+        { id: 'spark', label: 'sparklines' }
+    ];
+
+    function chosenLayout() {
+        let saved = null;
+        try { saved = localStorage.getItem(LAYOUT_KEY); } catch (e) { /* storage blocked */ }
+        return LAYOUTS.find(l => l.id === saved) || LAYOUTS[0];
+    }
+
+    // null for an idle bucket, so "no reviews" never renders as a genuine 0%
+    function seriesFor(r, buckets) {
+        return buckets.map(b => (b.t.n ? r.rate(b.t) : null));
+    }
+
+    function trendVolume(buckets, grain) {
+        const maxN = Math.max.apply(null, buckets.map(b => b.t.n)) || 1;
+        return '<div class="trend-vol">' + buckets.map(b =>
+            '<span style="height:max(2px,' + (b.t.n * 100 / maxN) + '%)" data-tip="' +
+            esc(grain.text(b.at) + ' · ' + b.t.n + ' reviews · ' + b.t.vodCount + ' VODs') +
+            '"></span>').join('') + '</div>';
+    }
+
+    // One cell per bucket with the same flex/gap as the chart rows, so a label
+    // sits exactly under the column it describes. Only every Nth is filled in,
+    // and the last bucket always gets one -- that's the one you look for first.
+    function trendAxis(buckets, grain) {
+        const n = buckets.length;
+        const step = Math.max(1, Math.ceil(n / 6));
+        return '<div class="trend-ticks">' + buckets.map((b, i) => {
+            const show = i === n - 1 || (i % step === 0 && i <= n - 1 - step / 2);
+            return '<span>' + (show ? '<b>' + esc(grain.text(b.at)) + '</b>' : '') + '</span>';
+        }).join('') + '</div>';
+    }
+
+    // --- layout 1: heatmap. Each row scaled to its OWN max, so a 4% label still
+    // shows where its hot streaks are instead of being a flat 2px line.
+    function trendHeat(buckets, grain) {
+        return '<div class="heatgrid">' + TREND_ROWS.map(r => {
+            const vals = seriesFor(r, buckets);
+            const max = Math.max.apply(null, vals.map(v => v || 0)) || 1;
+            const last = vals[vals.length - 1];
+            return '<span class="trend-name">' + esc(r.name) + '</span>' +
+                '<span class="heatrow">' + vals.map((v, i) =>
+                    '<i style="background:' + (v === null ? 'rgba(255,255,255,0.05)' : r.color) +
+                    ';opacity:' + (v === null ? 1 : (0.12 + 0.88 * (v / max))) + '" data-tip="' +
+                    esc(grain.text(buckets[i].at) + ' · ' +
+                        (v === null ? 'no reviews' : Math.round(v * 100) + '% of ' + buckets[i].t.n)) +
+                    '"></i>').join('') + '</span>' +
+                '<span class="trend-val">' + (last === null ? '—' : Math.round(last * 100) + '%') + '</span>';
+        }).join('') + '</div>';
+    }
+
+    // --- layout 2: overlaid lines on one shared axis, for comparing labels
+    // against each other. Idle buckets are skipped rather than plotted as 0.
+    function trendLines(buckets, grain) {
+        const W = 300, H = 90;
+        let max = 0;
+        TREND_ROWS.forEach(r => seriesFor(r, buckets).forEach(v => { if (v > max) max = v; }));
+        max = Math.max(max, 0.05);
+        const x = i => (buckets.length === 1 ? 0 : (i * W) / (buckets.length - 1));
+        const y = v => H - (v / max) * (H - 4) - 2;
+
+        const paths = TREND_ROWS.map(r => {
+            const pts = seriesFor(r, buckets)
+                .map((v, i) => (v === null ? null : x(i).toFixed(1) + ',' + y(v).toFixed(1)))
+                .filter(Boolean);
+            if (pts.length < 2) return '';
+            return '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + r.color +
+                '" stroke-width="1.5" vector-effect="non-scaling-stroke" ' +
+                'stroke-linejoin="round" stroke-linecap="round"></polyline>';
+        }).join('');
+
+        const grid = [0.25, 0.5, 0.75].map(f =>
+            '<line x1="0" x2="' + W + '" y1="' + y(max * f) + '" y2="' + y(max * f) +
+            '" stroke="rgba(255,255,255,0.08)" stroke-width="1" vector-effect="non-scaling-stroke"></line>'
+        ).join('');
+
+        return '<div class="linewrap">' +
+            '<span class="line-max">' + Math.round(max * 100) + '%</span>' +
+            '<svg class="linechart" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
+            grid + paths + '</svg>' +
+            '</div>' +
+            '<div class="trend-legend">' + TREND_ROWS.map(r =>
+                '<span><i style="background:' + r.color + '"></i>' + esc(r.name) + '</span>').join('') +
+            '</div>';
+    }
+
+    // --- layout 3: sparkline bars, each row scaled to its own min/max so the
+    // SHAPE is visible; the range text carries the absolute values the scaling
+    // throws away.
+    function trendSpark(buckets, grain) {
+        return '<div class="trendgrid">' + TREND_ROWS.map(r => {
+            const vals = seriesFor(r, buckets);
+            const real = vals.filter(v => v !== null);
+            const lo = Math.min.apply(null, real), hi = Math.max.apply(null, real);
+            const range = hi - lo || 1;
+            return '<span class="trend-name">' + esc(r.name) + '</span>' +
+                '<span class="trend-bars">' + vals.map((v, i) =>
+                    '<span style="background:' + (v === null ? 'rgba(255,255,255,0.07)' : r.color) +
+                    ';height:max(2px,' + (v === null ? 0 : ((v - lo) / range) * 100) + '%)" data-tip="' +
+                    esc(grain.text(buckets[i].at) + ' · ' +
+                        (v === null ? 'no reviews' : Math.round(v * 100) + '% of ' + buckets[i].t.n)) +
+                    '"></span>').join('') + '</span>' +
+                '<span class="trend-val">' + Math.round(lo * 100) + '–' + Math.round(hi * 100) + '%</span>';
+        }).join('') + '</div>';
+    }
+
+    function renderTrends(grain, layout) {
         const buckets = trendBuckets(grain);
         if (buckets.length < 2) {
             return '<div class="histpopup-empty">Not enough history yet — keep reviewing and this fills in.</div>';
         }
-
-        // rate() returns null for a bucket with no reviews, so an idle bucket
-        // reads as "no data" rather than as a genuine 0%
-        const rows = [
-            { name: 'AIM', cls: 'hot', rate: t => t.n && t.pos[0] / t.n },
-            { name: 'WH', cls: 'hot', rate: t => t.n && t.pos[1] / t.n },
-            { name: 'BH', cls: 'hot', rate: t => t.n && t.pos[2] / t.n },
-            { name: 'BOT', cls: 'hot', rate: t => t.n && t.pos[3] / t.n },
-            { name: 'clean', cls: 'cool', rate: t => t.n && t.clean / t.n },
-            { name: 'unsure', cls: 'dim', rate: t => t.n && t.uncertain / t.n },
-            { name: 'bad', cls: 'warn', rate: t => t.n && t.bad / t.n }
-        ];
-
-        const body = rows.map(r => {
-            const vals = buckets.map(b => (b.t.n ? r.rate(b.t) : null));
-            const last = vals[vals.length - 1];
-            const bars = buckets.map((b, i) => {
-                const v = vals[i];
-                if (v === null) {
-                    return '<span class="empty" style="height:2px" title="' +
-                        esc(grain.text(b.at) + ' · no reviews') + '"></span>';
-                }
-                return '<span class="' + r.cls + '" style="height:max(2px,' + (v * 100) + '%)" title="' +
-                    esc(grain.text(b.at) + ' · ' + Math.round(v * 100) + '% of ' + b.t.n) + '"></span>';
-            }).join('');
-            return '<span class="trend-name">' + esc(r.name) + '</span>' +
-                '<span class="trend-bars">' + bars + '</span>' +
-                '<span class="trend-val">' + (last === null ? '—' : Math.round(last * 100) + '%') + '</span>';
-        }).join('');
-
-        // absolute volume, scaled to its own max -- the rate rows say nothing
-        // about whether a spike came from 3 clips or 300
-        const maxN = Math.max.apply(null, buckets.map(b => b.t.n)) || 1;
-        const volBars = buckets.map(b =>
-            '<span class="vol" style="height:max(2px,' + (b.t.n * 100 / maxN) + '%)" title="' +
-            esc(grain.text(b.at) + ' · ' + b.t.n + ' reviews · ' + b.t.vodCount + ' VODs') + '"></span>'
-        ).join('');
-
-        return '<div class="trendgrid">' +
-            '<span class="trend-name">count</span>' +
-            '<span class="trend-bars">' + volBars + '</span>' +
-            '<span class="trend-val">' + buckets[buckets.length - 1].t.n + '</span>' +
-            body +
-            '<span></span>' +
-            '<span class="trend-axis"><span>' + esc(grain.text(buckets[0].at)) + '</span>' +
-            '<span>' + esc(grain.text(buckets[buckets.length - 1].at)) + '</span></span>' +
-            '<span></span>' +
-            '</div>';
+        const body = layout.id === 'lines' ? trendLines(buckets, grain)
+            : layout.id === 'spark' ? trendSpark(buckets, grain)
+            : trendHeat(buckets, grain);
+        // volume sits above every layout: the rate rows say nothing about whether
+        // a spike came from 3 clips or 300
+        return trendVolume(buckets, grain) + body + trendAxis(buckets, grain);
     }
 
     function renderDelta() {
@@ -2318,18 +2725,36 @@
             '</div>';
     }
 
-    function trendSection(grain) {
-        return '<div class="histsum-title">Rate per ' + esc(grain.label) +
-            '<select class="histgrain">' +
-            GRAINS.map(g => '<option value="' + g.id + '"' +
-                (g.id === grain.id ? ' selected' : '') + '>' + g.label + '</option>').join('') +
-            '</select></div>' +
-            renderTrends(grain);
+    // Segmented control. The indicator is a single element slid with a transform
+    // so the switch animates; that only works if the control survives a redraw,
+    // hence only the chart body below it is ever re-rendered.
+    function segControl(name, items, currentId) {
+        const i = Math.max(0, items.findIndex(x => x.id === currentId));
+        return '<span class="seg" data-seg="' + name + '" style="--seg-n:' + items.length + '">' +
+            '<span class="seg-ind" style="transform:translateX(' + (i * 100) + '%)"></span>' +
+            items.map(x => '<button type="button" class="seg-btn' +
+                (x.id === currentId ? ' is-on' : '') + '" data-val="' + x.id + '">' +
+                esc(x.label) + '</button>').join('') +
+            '</span>';
+    }
+
+    function trendSection(grain, layout) {
+        return '<div class="histsum-title trend-head">' +
+            '<span>Rate per</span>' +
+            segControl('grain', GRAINS, grain.id) +
+            segControl('layout', LAYOUTS, layout.id) +
+            '</div>' +
+            '<div class="histtrends-body">' + renderTrends(grain, layout) + '</div>';
     }
 
     // ---- clip list --------------------------------------------------------
     const LIST_FIRST = 50;  // groups rendered up front
     const LIST_MORE = 10;   // appended each time you near the bottom
+
+    const TABS = [
+        { id: 'all', label: 'All' },
+        { id: 'repeat', label: 'Repeats' }
+    ];
 
     const SORTS = [
         { id: 'recent', label: 'newest', fn: (a, b) => b.latest - a.latest },
@@ -2351,24 +2776,78 @@
         const reach = Math.max.apply(null, g.items.map(e => e.start + e.len));
         const span = known || reach;
         if (!(span > 0)) return '';
-        const bars = g.items.map(e => {
-            const s = summarize(e.code);
-            return '<i class="' + s.cls + '" style="left:' + (e.start * 100 / span) +
-                '%;width:' + Math.max(0.4, e.len * 100 / span) + '%" title="' +
-                esc(s.text + ' · ' + e.start.toFixed(1) + 's → ' +
-                    (e.start + e.len).toFixed(1) + 's · ' + ago(e.ts)) + '"></i>';
-        }).join('');
-        return '<div class="histtimeline' + (known ? '' : ' is-approx') + '" title="' +
-            esc(known ? 'VOD length ' + fmt(known, known)
-                      : 'VOD length unknown — scaled to furthest point reviewed') +
-            '">' + bars + '</div>';
+        // Greedy interval packing: each segment goes in the first lane whose last
+        // segment already ended. Non-overlapping reviews collapse onto one line;
+        // anything that genuinely overlaps is pushed to its own lane, where it is
+        // visible instead of being painted over by whatever drew last.
+        const lanes = [];
+        g.items.slice().sort((a, b) => a.start - b.start).forEach(e => {
+            const end = e.start + e.len;
+            let lane = lanes.find(l => l.end <= e.start);
+            if (!lane) { lane = { end: 0, items: [] }; lanes.push(lane); }
+            lane.items.push(e);
+            lane.end = end;
+        });
+
+        // Combined lane: total coverage of the VOD, regardless of how many
+        // passes produced it. Built by sweeping every segment boundary and
+        // colouring each elementary span by the strongest verdict covering it,
+        // so a clean pass overlapped by a guilty one reads as guilty there.
+        const RANK = { 'seen-guilty': 3, 'seen-bad': 2, 'seen-uncertain': 1, 'seen-clean': 0 };
+        function combinedLane() {
+            const cuts = [];
+            g.items.forEach(e => { cuts.push(e.start, e.start + e.len); });
+            const pts = Array.from(new Set(cuts)).sort((a, b) => a - b);
+            const spans = [];
+            for (let i = 0; i < pts.length - 1; i++) {
+                const a = pts[i], b = pts[i + 1];
+                if (b - a <= 0) continue;
+                const mid = (a + b) / 2;
+                let best = null;
+                g.items.forEach(e => {
+                    if (mid < e.start || mid > e.start + e.len) return;
+                    const cls = summarize(e.code).cls;
+                    if (!best || RANK[cls] > RANK[best]) best = cls;
+                });
+                if (!best) continue; // gap between passes
+                const prev = spans[spans.length - 1];
+                // merge with the previous span when it's the same verdict and
+                // touches it, so one pass doesn't render as many abutting slivers
+                if (prev && prev.cls === best && Math.abs(prev.end - a) < 1e-6) prev.end = b;
+                else spans.push({ start: a, end: b, cls: best });
+            }
+            const covered = spans.reduce((n, s) => n + (s.end - s.start), 0);
+            return '<div class="histlane is-combined" data-tip="' +
+                esc(Math.round(covered * 100 / span) + '% of the VOD reviewed across ' +
+                    g.items.length + ' passes') + '">' +
+                spans.map(s => '<i class="' + s.cls + '" style="left:' + (s.start * 100 / span) +
+                    '%;width:' + Math.max(0.4, (s.end - s.start) * 100 / span) + '%"></i>').join('') +
+                '</div>';
+        }
+
+        const rows = (lanes.length > 1 ? combinedLane() : '') + lanes.map(l =>
+            '<div class="histlane">' + l.items.map(e => {
+                const s = summarize(e.code);
+                return '<i class="' + s.cls + '" style="left:' + (e.start * 100 / span) +
+                    '%;width:' + Math.max(0.4, e.len * 100 / span) + '%" data-tip="' +
+                    esc(s.text + ' · ' + e.start.toFixed(1) + 's → ' +
+                        (e.start + e.len).toFixed(1) + 's · ' + ago(e.ts)) + '"></i>';
+            }).join('') + '</div>'
+        ).join('');
+
+        return '<div class="histtimeline' + (known ? '' : ' is-approx') +
+            (lanes.length > 1 ? ' has-overlap' : '') + '" data-tip="' +
+            esc((known ? 'VOD length ' + fmt(known, known)
+                       : 'VOD length unknown — scaled to furthest point reviewed') +
+                (lanes.length > 1 ? ' · ' + lanes.length + ' overlapping passes' : '')) +
+            '">' + rows + '</div>';
     }
 
     function groupHtml(g) {
         return '<div class="histgroup' + (g.current ? ' is-current' : '') +
             (g.items.length > 1 ? ' is-repeat' : '') + '">' +
             '<div class="histgroup-head">' +
-            '<span class="histgroup-id" title="VOD ' + esc(g.key) + '">' +
+            '<span class="histgroup-id" data-tip="VOD ' + esc(g.key) + '">' +
             esc(vodName(g.key)) + '</span>' +
             '<span class="histgroup-count">' + g.items.length + '×</span>' +
             (g.current ? '<span class="histgroup-now">watching now</span>' : '') +
@@ -2379,8 +2858,8 @@
                 const seg = e.start.toFixed(1) + 's → ' + (e.start + e.len).toFixed(1) + 's';
                 const task = e.url
                     ? '<a href="' + esc(e.url) + '" target="_blank" rel="noreferrer" ' +
-                      'title="task #' + esc(e.task) + '">view</a>'
-                    : '<span class="histrow-notask" title="task #' + esc(e.task) +
+                      'data-tip="task #' + esc(e.task) + '">view</a>'
+                    : '<span class="histrow-notask" data-tip="task #' + esc(e.task) +
                       '">no link</span>';
                 return '<div class="histrow">' +
                     '<span class="cliphistory-verdict ' + s.cls + '">' + s.html + '</span>' +
@@ -2407,18 +2886,16 @@
             '</div>' +
             '<div class="histpopup-body">' +
             renderStats(stats) +
-            '<div class="histsum histtrends">' + trendSection(chosenGrain()) + '</div>' +
+            '<div class="histsum histtrends">' +
+            trendSection(chosenGrain(), chosenLayout()) + '</div>' +
             (deltaHtml ? '<div class="histsum">' +
                 '<div class="histsum-title">Recent shift ' +
                 '<span class="histsum-note">percentage points vs. all-time</span></div>' +
                 deltaHtml + '</div>' : '') +
             '<div class="histclips-head">' +
-            '<span class="histsum-title" style="margin:0">Clips</span>' +
-            '<span class="histtab is-on" data-tab="all">All</span>' +
-            '<span class="histtab" data-tab="repeat">Seen more than once</span>' +
-            '<select class="histgrain histsort">' +
-            SORTS.map(s => '<option value="' + s.id + '">' + s.label + '</option>').join('') +
-            '</select>' +
+            '<span class="histsum-title is-plain">Clips</span>' +
+            segControl('tab', TABS, 'all') +
+            segControl('sort', SORTS, SORTS[0].id) +
             // last, and pushed right: the count changes on every append, so it
             // must not sit upstream of the tabs in the flex flow
             '<span class="histshown histsum-note"></span>' +
@@ -2431,8 +2908,9 @@
             '</div>';
 
         // ---- incremental list rendering ----
-        // 150 groups built eagerly is a lot of DOM for a list you mostly scroll
-        // the top of; render a screenful and extend as you approach the bottom.
+        // The log is uncapped, so building every group eagerly is a lot of DOM
+        // for a list you mostly scroll the top of; render a screenful and extend
+        // as you approach the bottom.
         const list = overlay.querySelector('.histlist');
         let shown = 0;
         let curSort = SORTS[0].id;
@@ -2467,6 +2945,23 @@
                 appendMore(LIST_MORE);
             }
         }
+        // Scrolling to a remembered offset only works if that offset EXISTS, and
+        // after a reset the list is 50 groups deep. Grow it until the target is
+        // reachable, then scroll -- clamping first just squashed the offset to
+        // whatever short height the fresh list happened to have.
+        function restoreScroll(target) {
+            const body = overlay.querySelector('.histpopup-body');
+            if (target <= 0) { body.scrollTop = 0; return; }
+            let guard = 0;
+            while (shown < order.length &&
+                   body.scrollHeight < target + body.clientHeight &&
+                   guard++ < 500) {
+                appendMore(LIST_MORE);
+            }
+            body.scrollTop = Math.min(target, body.scrollHeight - body.clientHeight);
+            topUp(); // keep a screenful of runway below wherever we landed
+        }
+
         function resetList(sortId, tab) {
             curSort = sortId || curSort;
             curTab = tab || curTab;
@@ -2497,24 +2992,43 @@
         // tab filtering is pure CSS on the body, so switching never rebuilds or
         // rescrolls the list
         overlay.addEventListener('click', e => {
-            const tab = e.target.closest && e.target.closest('.histtab');
-            if (!tab) return;
-            overlay.querySelectorAll('.histtab').forEach(t => t.classList.remove('is-on'));
-            tab.classList.add('is-on');
-            resetList(null, tab.dataset.tab);
-            overlay.querySelector('.histpopup-body').scrollTop = 0;
+            const t = e.target.closest && e.target.closest('.histcombo-toggle');
+            if (!t) return;
+            const rest = t.previousElementSibling;
+            const open = rest.classList.toggle('is-open');
+            t.textContent = open
+                ? '− fewer'
+                : '+ ' + rest.children.length + ' more combination' +
+                  (rest.children.length === 1 ? '' : 's');
         });
-        // redraw only the trends block, so changing grain doesn't scroll the
-        // whole popup back to the top
-        overlay.addEventListener('change', e => {
-            if (e.target.classList.contains('histsort')) {
-                resetList(e.target.value);
-                return;
+        // Every segmented control goes through here: slide the indicator, then
+        // redraw only the part that changed. Redrawing the control itself would
+        // replace the element mid-transition and kill the animation.
+        overlay.addEventListener('click', e => {
+            const btn = e.target.closest && e.target.closest('.seg-btn');
+            if (!btn) return;
+            const seg = btn.parentNode;
+            const buttons = Array.from(seg.querySelectorAll('.seg-btn'));
+            const i = buttons.indexOf(btn);
+            buttons.forEach(b => b.classList.toggle('is-on', b === btn));
+            seg.querySelector('.seg-ind').style.transform = 'translateX(' + (i * 100) + '%)';
+
+            const which = seg.dataset.seg;
+            const val = btn.dataset.val;
+            if (which === 'grain' || which === 'layout') {
+                try {
+                    localStorage.setItem(which === 'grain' ? GRAIN_KEY : LAYOUT_KEY, val);
+                } catch (err) { /* storage blocked */ }
+                overlay.querySelector('.histtrends-body').innerHTML =
+                    renderTrends(chosenGrain(), chosenLayout());
+            } else if (which === 'tab') {
+                const body = overlay.querySelector('.histpopup-body');
+                const at = body.scrollTop;   // stay exactly here if we can
+                resetList(null, val);
+                restoreScroll(at);
+            } else if (which === 'sort') {
+                resetList(val);
             }
-            if (!e.target.classList.contains('histgrain')) return;
-            try { localStorage.setItem(GRAIN_KEY, e.target.value); } catch (err) { /* storage blocked */ }
-            const grain = GRAINS.find(g => g.id === e.target.value) || GRAINS[1];
-            overlay.querySelector('.histtrends').innerHTML = trendSection(grain);
         });
         // Scroll events are coalesced and dropped under fast scrolling, which is
         // why a scrollTop threshold only fired a couple of times. An observer on
@@ -3060,6 +3574,7 @@
     function tick() {
         step('unsizePlayer', unsizePlayer);
         step('killJunk', killJunk);
+        step('ensureTooltips', ensureTooltips);
         step('yoink', yoink);
         step('stripLabelPrefix', stripLabelPrefix);
         step('ensureClipBar', ensureClipBar);
