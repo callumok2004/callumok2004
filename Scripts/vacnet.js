@@ -846,6 +846,102 @@
             color: rgba(255,255,255,0.45) !important;
         }
 
+        /* ---- game mode ---- */
+        .modepick {
+            flex: 0 0 auto !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            margin-bottom: 12px !important;
+            padding: 6px 9px !important;
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(255,255,255,0.12) !important;
+            border-radius: 4px !important;
+        }
+        .modepick.is-set { border-color: rgba(245,166,35,0.45) !important; }
+        .modepick-label {
+            font-size: 11px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            color: rgba(255,255,255,0.45) !important;
+        }
+        /* one-click chips, in the sidebar and in every history row */
+        .modebtn {
+            flex: 1 1 0 !important;
+            padding: 5px 4px !important;
+            font-size: 12px !important;
+            font-weight: bold !important;
+            font-family: monospace !important;
+            letter-spacing: 0.5px !important;
+            color: rgba(255,255,255,0.55) !important;
+            background: rgba(255,255,255,0.08) !important;
+            border: 1px solid rgba(255,255,255,0.12) !important;
+            border-radius: 3px !important;
+            cursor: pointer !important;
+            transition: background 0.12s ease, color 0.12s ease !important;
+        }
+        .modebtn:hover {
+            color: #fff !important;
+            background: rgba(255,255,255,0.16) !important;
+        }
+        .modebtn.is-on {
+            color: #1b1f23 !important;
+            background: #f5a623 !important;
+            border-color: #f5a623 !important;
+        }
+        .modepick.is-set { border-color: rgba(245,166,35,0.45) !important; }
+
+        /* the history-row variant is the same control, just smaller */
+        .groupmode {
+            margin-left: auto !important;
+            flex: 0 0 auto !important;
+            display: flex !important;
+            gap: 3px !important;
+        }
+        .groupmode .modebtn {
+            flex: 0 0 auto !important;
+            padding: 1px 6px !important;
+            font-size: 9px !important;
+        }
+        /* labelled during a No-mode pass: dim rather than vanish, so the list
+           doesn't reflow under the cursor mid-click */
+        .histgroup.is-done { opacity: 0.4 !important; }
+
+        .modegrid {
+            display: grid !important;
+            grid-template-columns: auto 1fr auto auto !important;
+            align-items: center !important;
+            column-gap: 8px !important;
+            row-gap: 4px !important;
+            font-size: 12px !important;
+        }
+        .mode-name { font-weight: bold !important; color: #fff !important; }
+        .mode-name.is-none { color: rgba(255,255,255,0.35) !important; font-weight: normal !important; }
+        .mode-bar {
+            height: 8px !important;
+            border-radius: 2px !important;
+            background: rgba(255,255,255,0.08) !important;
+        }
+        .mode-bar i {
+            display: block !important;
+            height: 100% !important;
+            border-radius: 2px !important;
+            background: #7ec2ff !important;
+        }
+        .mode-n {
+            font-family: monospace !important;
+            font-variant-numeric: tabular-nums !important;
+            color: rgba(255,255,255,0.75) !important;
+        }
+        .mode-pct {
+            font-family: monospace !important;
+            font-variant-numeric: tabular-nums !important;
+            font-weight: bold !important;
+            color: #ff6b6b !important;
+            min-width: 34px !important;
+            text-align: right !important;
+        }
+
         /* ---- custom tooltip ---- */
         .vactip {
             position: fixed !important;
@@ -1980,6 +2076,47 @@
     const SUBS = ['aimassist', 'wallhack', 'autobhop', 'bot'];
     const SHORT_NAME = ['AIM', 'WH', 'BH', 'BOT'];
 
+    // ---- game modes -------------------------------------------------------
+    // Stored as an index (one char) in field 7. The site never tells us the
+    // mode, so this is entirely your own annotation. It belongs to the VOD, not
+    // the clip, so setting it writes to every entry for that VOD at once.
+    const MODES = [
+        { id: 0, label: 'unlabelled', short: '—' },
+        { id: 1, label: 'Competitive', short: 'COMP' },
+        { id: 3, label: 'Wingman', short: 'WING' },
+        { id: 4, label: 'Casual', short: 'CAS' },
+        { id: 5, label: 'Deathmatch', short: 'DM' },
+        { id: 6, label: 'Arms Race', short: 'AR' },
+        { id: 7, label: 'Other', short: 'OTH' }
+    ];
+
+    // ids are not array positions any more (2 was retired), so look up by id.
+    // Anything already stored as 2 reads back as 1.
+    function modeId(i) { return i === 2 ? 1 : (i || 0); }
+    function modeInfo(i) {
+        const id = modeId(i);
+        return MODES.find(m => m.id === id) || MODES[0];
+    }
+
+    function setVodMode(key, mode) {
+        const h = loadHistory();
+        if (!h[key]) return false;
+        h[key].forEach(a => { a[7] = mode; });
+        saveHistory(h);
+        seenCache = null;      // cached decodes now carry a stale mode
+        seenCacheKey = null;
+        return true;
+    }
+
+    function vodMode(key) {
+        const list = loadHistory()[key];
+        if (!list || !list.length) return 0;
+        return modeId(list[0][7]);
+    }
+
+    // the mode chosen on the current page before any entry for it exists
+    let pendingMode = 0;
+
     function vodKey(src) {
         const m = (src || '').match(/([^/]+)\.webm/i);
         if (!m) return src || '';
@@ -2067,6 +2204,7 @@
             code: a[3],
             ts: a[4] * 60000,
             dur: a[6] || 0,
+            mode: modeId(a[7]),
             url: tok ? 'https://www.counter-strike.net/vacnet/view?s=' + tok : null
         };
     }
@@ -2110,7 +2248,10 @@
             Math.round(Date.now() / 60000),
             packToken(currentViewToken()),
             // whole-VOD length, so the history can draw segments to scale later
-            Math.round((pageVideoEl() || {}).duration || 0) || 0
+            Math.round((pageVideoEl() || {}).duration || 0) || 0,
+            // mode is per-VOD: inherit whatever this VOD already carries unless
+            // it was set on this page
+            pendingMode || modeId(list.length && list[0][7]) || 0
         ];
         const at = task ? list.findIndex(e => e[0] === task) : -1;
         if (at >= 0) list[at] = entry; else list.push(entry);
@@ -2317,6 +2458,53 @@
             (seen ? '<span class="vodname-seen">seen ' + seen + '×</span>' : '');
     }
 
+    // ---- mode picker, in the sidebar -------------------------------------
+    // Writes straight through to any entries this VOD already has, and is held
+    // in pendingMode for the entry this page is about to create.
+    function ensureModePicker() {
+        const col = document.querySelector('.verdict-column');
+        if (!col) return;
+        const key = currentVodKey();
+        if (!key) return;
+        let box = col.querySelector('.modepick');
+        if (box && box.dataset.key === key) return;
+
+        if (!box) {
+            box = document.createElement('div');
+            box.className = 'modepick';
+            // one button per mode: a dropdown is two interactions and a hunt
+            // through a list, these are a single click at a fixed position
+            box.innerHTML = '<span class="modepick-label">Mode</span>' +
+                MODES.filter(m => m.id).map(m =>
+                    '<button type="button" class="modebtn" data-mode="' + m.id +
+                    '" data-tip="' + esc(m.label) + '">' + esc(m.short) + '</button>').join('');
+            box.addEventListener('click', e => {
+                const btn = e.target.closest('.modebtn');
+                if (!btn) return;
+                const val = parseInt(btn.dataset.mode, 10) || 0;
+                // clicking the active one clears it, so a mis-click is undoable
+                pendingMode = (val === pendingMode) ? 0 : val;
+                const k = currentVodKey();
+                if (k) setVodMode(k, pendingMode); // no-op if nothing logged yet
+                paint();
+            });
+            const name = col.querySelector('.vodname');
+            if (name) name.insertAdjacentElement('afterend', box);
+            else col.insertBefore(box, col.firstChild);
+        }
+
+        function paint() {
+            box.querySelectorAll('.modebtn').forEach(b => {
+                b.classList.toggle('is-on', parseInt(b.dataset.mode, 10) === pendingMode);
+            });
+            box.classList.toggle('is-set', !!pendingMode);
+        }
+
+        box.dataset.key = key;
+        pendingMode = vodMode(key);
+        paint();
+    }
+
     // ---- overlap with previously reviewed segments -----------------------
     // Repeats of a VOD often cover part of a window you already judged. Work out
     // which slices of the CURRENT clip you've seen before, clipped to this clip's
@@ -2395,6 +2583,7 @@
                     key: k,
                     items: items,
                     latest: items.length ? items[0].ts : 0,
+                    mode: items.length ? items[0].mode : 0,
                     current: k === cur
                 };
             })
@@ -2522,6 +2711,46 @@
                 'Total length of every clip reviewed — a floor, since it counts ' +
                 'one pass per clip and you usually loop them.') +
             '</div></div>';
+    }
+
+    // ---- per game mode ----------------------------------------------------
+    function renderModes() {
+        const entries = allEntries();
+        if (!entries.length) return '';
+        const by = {};
+        entries.forEach(e => {
+            const m = e.mode || 0;
+            (by[m] = by[m] || []).push(e);
+        });
+        const rows = Object.keys(by)
+            .map(m => ({ mode: modeId(parseInt(m, 10)), t: tally(by[m]) }))
+            .sort((a, b) => b.t.n - a.t.n);
+        const labelled = rows.filter(r => r.mode).reduce((n, r) => n + r.t.n, 0);
+        if (!labelled) {
+            return '<div class="histsum">' +
+                '<div class="histsum-title">Per game mode</div>' +
+                '<div class="histsum-caveat">Nothing labelled yet — set a mode in the ' +
+                'sidebar while reviewing, or use the <b>No mode</b> tab below to work ' +
+                'through what\'s already logged.</div></div>';
+        }
+
+        const max = Math.max.apply(null, rows.map(r => r.t.n)) || 1;
+        return '<div class="histsum">' +
+            '<div class="histsum-title">Per game mode ' +
+            '<span class="histsum-note">' + labelled + ' of ' + entries.length +
+            ' labelled</span></div>' +
+            '<div class="modegrid">' + rows.map(r => {
+                const guilty = r.t.n ? (r.t.n - r.t.clean - r.t.bad) * 100 / r.t.n : 0;
+                return '<span class="mode-name' + (r.mode ? '' : ' is-none') + '">' +
+                    esc(modeInfo(r.mode).label) + '</span>' +
+                    '<span class="mode-bar"><i style="width:' + (r.t.n * 100 / max) +
+                    '%"></i></span>' +
+                    '<span class="mode-n">' + r.t.n + '</span>' +
+                    '<span class="mode-pct" data-tip="' +
+                    esc('share of ' + modeInfo(r.mode).label + ' clips with at least one ' +
+                        'label confirmed or uncertain') + '">' +
+                    Math.round(guilty) + '%</span>';
+            }).join('') + '</div></div>';
     }
 
     const COMBO_HEAD = 8; // combinations shown before the "more" toggle
@@ -2875,7 +3104,8 @@
 
     const TABS = [
         { id: 'all', label: 'All' },
-        { id: 'repeat', label: 'Repeats' }
+        { id: 'repeat', label: 'Repeats' },
+        { id: 'unlabelled', label: 'No mode' }
     ];
 
     const SORTS = [
@@ -2978,6 +3208,13 @@
             esc(vodName(g.key)) + '</span>' +
             '<span class="histgroup-count">' + g.items.length + '×</span>' +
             (g.current ? '<span class="histgroup-now">watching now</span>' : '') +
+            // one control per VOD; changing it rewrites every entry for that VOD
+            '<span class="groupmode" data-vod="' + esc(g.key) + '">' +
+            MODES.filter(m => m.id).map(m =>
+                '<button type="button" class="modebtn' + (m.id === g.mode ? ' is-on' : '') +
+                '" data-mode="' + m.id + '" data-tip="' + esc(m.label) + '">' +
+                esc(m.short) + '</button>').join('') +
+            '</span>' +
             '</div>' +
             groupTimeline(g) +
             g.items.map(e => {
@@ -3014,6 +3251,7 @@
             '<div class="histpopup-body">' +
             renderTime() +
             renderStats(stats) +
+            renderModes() +
             '<div class="histsum histtrends">' +
             trendSection(chosenGrain(), chosenLayout()) + '</div>' +
             (deltaHtml ? '<div class="histsum">' +
@@ -3095,11 +3333,14 @@
             curTab = tab || curTab;
             const s = SORTS.find(x => x.id === curSort) || SORTS[0];
             order = groups
-                .filter(g => curTab !== 'repeat' || g.items.length > 1)
+                .filter(g => curTab === 'all' ||
+                    (curTab === 'repeat' ? g.items.length > 1 : !g.mode))
                 .sort(s.fn);
-            list.innerHTML = order.length
-                ? ''
-                : '<div class="histpopup-empty">No VODs seen more than once yet.</div>';
+            list.innerHTML = order.length ? '' :
+                '<div class="histpopup-empty">' +
+                (curTab === 'repeat' ? 'No VODs seen more than once yet.'
+                    : curTab === 'unlabelled' ? 'Every VOD has a mode set.'
+                    : 'Nothing logged yet.') + '</div>';
             shown = 0;
             appendMore(LIST_FIRST);
             topUp();
@@ -3128,6 +3369,31 @@
                 ? '− fewer'
                 : '+ ' + rest.children.length + ' more combination' +
                   (rest.children.length === 1 ? '' : 's');
+        });
+        // labelling a VOD's mode from the list: write through, update the local
+        // copy so filters and stats agree, and leave the row where it is
+        overlay.addEventListener('click', e => {
+            const btn = e.target.closest && e.target.closest('.groupmode .modebtn');
+            if (!btn) return;
+            const box = btn.parentNode;
+            const key = box.dataset.vod;
+            const val = parseInt(btn.dataset.mode, 10) || 0;
+            const g = groups.find(x => x.key === key);
+            // click the active one to clear, same as the sidebar
+            const mode = (g && g.mode === val) ? 0 : val;
+            setVodMode(key, mode);
+            if (g) {
+                g.mode = mode;
+                g.items.forEach(it => { it.mode = mode; });
+            }
+            box.querySelectorAll('.modebtn').forEach(b => {
+                b.classList.toggle('is-on', parseInt(b.dataset.mode, 10) === mode);
+            });
+            // in the No-mode tab a labelled row no longer belongs; fade it out
+            // rather than yanking it from under the cursor mid-pass
+            if (curTab === 'unlabelled') {
+                box.closest('.histgroup').classList.toggle('is-done', !!mode);
+            }
         });
         // Every segmented control goes through here: slide the indicator, then
         // redraw only the part that changed. Redrawing the control itself would
@@ -3715,6 +3981,7 @@
         step('ensureDownloadButton', ensureDownloadButton);
         step('ensureOverlapWarning', ensureOverlapWarning);
         step('ensureVodName', ensureVodName); // last inserted -> sits on top
+        step('ensureModePicker', ensureModePicker);
         step('ensureHistoryPanel', ensureHistoryPanel);
         step('ensureShareButton', ensureShareButton);
         step('ensureHistoryButton', ensureHistoryButton);
