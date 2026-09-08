@@ -469,22 +469,31 @@
             z-index: 150 !important;
         }
 
+        /* icon-only, in the corner of the VOD name block */
         .sharebutton {
-            width: 100% !important;
-            margin-top: 8px !important;
-            padding: 7px 6px !important;
-            font-size: 13px !important;
+            margin-left: auto !important;
+            flex: 0 0 auto !important;
+            width: 24px !important;
+            height: 24px !important;
+            padding: 0 !important;
+            font-size: 12px !important;
+            line-height: 1 !important;
             color: #fff !important;
             background: rgba(255,255,255,0.10) !important;
-            border: 1px solid rgba(255,255,255,0.25) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
             border-radius: 3px !important;
             cursor: pointer !important;
-            flex: 0 0 auto !important;
         }
-        .sharebutton:hover { background: rgba(255,255,255,0.18) !important; }
+        .sharebutton:hover { background: rgba(255,255,255,0.2) !important; }
         .sharebutton.copied {
             background: #3d8b40 !important;
             border-color: #3d8b40 !important;
+        }
+        /* feedback has to fit the same 24px box, so it's a tick, not a sentence */
+        .sharebutton.copied, .sharebutton.failed { font-size: 13px !important; }
+        .sharebutton.failed {
+            background: #b03030 !important;
+            border-color: #b03030 !important;
         }
 
         .histpopup-overlay {
@@ -547,6 +556,7 @@
         .histclips-head {
             display: flex !important;
             align-items: center !important;
+            flex-wrap: wrap !important;   /* four controls won't always fit */
             gap: 8px !important;
             margin: 18px 0 0 0 !important;
             padding: 9px 12px !important;
@@ -907,9 +917,106 @@
            doesn't reflow under the cursor mid-click */
         .histgroup.is-done { opacity: 0.4 !important; }
 
+        /* ---- mode filter menu ---- */
+        .modefilter { position: relative !important; flex: 0 0 auto !important; }
+        .modefilter-btn {
+            font-size: 11px !important;
+            font-weight: bold !important;
+            font-family: inherit !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+            padding: 4px 9px !important;
+            color: rgba(255,255,255,0.55) !important;
+            background: rgba(0,0,0,0.22) !important;
+            border: 1px solid rgba(255,255,255,0.09) !important;
+            border-radius: 4px !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
+        }
+        .modefilter-btn:hover { color: #fff !important; }
+        .modefilter.is-filtered .modefilter-btn {
+            color: #f5a623 !important;
+            border-color: rgba(245,166,35,0.4) !important;
+        }
+        .modefilter-menu {
+            display: none !important;
+            position: absolute !important;
+            top: calc(100% + 4px) !important;
+            right: 0 !important;
+            z-index: 5 !important;
+            min-width: 150px !important;
+            padding: 6px !important;
+            background: #1b1f23 !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            border-radius: 4px !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6) !important;
+        }
+        .modefilter.is-open .modefilter-menu { display: block !important; }
+        .modefilter-menu label {
+            display: flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            padding: 3px 5px !important;
+            font-size: 12px !important;
+            font-weight: normal !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+            color: rgba(255,255,255,0.8) !important;
+            border-radius: 3px !important;
+            cursor: pointer !important;
+        }
+        .modefilter-menu label:hover { background: rgba(255,255,255,0.08) !important; }
+        .modefilter-menu input { accent-color: #f5a623 !important; cursor: pointer !important; }
+        .modefilter-acts {
+            display: flex !important;
+            gap: 6px !important;
+            margin-top: 5px !important;
+            padding-top: 5px !important;
+            border-top: 1px solid rgba(255,255,255,0.12) !important;
+        }
+        .modefilter-acts button {
+            flex: 1 1 0 !important;
+            font-size: 10px !important;
+            font-family: inherit !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            padding: 3px !important;
+            color: rgba(255,255,255,0.6) !important;
+            background: rgba(255,255,255,0.07) !important;
+            border: 1px solid rgba(255,255,255,0.12) !important;
+            border-radius: 3px !important;
+            cursor: pointer !important;
+        }
+        .modefilter-acts button:hover { color: #fff !important; }
+
+        /* per-label split inside a mode row */
+        .mode-split {
+            display: flex !important;
+            gap: 1px !important;
+            width: 84px !important;
+            height: 8px !important;
+            background: rgba(255,255,255,0.06) !important;
+            border-radius: 2px !important;
+            overflow: hidden !important;
+        }
+        .mode-split i { display: block !important; height: 100% !important; }
+        .ms-0 { background: #ff6b6b !important; }
+        .ms-1 { background: #f5a623 !important; }
+        .ms-2 { background: #7ec2ff !important; }
+        .ms-3 { background: #c39bf0 !important; }
+        .mode-key {
+            display: flex !important;
+            gap: 10px !important;
+            margin-top: 6px !important;
+            font-size: 10px !important;
+            color: rgba(255,255,255,0.45) !important;
+        }
+        .mode-key span { display: flex !important; align-items: center !important; gap: 4px !important; }
+        .mode-key i { width: 8px !important; height: 3px !important; border-radius: 2px !important; display: block !important; }
+
         .modegrid {
             display: grid !important;
-            grid-template-columns: auto 1fr auto auto !important;
+            grid-template-columns: auto 1fr auto auto auto !important;
             align-items: center !important;
             column-gap: 8px !important;
             row-gap: 4px !important;
@@ -922,11 +1029,11 @@
             border-radius: 2px !important;
             background: rgba(255,255,255,0.08) !important;
         }
-        .mode-bar i {
+        .mode-bar .mode-vol {
             display: block !important;
             height: 100% !important;
             border-radius: 2px !important;
-            background: #7ec2ff !important;
+            background: rgba(255,255,255,0.35) !important;
         }
         .mode-n {
             font-family: monospace !important;
@@ -1232,42 +1339,31 @@
             transition: opacity 0.1s ease !important;
         }
         .presetbutton:hover { opacity: 1 !important; }
-        .downloadrow {
-            display: flex !important;
-            gap: 8px !important;
-            margin-top: 10px !important;
-            flex: 0 0 auto !important;
-        }
-        .downloadformat {
-            flex: 0 0 auto !important;
-            padding: 0 6px !important;
-            font-size: 13px !important;
-            color: #fff !important;
-            background: rgba(255,255,255,0.14) !important;
-            border: 1px solid rgba(255,255,255,0.3) !important;
-            border-radius: 3px !important;
-            cursor: pointer !important;
-        }
-        .downloadformat option { color: #000 !important; }
 
-        .downloadclip {
-            flex: 1 1 auto !important;
-            width: auto !important;
-            padding: 8px 6px !important;
-            font-size: 14px !important;
-            color: #fff !important;
-            background: rgba(255,255,255,0.14) !important;
-            border: 1px solid rgba(255,255,255,0.3) !important;
-            border-radius: 3px !important;
-            cursor: pointer !important;
-            flex: 0 0 auto !important;
+        /* ---- accidental-submit guard ---- */
+        .submitverdictbutton.is-locked {
+            opacity: 0.45 !important;
+            cursor: not-allowed !important;
         }
-        .downloadclip:hover { background: rgba(255,255,255,0.22) !important; }
-        .downloadclip:disabled { cursor: default !important; }
-        .downloadclip.recording {
-            background: #b03030 !important;
-            border-color: #b03030 !important;
-            font-family: monospace !important;
+        /* the bar drains over the lock window, so the wait is visible */
+        .submitverdictbutton.is-locked::after {
+            content: '' !important;
+            position: absolute !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            height: 2px !important;
+            background: #f5a623 !important;
+            animation: vacnet-unlock 2s linear forwards !important;
+        }
+        .submitverdictbutton { position: relative !important; overflow: hidden !important; }
+        @keyframes vacnet-unlock { from { width: 100%; } to { width: 0%; } }
+        .submitverdictbutton.submit-blocked {
+            animation: vacnet-nudge 0.25s ease !important;
+        }
+        @keyframes vacnet-nudge {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
 
         .preset-legit { background: #3d8b40 !important; }
@@ -2741,16 +2837,31 @@
             ' labelled</span></div>' +
             '<div class="modegrid">' + rows.map(r => {
                 const guilty = r.t.n ? (r.t.n - r.t.clean - r.t.bad) * 100 / r.t.n : 0;
+                // per-label split, inline: four thin segments in one bar rather
+                // than four more rows per mode
+                const split = SHORT_NAME.map((nm, i) => {
+                    const pct = r.t.n ? r.t.pos[i] * 100 / r.t.n : 0;
+                    return '<i class="ms-' + i + '" style="width:' + pct + '%" data-tip="' +
+                        esc(nm + ' ' + Math.round(pct) + '% (' + r.t.pos[i] + ' of ' +
+                            r.t.n + ' ' + modeInfo(r.mode).label + ')') + '"></i>';
+                }).join('');
                 return '<span class="mode-name' + (r.mode ? '' : ' is-none') + '">' +
                     esc(modeInfo(r.mode).label) + '</span>' +
-                    '<span class="mode-bar"><i style="width:' + (r.t.n * 100 / max) +
-                    '%"></i></span>' +
+                    '<span class="mode-bar" data-tip="' +
+                    esc(r.t.n + ' clips · ' + r.t.vodCount + ' VODs') + '">' +
+                    '<i class="mode-vol" style="width:' + (r.t.n * 100 / max) + '%"></i>' +
+                    '</span>' +
+                    '<span class="mode-split">' + split + '</span>' +
                     '<span class="mode-n">' + r.t.n + '</span>' +
                     '<span class="mode-pct" data-tip="' +
                     esc('share of ' + modeInfo(r.mode).label + ' clips with at least one ' +
                         'label confirmed or uncertain') + '">' +
                     Math.round(guilty) + '%</span>';
-            }).join('') + '</div></div>';
+            }).join('') +
+            '</div>' +
+            '<div class="mode-key">' + SHORT_NAME.map((nm, i) =>
+                '<span><i class="ms-' + i + '"></i>' + esc(nm) + '</span>').join('') +
+            '</div></div>';
     }
 
     const COMBO_HEAD = 8; // combinations shown before the "more" toggle
@@ -3262,6 +3373,17 @@
             '<span class="histsum-title is-plain">Clips</span>' +
             segControl('tab', TABS, 'all') +
             segControl('sort', SORTS, SORTS[0].id) +
+            // checkbox menu rather than more chips: seven modes wouldn't fit
+            // beside the two segmented controls
+            '<span class="modefilter">' +
+            '<button type="button" class="modefilter-btn">All modes ▾</button>' +
+            '<div class="modefilter-menu">' +
+            MODES.map(m => '<label><input type="checkbox" checked value="' + m.id + '">' +
+                esc(m.label) + '</label>').join('') +
+            '<div class="modefilter-acts">' +
+            '<button type="button" data-all="1">all</button>' +
+            '<button type="button" data-all="0">none</button>' +
+            '</div></div></span>' +
             // last, and pushed right: the count changes on every append, so it
             // must not sit upstream of the tabs in the flex flow
             '<span class="histshown histsum-note"></span>' +
@@ -3281,6 +3403,7 @@
         let shown = 0;
         let curSort = SORTS[0].id;
         let curTab = 'all';
+        const modeFilter = new Set(MODES.map(m => m.id)); // everything, initially
         // The filter drives WHICH groups get loaded, not which loaded ones are
         // visible -- hiding them with CSS meant "seen more than once" could only
         // ever show the repeats that happened to be inside the loaded slice.
@@ -3335,6 +3458,7 @@
             order = groups
                 .filter(g => curTab === 'all' ||
                     (curTab === 'repeat' ? g.items.length > 1 : !g.mode))
+                .filter(g => modeFilter.has(g.mode))
                 .sort(s.fn);
             list.innerHTML = order.length ? '' :
                 '<div class="histpopup-empty">' +
@@ -3370,6 +3494,47 @@
                 : '+ ' + rest.children.length + ' more combination' +
                   (rest.children.length === 1 ? '' : 's');
         });
+        // ---- mode filter menu ----
+        const mf = overlay.querySelector('.modefilter');
+        function syncFilterLabel() {
+            const n = modeFilter.size;
+            mf.querySelector('.modefilter-btn').textContent =
+                (n === MODES.length ? 'All modes'
+                    : n === 0 ? 'No modes'
+                    : n === 1 ? modeInfo(Array.from(modeFilter)[0]).label
+                    : n + ' modes') + ' ▾';
+            mf.classList.toggle('is-filtered', n !== MODES.length);
+        }
+        mf.addEventListener('click', e => {
+            if (e.target.closest('.modefilter-btn')) {
+                mf.classList.toggle('is-open');
+                return;
+            }
+            const act = e.target.closest('[data-all]');
+            if (act) {
+                const on = act.dataset.all === '1';
+                modeFilter.clear();
+                mf.querySelectorAll('input').forEach(i => {
+                    i.checked = on;
+                    if (on) modeFilter.add(parseInt(i.value, 10));
+                });
+                syncFilterLabel();
+                resetList();
+            }
+        });
+        mf.addEventListener('change', e => {
+            const box = e.target;
+            if (box.type !== 'checkbox') return;
+            const id = parseInt(box.value, 10);
+            if (box.checked) modeFilter.add(id); else modeFilter.delete(id);
+            syncFilterLabel();
+            resetList();
+        });
+        // click anywhere else closes it
+        overlay.addEventListener('click', e => {
+            if (!e.target.closest('.modefilter')) mf.classList.remove('is-open');
+        });
+
         // labelling a VOD's mode from the list: write through, update the local
         // copy so filters and stats agree, and leave the row where it is
         overlay.addEventListener('click', e => {
@@ -3465,36 +3630,40 @@
         });
     }
 
+    // Icon-only, tucked into the corner of the VOD name header -- it's a rarely
+    // used action and doesn't warrant a full-width button in the column.
     function ensureShareButton() {
-        const col = document.querySelector('.verdict-column');
-        if (!col || col.querySelector('.sharebutton')) return;
+        const host = document.querySelector('.vodname');
+        if (!host || host.querySelector('.sharebutton')) return;
         const url = currentShareUrl();
         if (!url) return; // details table not rendered for this task
 
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'sharebutton';
-        const label = '🔗 Copy share link';
+        const label = '🔗';
         btn.textContent = label;
-        btn.title = url + '\n(shift-click to open in a new tab)';
+        btn.setAttribute('data-tip', 'Copy share link (shift-click to open)');
         btn.addEventListener('click', e => {
             if (e.shiftKey) {
                 window.open(url, '_blank', 'noreferrer');
                 return;
             }
             copyText(url).then(() => {
-                btn.textContent = '✓ Copied';
+                btn.textContent = '✓';
                 btn.classList.add('copied');
             }).catch(() => {
-                btn.textContent = 'copy blocked — link in tooltip';
+                btn.textContent = '✕';
+                btn.classList.add('failed');
+                btn.setAttribute('data-tip', 'Copy blocked — ' + url);
             }).then(() => {
                 setTimeout(() => {
                     btn.textContent = label;
-                    btn.classList.remove('copied');
+                    btn.classList.remove('copied', 'failed');
                 }, 1600);
             });
         });
-        col.appendChild(btn);
+        host.appendChild(btn);
     }
 
     // Sits beside "Invite Reviewers" in the page header, so the log is reachable
@@ -3611,291 +3780,34 @@
         col.appendChild(row);
     }
 
-    // ---- download just the clip ------------------------------------------
-    // The source is the whole match VOD, and a browser can't losslessly cut a
-    // WebM without demuxing it, so we capture the element's stream while the
-    // clip plays through once in real time. That means a re-encode and it takes
-    // as long as the clip is (~12s), but it needs no external libraries.
-    // Container choice. MediaRecorder MP4 support (H.264/AAC) landed in Chrome
-    // 130; anything older only has WebM, so we probe and offer what actually
-    // works rather than advertising both.
-    const FORMATS = [
-        {
-            id: 'mp4',
-            label: 'MP4',
-            ext: 'mp4',
-            types: [
-                'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
-                'video/mp4;codecs=avc1,mp4a.40.2',
-                'video/mp4;codecs=avc1',
-                'video/mp4'
-            ]
-        },
-        {
-            id: 'webm',
-            label: 'WebM',
-            ext: 'webm',
-            types: [
-                'video/webm;codecs=vp9,opus',
-                'video/webm;codecs=vp8,opus',
-                'video/webm'
-            ]
-        }
-    ];
-    const FORMAT_KEY = 'vacnetClipFormat';
 
-    function supportedMime(format) {
-        if (typeof W.MediaRecorder === 'undefined') return null;
-        return format.types.find(t => MediaRecorder.isTypeSupported(t)) || null;
+    // ---- accidental-submit guard -----------------------------------------
+    // Armed at script start, which is effectively when the new clip appeared:
+    // the page does a full reload on every submit.
+    const SUBMIT_LOCK_MS = 2000;
+    const armedAt = Date.now();
+
+    function submitLockLeft() {
+        return Math.max(0, SUBMIT_LOCK_MS - (Date.now() - armedAt));
     }
 
-    function availableFormats() {
-        return FORMATS.filter(supportedMime);
+    function flashLock() {
+        const btn = document.getElementById('submitVerdictButton');
+        if (!btn) return;
+        btn.classList.remove('submit-blocked');
+        void btn.offsetWidth;              // restart the animation
+        btn.classList.add('submit-blocked');
     }
 
-    function chosenFormat() {
-        const list = availableFormats();
-        if (!list.length) return null;
-        let saved = null;
-        try { saved = localStorage.getItem(FORMAT_KEY); } catch (e) { /* storage blocked */ }
-        return list.find(f => f.id === saved) || list[0];
-    }
-
-    function clipFilename(videoEl, bounds, ext) {
-        let base = 'clip';
-        const src = videoEl.currentSrc || videoEl.src || '';
-        const m = src.match(/([^/]+)\.webm/i);
-        if (m) base = m[1].slice(0, 24);
-        return base + '_' + bounds.start.toFixed(1) + 's+' + bounds.len.toFixed(1) + 's.' + ext;
-    }
-
-    // The page's <video> is cross-origin and has no crossorigin attribute, so it
-    // is tainted and captureStream() throws SecurityError. We therefore never
-    // record the page's element -- we build our own offscreen one that isn't
-    // tainted, by whichever of these works:
-    //   1. same URL with crossOrigin="anonymous" (free, streams as it plays)
-    //   2. GM_xmlhttpRequest the bytes and play them from a blob: URL
-    //      (privileged, ignores CORS, but downloads the whole VOD first)
-    function makeOffscreenVideo(withCors) {
-        const v = document.createElement('video');
-        if (withCors) v.crossOrigin = 'anonymous';
-        v.preload = 'auto';
-        v.playsInline = true;
-        // offscreen rather than display:none -- hidden elements can get their
-        // frame production throttled, which would stall the capture
-        v.style.cssText = 'position:fixed;left:-10000px;top:0;width:640px;height:360px;opacity:0;pointer-events:none;z-index:-1;';
-        document.body.appendChild(v);
-        return v;
-    }
-
-    function getCapturableVideo(src, btn, cb) {
-        // --- attempt 1: CORS-clean element, no download needed
-        const probe = makeOffscreenVideo(true);
-        let settled = false;
-
-        const giveUp = () => {
-            if (settled) return;
-            settled = true;
-            probe.remove();
-            fetchViaGM();
-        };
-        const succeed = () => {
-            if (settled) return;
-            settled = true;
-            clearTimeout(timer);
-            cb(probe, null);
-        };
-
-        probe.addEventListener('loadeddata', succeed);
-        probe.addEventListener('error', giveUp);
-        const timer = setTimeout(giveUp, 8000);
-        probe.src = src;
-        probe.load();
-
-        // --- attempt 2: pull the bytes with the userscript's privileged request
-        function fetchViaGM() {
-            if (typeof GM_xmlhttpRequest !== 'function') {
-                cb(null, 'no CORS and GM_xmlhttpRequest unavailable');
-                return;
-            }
-            btn.textContent = 'downloading VOD...';
-            GM_xmlhttpRequest({
-                method: 'GET',
-                url: src,
-                responseType: 'blob',
-                onprogress: e => {
-                    if (e.lengthComputable) {
-                        btn.textContent = 'downloading VOD ' + Math.round((e.loaded / e.total) * 100) + '%';
-                    }
-                },
-                onerror: () => cb(null, 'download failed'),
-                ontimeout: () => cb(null, 'download timed out'),
-                onload: r => {
-                    if (!r.response) { cb(null, 'empty response'); return; }
-                    const v = makeOffscreenVideo(false);
-                    const url = URL.createObjectURL(r.response);
-                    v.addEventListener('loadeddata', () => cb(v, null), { once: true });
-                    v.addEventListener('error', () => cb(null, 'blob decode failed'), { once: true });
-                    v.src = url;
-                    v.load();
-                }
-            });
-        }
-    }
-
-    function downloadClip(btn) {
-        const pageVideo = document.querySelector('.video-js video');
-        const bounds = getClipBounds();
-        if (!pageVideo || !bounds) return;
-
-        const src = pageVideo.currentSrc || pageVideo.src;
-        const format = chosenFormat();
-        if (!src || !format) {
-            btn.textContent = 'unsupported browser';
-            return;
-        }
-        const mimeType = supportedMime(format);
-
-        const label = '⬇ Download clip';
-        btn.disabled = true;
-        btn.classList.add('recording');
-        btn.textContent = 'preparing...';
-
-        // Created here, inside the click gesture -- an AudioContext constructed
-        // later (after the async fetch) can be born suspended and would record
-        // silence.
-        let audioCtx = null;
-        try {
-            const AC = W.AudioContext || W.webkitAudioContext;
-            if (AC) audioCtx = new AC();
-        } catch (e) { /* no Web Audio -> fall back to audible capture */ }
-
-        function fail(msg) {
-            btn.textContent = msg;
-            btn.classList.remove('recording');
-            setTimeout(() => { btn.disabled = false; btn.textContent = label; }, 2500);
-        }
-
-        getCapturableVideo(src, btn, (srcVideo, err) => {
-            if (err || !srcVideo) { fail(err || 'capture failed'); return; }
-
-            const cleanup = () => {
-                try { srcVideo.pause(); } catch (e) { /* gone */ }
-                if (srcVideo.src.startsWith('blob:')) URL.revokeObjectURL(srcVideo.src);
-                srcVideo.remove();
-                if (audioCtx) { try { audioCtx.close(); } catch (e) { /* already closed */ } }
-            };
-
-            const capture = srcVideo.captureStream || srcVideo.mozCaptureStream;
-            let rec;
-            try {
-                const stream = capture.call(srcVideo);
-
-                // Silent capture: routing the element through a MediaElementSource
-                // takes its audio off the speakers entirely. We connect it only to
-                // a MediaStreamDestination -- never to audioCtx.destination -- so
-                // the sound lands in the recording but is never played out loud.
-                let audioTracks = stream.getAudioTracks();
-                if (audioCtx) {
-                    try {
-                        const source = audioCtx.createMediaElementSource(srcVideo);
-                        const dest = audioCtx.createMediaStreamDestination();
-                        source.connect(dest);
-                        audioCtx.resume();
-                        audioTracks = dest.stream.getAudioTracks();
-                    } catch (e) {
-                        // graph failed -- keep captureStream's audio (audible)
-                    }
-                }
-
-                const mixed = new MediaStream(stream.getVideoTracks().concat(audioTracks));
-                rec = new MediaRecorder(mixed, { mimeType, videoBitsPerSecond: 8000000 });
-            } catch (e) {
-                cleanup();
-                fail('capture failed');
-                return;
-            }
-
-            const chunks = [];
-            rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
-            rec.onstop = () => {
-                const blob = new Blob(chunks, { type: rec.mimeType || mimeType });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = clipFilename(pageVideo, bounds, format.ext);
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                setTimeout(() => URL.revokeObjectURL(url), 30000);
-                cleanup();
-                btn.classList.remove('recording');
-                btn.disabled = false;
-                btn.textContent = label;
-            };
-
-            // The offscreen copy plays silently (its audio is routed into the
-            // recorder, not the speakers), so leave the page's player alone --
-            // you can keep watching and listening to the clip while it records.
-            srcVideo.muted = false; // muting would silence the graph too
-            srcVideo.volume = 1;
-            srcVideo.playbackRate = 1; // capture is wall-clock; any other rate skews it
-
-            srcVideo.currentTime = bounds.start;
-            srcVideo.addEventListener('seeked', function onSeeked() {
-                srcVideo.removeEventListener('seeked', onSeeked);
-                rec.start(100);
-                srcVideo.play();
-
-                (function watch() {
-                    if (rec.state !== 'recording') return;
-                    const done = srcVideo.currentTime - bounds.start;
-                    if (done >= bounds.len || srcVideo.ended) {
-                        rec.stop();
-                        return;
-                    }
-                    btn.textContent = 'recording ' + done.toFixed(1) + 's / ' + bounds.len.toFixed(1) + 's';
-                    requestAnimationFrame(watch);
-                })();
-            }, { once: true });
-        });
-    }
-
-    function ensureDownloadButton() {
-        const col = document.querySelector('.verdict-column');
-        if (!col || col.querySelector('.downloadrow')) return;
-
-        const row = document.createElement('div');
-        row.className = 'downloadrow';
-
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'downloadclip';
-        btn.textContent = '⬇ Download clip';
-        btn.title = 'Plays the clip through once and saves that window to a file';
-        btn.addEventListener('click', () => downloadClip(btn));
-        row.appendChild(btn);
-
-        const formats = availableFormats();
-        if (formats.length > 1) {
-            const sel = document.createElement('select');
-            sel.className = 'downloadformat';
-            sel.title = 'Output container';
-            const current = chosenFormat();
-            formats.forEach(f => {
-                const opt = document.createElement('option');
-                opt.value = f.id;
-                opt.textContent = f.label;
-                if (current && f.id === current.id) opt.selected = true;
-                sel.appendChild(opt);
-            });
-            sel.addEventListener('change', () => {
-                try { localStorage.setItem(FORMAT_KEY, sel.value); } catch (e) { /* storage blocked */ }
-            });
-            row.appendChild(sel);
-        }
-
-        col.appendChild(row);
+    // visual state only -- the click handler is what actually blocks
+    function ensureSubmitLock() {
+        const btn = document.getElementById('submitVerdictButton');
+        if (!btn || btn.dataset.lockWired) return;
+        const left = submitLockLeft();
+        if (left <= 0) return;
+        btn.dataset.lockWired = '1';
+        btn.classList.add('is-locked');
+        setTimeout(() => btn.classList.remove('is-locked'), left);
     }
 
     // ---- instant submit + history logging --------------------------------
@@ -3915,6 +3827,18 @@
         document.addEventListener('click', e => {
             const t = e.target;
             if (!t || !t.closest) return;
+
+            // Dead-click guard. The page reloads onto a new clip under a cursor
+            // that hasn't moved, so a click aimed at the previous task can land
+            // on this one's Proceed. Swallow it in the capture phase -- the
+            // page's inline onclick is a listener on the button itself, so
+            // stopping propagation here means it never runs.
+            if (t.closest('#submitVerdictButton') && submitLockLeft() > 0) {
+                e.preventDefault();
+                e.stopPropagation();
+                flashLock();
+                return;
+            }
 
             // Report Bad Clip: we know the outcome without reading the form,
             // and the page navigates away immediately, so log it right now.
@@ -3978,13 +3902,13 @@
         step('ensureWheelSeek', ensureWheelSeek);
         step('ensureHoldSpeed', ensureHoldSpeed);
         step('ensurePresets', ensurePresets);
-        step('ensureDownloadButton', ensureDownloadButton);
         step('ensureOverlapWarning', ensureOverlapWarning);
         step('ensureVodName', ensureVodName); // last inserted -> sits on top
         step('ensureModePicker', ensureModePicker);
         step('ensureHistoryPanel', ensureHistoryPanel);
         step('ensureShareButton', ensureShareButton);
         step('ensureHistoryButton', ensureHistoryButton);
+        step('ensureSubmitLock', ensureSubmitLock);
         step('installSubmitFlow', installSubmitFlow);
         step('moveFooterButtons', moveFooterButtons);
     }
