@@ -553,10 +553,11 @@
         /* ---- clips sub-header + tabs ---- */
         /* the clips header is a card too, but flush with the list below it so
            the two read as one section */
+        /* Two explicit rows that always exist, so the header's height and the
+           position of every control are constant no matter what's selected. */
         .histclips-head {
             display: flex !important;
-            align-items: center !important;
-            flex-wrap: wrap !important;   /* four controls won't always fit */
+            flex-direction: column !important;
             gap: 8px !important;
             margin: 18px 0 0 0 !important;
             padding: 9px 12px !important;
@@ -571,6 +572,13 @@
             border-radius: 0 0 4px 4px !important;
         }
         .histlist:empty { display: none !important; }
+        .hch-row {
+            display: flex !important;
+            align-items: center !important;
+            flex-wrap: nowrap !important;   /* never reflow */
+            gap: 8px !important;
+            min-width: 0 !important;
+        }
         .histshown {
             margin-left: auto !important;   /* pinned right, off the tabs' flow */
             flex: 0 0 auto !important;
@@ -917,15 +925,21 @@
            doesn't reflow under the cursor mid-click */
         .histgroup.is-done { opacity: 0.4 !important; }
 
-        /* ---- mode filter menu ---- */
-        .modefilter { position: relative !important; flex: 0 0 auto !important; }
-        .modefilter-btn {
+        /* ---- checkbox filter menus ---- */
+        .chkmenu { position: relative !important; flex: 0 0 auto !important; }
+        /* Fixed width, and only the short count badge inside it changes -- the
+           button must never resize, or the whole header shifts when you filter. */
+        .chkmenu-btn {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            width: 132px !important;
+            padding: 4px 8px !important;
             font-size: 11px !important;
             font-weight: bold !important;
             font-family: inherit !important;
             text-transform: none !important;
             letter-spacing: 0 !important;
-            padding: 4px 9px !important;
             color: rgba(255,255,255,0.55) !important;
             background: rgba(0,0,0,0.22) !important;
             border: 1px solid rgba(255,255,255,0.09) !important;
@@ -933,26 +947,38 @@
             cursor: pointer !important;
             white-space: nowrap !important;
         }
-        .modefilter-btn:hover { color: #fff !important; }
-        .modefilter.is-filtered .modefilter-btn {
+        .chkmenu-btn:hover { color: #fff !important; }
+        .chkmenu-label { flex: 0 0 auto !important; }
+        .chkmenu-count {
+            flex: 1 1 auto !important;
+            text-align: right !important;
+            font-weight: normal !important;
+            font-variant-numeric: tabular-nums !important;
+            color: rgba(255,255,255,0.4) !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+        .chkmenu-caret { flex: 0 0 auto !important; opacity: 0.6 !important; }
+        .chkmenu.is-filtered .chkmenu-btn {
             color: #f5a623 !important;
             border-color: rgba(245,166,35,0.4) !important;
         }
-        .modefilter-menu {
+        .chkmenu.is-filtered .chkmenu-count { color: #f5a623 !important; }
+        .chkmenu-menu {
             display: none !important;
             position: absolute !important;
             top: calc(100% + 4px) !important;
-            right: 0 !important;
+            left: 0 !important;
             z-index: 5 !important;
-            min-width: 150px !important;
+            min-width: 100% !important;
             padding: 6px !important;
             background: #1b1f23 !important;
             border: 1px solid rgba(255,255,255,0.2) !important;
             border-radius: 4px !important;
             box-shadow: 0 6px 20px rgba(0,0,0,0.6) !important;
         }
-        .modefilter.is-open .modefilter-menu { display: block !important; }
-        .modefilter-menu label {
+        .chkmenu.is-open .chkmenu-menu { display: block !important; }
+        .chkmenu-menu label {
             display: flex !important;
             align-items: center !important;
             gap: 7px !important;
@@ -961,25 +987,25 @@
             font-weight: normal !important;
             text-transform: none !important;
             letter-spacing: 0 !important;
+            white-space: nowrap !important;
             color: rgba(255,255,255,0.8) !important;
             border-radius: 3px !important;
             cursor: pointer !important;
         }
-        .modefilter-menu label:hover { background: rgba(255,255,255,0.08) !important; }
-        .modefilter-menu input { accent-color: #f5a623 !important; cursor: pointer !important; }
-        .modefilter-acts {
+        .chkmenu-menu label:hover { background: rgba(255,255,255,0.08) !important; }
+        .chkmenu-menu input { accent-color: #f5a623 !important; cursor: pointer !important; }
+        .chkmenu-acts {
             display: flex !important;
             gap: 6px !important;
             margin-top: 5px !important;
             padding-top: 5px !important;
             border-top: 1px solid rgba(255,255,255,0.12) !important;
         }
-        .modefilter-acts button {
+        .chkmenu-acts button {
             flex: 1 1 0 !important;
             font-size: 10px !important;
             font-family: inherit !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
+            letter-spacing: 0.5px !important;
             padding: 3px !important;
             color: rgba(255,255,255,0.6) !important;
             background: rgba(255,255,255,0.07) !important;
@@ -987,7 +1013,7 @@
             border-radius: 3px !important;
             cursor: pointer !important;
         }
-        .modefilter-acts button:hover { color: #fff !important; }
+        .chkmenu-acts button:hover { color: #fff !important; }
 
         /* per-label split inside a mode row */
         .mode-split {
@@ -2181,7 +2207,7 @@
     // mode, so this is entirely your own annotation. It belongs to the VOD, not
     // the clip, so setting it writes to every entry for that VOD at once.
     const MODES = [
-        { id: 0, label: 'unlabelled', short: '—' },
+        { id: 0, label: 'Unlabelled', short: '—' },
         { id: 1, label: 'Competitive', short: 'COMP' },
         { id: 3, label: 'Wingman', short: 'WING' },
         { id: 4, label: 'Casual', short: 'CAS' },
@@ -2964,25 +2990,25 @@
 
     const GRAINS = [
         {
-            id: 'hour', label: 'hour',
+            id: 'hour', label: 'Hour',
             floor: ts => { const d = new Date(ts); d.setMinutes(0, 0, 0); return d; },
             text: d => d.getHours() + ':00',
             span: 3600e3
         },
         {
-            id: 'day', label: 'day',
+            id: 'day', label: 'Day',
             floor: ts => { const d = new Date(ts); d.setHours(0, 0, 0, 0); return d; },
             text: d => (d.getMonth() + 1) + '/' + d.getDate(),
             span: 86400e3
         },
         {
-            id: 'week', label: 'week',
+            id: 'week', label: 'Week',
             floor: ts => startOfWeek(ts),
             text: d => (d.getMonth() + 1) + '/' + d.getDate(),
             span: 7 * 86400e3
         },
         {
-            id: 'month', label: 'month',
+            id: 'month', label: 'Month',
             floor: ts => { const d = new Date(ts); d.setDate(1); d.setHours(0, 0, 0, 0); return d; },
             text: d => (d.getMonth() + 1) + '/' + String(d.getFullYear()).slice(2),
             span: 30 * 86400e3
@@ -3067,9 +3093,9 @@
 
     const LAYOUT_KEY = 'vacnetTrendLayout';
     const LAYOUTS = [
-        { id: 'heat', label: 'heatmap' },
-        { id: 'lines', label: 'lines' },
-        { id: 'spark', label: 'sparklines' }
+        { id: 'heat', label: 'Heatmap' },
+        { id: 'lines', label: 'Lines' },
+        { id: 'spark', label: 'Sparklines' }
     ];
 
     function chosenLayout() {
@@ -3257,11 +3283,57 @@
     ];
 
     const SORTS = [
-        { id: 'recent', label: 'newest', fn: (a, b) => b.latest - a.latest },
-        { id: 'oldest', label: 'oldest', fn: (a, b) => a.latest - b.latest },
-        { id: 'most', label: 'most reviewed', fn: (a, b) => b.items.length - a.items.length || b.latest - a.latest },
-        { id: 'guilty', label: 'most guilty', fn: (a, b) => guiltyCount(b) - guiltyCount(a) || b.latest - a.latest }
+        // every control label in the popup is sentence case: "Newest", "Day",
+        // "Heatmap", "Repeats" -- not a mix of cased and uncased
+        { id: 'recent', label: 'Newest', fn: (a, b) => b.latest - a.latest },
+        { id: 'oldest', label: 'Oldest', fn: (a, b) => a.latest - b.latest },
+        { id: 'most', label: 'Most reviewed', fn: (a, b) => b.items.length - a.items.length || b.latest - a.latest },
+        { id: 'guilty', label: 'Most guilty', fn: (a, b) => guiltyCount(b) - guiltyCount(a) || b.latest - a.latest }
     ];
+
+    // Verdict categories a clip can fall under, for the label filter. A clip can
+    // match several (AIM + WH), so this is a set per entry, not one value.
+    const LABEL_FILTERS = [
+        { id: 'p0', label: 'Aim assist' },
+        { id: 'p1', label: 'Wall hack' },
+        { id: 'p2', label: 'Auto bhop' },
+        { id: 'p3', label: 'Bot' },
+        { id: 'unsure', label: 'Uncertain' },
+        { id: 'clean', label: 'Clean' },
+        { id: 'bad', label: 'Bad clip' }
+    ];
+
+    function entryLabels(e) {
+        if (e.code === 'b') return ['bad'];
+        const s = String(e.code);
+        const out = [];
+        let anyUnc = false;
+        SUBS.forEach((_, i) => {
+            if (s[i] === '2') out.push('p' + i);
+            else if (s[i] === '1') anyUnc = true;
+        });
+        if (anyUnc) out.push('unsure');
+        if (!out.length) out.push('clean');
+        return out;
+    }
+
+    // Generic checkbox dropdown, shared by the mode and label filters so they
+    // behave and measure identically.
+    function checkMenu(name, label, items) {
+        return '<span class="chkmenu" data-menu="' + name + '">' +
+            '<button type="button" class="chkmenu-btn">' +
+            '<span class="chkmenu-label">' + esc(label) + '</span>' +
+            '<span class="chkmenu-count">All</span>' +
+            '<span class="chkmenu-caret">▾</span>' +
+            '</button>' +
+            '<div class="chkmenu-menu">' +
+            items.map(m => '<label><input type="checkbox" checked value="' + m.id + '">' +
+                esc(m.label) + '</label>').join('') +
+            '<div class="chkmenu-acts">' +
+            '<button type="button" data-all="1">All</button>' +
+            '<button type="button" data-all="0">None</button>' +
+            '</div></div></span>';
+    }
 
     function guiltyCount(g) {
         return g.items.filter(e => String(e.code).indexOf('2') >= 0).length;
@@ -3406,24 +3478,20 @@
                 '<div class="histsum-title">Recent shift ' +
                 '<span class="histsum-note">percentage points vs. all-time</span></div>' +
                 deltaHtml + '</div>' : '') +
+            // Two fixed rows rather than one wrapping row: the controls change
+            // width as their labels change, and a single flex row re-flowed
+            // every time you picked a filter.
             '<div class="histclips-head">' +
+            '<div class="hch-row">' +
             '<span class="histsum-title is-plain">Clips</span>' +
             segControl('tab', TABS, 'all') +
             segControl('sort', SORTS, SORTS[0].id) +
-            // checkbox menu rather than more chips: seven modes wouldn't fit
-            // beside the two segmented controls
-            '<span class="modefilter">' +
-            '<button type="button" class="modefilter-btn">All modes ▾</button>' +
-            '<div class="modefilter-menu">' +
-            MODES.map(m => '<label><input type="checkbox" checked value="' + m.id + '">' +
-                esc(m.label) + '</label>').join('') +
-            '<div class="modefilter-acts">' +
-            '<button type="button" data-all="1">all</button>' +
-            '<button type="button" data-all="0">none</button>' +
-            '</div></div></span>' +
-            // last, and pushed right: the count changes on every append, so it
-            // must not sit upstream of the tabs in the flex flow
+            '</div>' +
+            '<div class="hch-row">' +
+            checkMenu('mode', 'Modes', MODES.map(m => ({ id: m.id, label: m.label }))) +
+            checkMenu('label', 'Labels', LABEL_FILTERS) +
             '<span class="histshown histsum-note"></span>' +
+            '</div>' +
             '</div>' +
             '<div class="histlist">' +
             (groups.length ? '' : '<div class="histpopup-empty">Nothing logged yet.</div>') +
@@ -3440,7 +3508,8 @@
         let shown = 0;
         let curSort = SORTS[0].id;
         let curTab = 'all';
-        const modeFilter = new Set(MODES.map(m => m.id)); // everything, initially
+        const modeFilter = new Set(MODES.map(m => m.id));          // everything,
+        const labelFilter = new Set(LABEL_FILTERS.map(l => l.id)); // initially
         // The filter drives WHICH groups get loaded, not which loaded ones are
         // visible -- hiding them with CSS meant "seen more than once" could only
         // ever show the repeats that happened to be inside the loaded slice.
@@ -3496,6 +3565,8 @@
                 .filter(g => curTab === 'all' ||
                     (curTab === 'repeat' ? g.items.length > 1 : !g.mode))
                 .filter(g => modeFilter.has(g.mode))
+                // a VOD qualifies if ANY of its reviews carries a selected label
+                .filter(g => g.items.some(e => entryLabels(e).some(l => labelFilter.has(l))))
                 .sort(s.fn);
             list.innerHTML = order.length ? '' :
                 '<div class="histpopup-empty">' +
@@ -3531,45 +3602,54 @@
                 : '+ ' + rest.children.length + ' more combination' +
                   (rest.children.length === 1 ? '' : 's');
         });
-        // ---- mode filter menu ----
-        const mf = overlay.querySelector('.modefilter');
-        function syncFilterLabel() {
-            const n = modeFilter.size;
-            mf.querySelector('.modefilter-btn').textContent =
-                (n === MODES.length ? 'All modes'
-                    : n === 0 ? 'No modes'
-                    : n === 1 ? modeInfo(Array.from(modeFilter)[0]).label
-                    : n + ' modes') + ' ▾';
-            mf.classList.toggle('is-filtered', n !== MODES.length);
+        // ---- checkbox filter menus (modes, labels) ----
+        // The button's width is fixed in CSS and only a short "All"/"3 of 7"
+        // badge changes, so picking a filter can't resize the header.
+        function syncMenu(menu) {
+            const boxes = Array.from(menu.querySelectorAll('input'));
+            const on = boxes.filter(b => b.checked).length;
+            const all = on === boxes.length;
+            menu.querySelector('.chkmenu-count').textContent =
+                all ? 'All' : (on === 0 ? 'None' : on + ' of ' + boxes.length);
+            menu.classList.toggle('is-filtered', !all);
         }
-        mf.addEventListener('click', e => {
-            if (e.target.closest('.modefilter-btn')) {
-                mf.classList.toggle('is-open');
-                return;
-            }
-            const act = e.target.closest('[data-all]');
-            if (act) {
+        overlay.querySelectorAll('.chkmenu').forEach(menu => {
+            const which = menu.dataset.menu;
+            const target = which === 'mode' ? modeFilter : labelFilter;
+            const cast = v => (which === 'mode' ? parseInt(v, 10) : v);
+
+            menu.addEventListener('click', e => {
+                if (e.target.closest('.chkmenu-btn')) {
+                    const open = menu.classList.contains('is-open');
+                    // only one menu open at a time
+                    overlay.querySelectorAll('.chkmenu').forEach(m => m.classList.remove('is-open'));
+                    menu.classList.toggle('is-open', !open);
+                    return;
+                }
+                const act = e.target.closest('[data-all]');
+                if (!act) return;
                 const on = act.dataset.all === '1';
-                modeFilter.clear();
-                mf.querySelectorAll('input').forEach(i => {
+                target.clear();
+                menu.querySelectorAll('input').forEach(i => {
                     i.checked = on;
-                    if (on) modeFilter.add(parseInt(i.value, 10));
+                    if (on) target.add(cast(i.value));
                 });
-                syncFilterLabel();
+                syncMenu(menu);
                 resetList();
-            }
+            });
+            menu.addEventListener('change', e => {
+                if (e.target.type !== 'checkbox') return;
+                const id = cast(e.target.value);
+                if (e.target.checked) target.add(id); else target.delete(id);
+                syncMenu(menu);
+                resetList();
+            });
         });
-        mf.addEventListener('change', e => {
-            const box = e.target;
-            if (box.type !== 'checkbox') return;
-            const id = parseInt(box.value, 10);
-            if (box.checked) modeFilter.add(id); else modeFilter.delete(id);
-            syncFilterLabel();
-            resetList();
-        });
-        // click anywhere else closes it
+        // click anywhere else closes them
         overlay.addEventListener('click', e => {
-            if (!e.target.closest('.modefilter')) mf.classList.remove('is-open');
+            if (!e.target.closest('.chkmenu')) {
+                overlay.querySelectorAll('.chkmenu').forEach(m => m.classList.remove('is-open'));
+            }
         });
 
         // labelling a VOD's mode from the list: write through, update the local
