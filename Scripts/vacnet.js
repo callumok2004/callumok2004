@@ -993,7 +993,6 @@
         .mode-split {
             display: flex !important;
             gap: 1px !important;
-            width: 84px !important;
             height: 8px !important;
             background: rgba(255,255,255,0.06) !important;
             border-radius: 2px !important;
@@ -1004,6 +1003,10 @@
         .ms-1 { background: #f5a623 !important; }
         .ms-2 { background: #7ec2ff !important; }
         .ms-3 { background: #c39bf0 !important; }
+        /* grey everywhere else means uncertain, so it does here too */
+        .ms-unsure { background: #b8b8b8 !important; }
+        .ms-clean { background: #3d8b40 !important; }
+        .ms-bad { background: #7a4fb5 !important; }
         .mode-key {
             display: flex !important;
             gap: 10px !important;
@@ -1025,6 +1028,7 @@
         .mode-name { font-weight: bold !important; color: #fff !important; }
         .mode-name.is-none { color: rgba(255,255,255,0.35) !important; font-weight: normal !important; }
         .mode-bar {
+            width: 84px !important;   /* was the wide one; now the context bar */
             height: 8px !important;
             border-radius: 2px !important;
             background: rgba(255,255,255,0.08) !important;
@@ -2213,6 +2217,20 @@
     // the mode chosen on the current page before any entry for it exists
     let pendingMode = 0;
 
+    // Single write path, shared by the sidebar chips and the verdict presets, so
+    // the buttons always reflect what will actually be stored.
+    function applyMode(val) {
+        pendingMode = val || 0;
+        const k = currentVodKey();
+        if (k) setVodMode(k, pendingMode); // no-op until this VOD has an entry
+        const box = document.querySelector('.modepick');
+        if (!box) return;
+        box.querySelectorAll('.modebtn').forEach(b => {
+            b.classList.toggle('is-on', parseInt(b.dataset.mode, 10) === pendingMode);
+        });
+        box.classList.toggle('is-set', !!pendingMode);
+    }
+
     function vodKey(src) {
         const m = (src || '').match(/([^/]+)\.webm/i);
         if (!m) return src || '';
@@ -2579,26 +2597,21 @@
                 if (!btn) return;
                 const val = parseInt(btn.dataset.mode, 10) || 0;
                 // clicking the active one clears it, so a mis-click is undoable
-                pendingMode = (val === pendingMode) ? 0 : val;
-                const k = currentVodKey();
-                if (k) setVodMode(k, pendingMode); // no-op if nothing logged yet
-                paint();
+                applyMode(val === pendingMode ? 0 : val);
             });
             const name = col.querySelector('.vodname');
             if (name) name.insertAdjacentElement('afterend', box);
             else col.insertBefore(box, col.firstChild);
         }
 
-        function paint() {
-            box.querySelectorAll('.modebtn').forEach(b => {
-                b.classList.toggle('is-on', parseInt(b.dataset.mode, 10) === pendingMode);
-            });
-            box.classList.toggle('is-set', !!pendingMode);
-        }
-
         box.dataset.key = key;
+        // read-only refresh: pick up whatever this VOD already carries without
+        // writing anything back
         pendingMode = vodMode(key);
-        paint();
+        box.querySelectorAll('.modebtn').forEach(b => {
+            b.classList.toggle('is-on', parseInt(b.dataset.mode, 10) === pendingMode);
+        });
+        box.classList.toggle('is-set', !!pendingMode);
     }
 
     // ---- overlap with previously reviewed segments -----------------------
@@ -2839,19 +2852,34 @@
                 const guilty = r.t.n ? (r.t.n - r.t.clean - r.t.bad) * 100 / r.t.n : 0;
                 // per-label split, inline: four thin segments in one bar rather
                 // than four more rows per mode
-                const split = SHORT_NAME.map((nm, i) => {
-                    const pct = r.t.n ? r.t.pos[i] * 100 / r.t.n : 0;
-                    return '<i class="ms-' + i + '" style="width:' + pct + '%" data-tip="' +
-                        esc(nm + ' ' + Math.round(pct) + '% (' + r.t.pos[i] + ' of ' +
-                            r.t.n + ' ' + modeInfo(r.mode).label + ')') + '"></i>';
-                }).join('');
+                // Every clip lands in exactly one of: has-a-confirmed-label /
+                // uncertain-only / clean / bad, so those four shares sum to 100%
+                // and the bar has neither gaps nor clipped overflow. Within the
+                // confirmed share, the four labels are split by their relative
+                // frequency -- they overlap (one clip can be AIM+WH), so their
+                // raw percentages could otherwise sum past the whole bar.
+                const n = r.t.n || 1;
+                const posSum = r.t.pos.reduce((a, b) => a + b, 0) || 1;
+                const posShare = r.t.posAny * 100 / n;
+                const seg = (cls, nm, width, count) =>
+                    '<i class="' + cls + '" style="width:' + width + '%" data-tip="' +
+                    esc(nm + ' ' + Math.round(count * 100 / n) + '% (' + count + ' of ' +
+                        n + ' ' + modeInfo(r.mode).label + ')') + '"></i>';
+
+                const split = SHORT_NAME.map((nm, i) =>
+                        seg('ms-' + i, nm, posShare * r.t.pos[i] / posSum, r.t.pos[i])).join('') +
+                    seg('ms-unsure', 'uncertain only', r.t.uncOnly * 100 / n, r.t.uncOnly) +
+                    seg('ms-clean', 'clean', r.t.clean * 100 / n, r.t.clean) +
+                    seg('ms-bad', 'bad clip', r.t.bad * 100 / n, r.t.bad);
+                // the per-label split gets the wide slot -- it's the point of the
+                // card; raw volume is context and rides in the narrow one
                 return '<span class="mode-name' + (r.mode ? '' : ' is-none') + '">' +
                     esc(modeInfo(r.mode).label) + '</span>' +
+                    '<span class="mode-split">' + split + '</span>' +
                     '<span class="mode-bar" data-tip="' +
                     esc(r.t.n + ' clips · ' + r.t.vodCount + ' VODs') + '">' +
                     '<i class="mode-vol" style="width:' + (r.t.n * 100 / max) + '%"></i>' +
                     '</span>' +
-                    '<span class="mode-split">' + split + '</span>' +
                     '<span class="mode-n">' + r.t.n + '</span>' +
                     '<span class="mode-pct" data-tip="' +
                     esc('share of ' + modeInfo(r.mode).label + ' clips with at least one ' +
@@ -2861,6 +2889,9 @@
             '</div>' +
             '<div class="mode-key">' + SHORT_NAME.map((nm, i) =>
                 '<span><i class="ms-' + i + '"></i>' + esc(nm) + '</span>').join('') +
+            '<span><i class="ms-unsure"></i>unsure</span>' +
+            '<span><i class="ms-clean"></i>clean</span>' +
+            '<span><i class="ms-bad"></i>bad</span>' +
             '</div></div>';
     }
 
@@ -2980,7 +3011,11 @@
 
     // tallies shared by the trend bars and the delta table
     function tally(entries) {
-        const t = { n: entries.length, bad: 0, clean: 0, uncertain: 0, pos: [0, 0, 0, 0], vods: {} };
+        // posAny/uncOnly partition the set with clean and bad: every entry lands
+        // in exactly one of the four, which is what the mode bars need to fill
+        // without gaps. `pos` and `uncertain` overlap by design and can't.
+        const t = { n: entries.length, bad: 0, clean: 0, uncertain: 0, posAny: 0, uncOnly: 0,
+                    pos: [0, 0, 0, 0], vods: {} };
         entries.forEach(e => {
             t.vods[e.vod] = 1;
             if (e.code === 'b') { t.bad++; return; }
@@ -2991,7 +3026,9 @@
                 else if (s[i] === '1') anyUnc = true;
             });
             if (anyUnc) t.uncertain++;
-            if (!anyPos && !anyUnc) t.clean++;
+            if (anyPos) t.posAny++;
+            else if (anyUnc) t.uncOnly++;   // uncertain, nothing confirmed
+            else t.clean++;
         });
         t.vodCount = Object.keys(t.vods).length;
         return t;
@@ -3737,19 +3774,22 @@
             name: 'WH',
             cls: 'preset-wh',
             title: 'Wall hack, aim assist uncertain, not auto bhop, not bot',
-            set: { aimassist: 'skip', wallhack: 'positive', autobhop: 'negative', bot: 'negative' }
+            set: { aimassist: 'skip', wallhack: 'positive', autobhop: 'negative', bot: 'negative' },
+            mode: 1 // Competitive
         },
         {
             name: 'HVH',
             cls: 'preset-hvh',
             title: 'Aim assist, wall hack, auto bhop, not bot',
-            set: { aimassist: 'positive', wallhack: 'positive', autobhop: 'positive', bot: 'negative' }
+            set: { aimassist: 'positive', wallhack: 'positive', autobhop: 'positive', bot: 'negative' },
+            mode: 1 // Competitive
         },
         {
             name: 'BOT',
             cls: 'preset-bot',
             title: 'Aim assist, bot player, wall hack uncertain, not auto bhop',
-            set: { aimassist: 'positive', wallhack: 'skip', autobhop: 'negative', bot: 'positive' }
+            set: { aimassist: 'positive', wallhack: 'skip', autobhop: 'negative', bot: 'positive' },
+            mode: 5 // Deathmatch
         }
     ];
 
@@ -3761,6 +3801,9 @@
             // the page reads .checked directly, but fire change for any CSS/JS hooks
             input.dispatchEvent(new Event('change', { bubbles: true }));
         }
+        // Only fills a blank -- an explicit choice always wins, so a preset can
+        // never overwrite a mode you already set for this VOD.
+        if (preset.mode && !pendingMode) applyMode(preset.mode);
     }
 
     function ensurePresets() {
