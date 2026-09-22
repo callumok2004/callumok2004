@@ -10,6 +10,8 @@ const IGNORE_FIELDS = new Set(['banner_url', 'followers']);
 
 const LIKES_DEBOUNCE_POLLS = 10;
 
+const STALE_THRESHOLD = 2 * 24 * 60 * 60 * 1000; // 2 days
+
 const CUSTOM_HANDLERS = {};
 
 let state = {}
@@ -158,8 +160,12 @@ async function check() {
 		state = saved;
 	} catch { }
 
-	if (!saved) {
-		console.log('Initializing — fetching following list and latest tweet...');
+	const stale = saved && (!saved.lastSeen || Date.now() - saved.lastSeen > STALE_THRESHOLD);
+
+	if (!saved || stale) {
+		console.log(stale
+			? 'State is stale (was offline) — rebaselining silently...'
+			: 'Initializing — fetching following list and latest tweet...');
 		const followingList = await getFollowingList() ?? [];
 		const tweets = await getLatestTweets();
 		const latestTweetId = tweets?.[0]?.id ?? null;
@@ -168,9 +174,10 @@ async function check() {
 			fields: flat, bannerHash, bannerUrl, followingList, latestTweetId,
 			confirmedLikes: Number.isFinite(initLikes) ? initLikes : null,
 			candidateLikes: Number.isFinite(initLikes) ? initLikes : null,
-			likeStreak: 0
+			likeStreak: 0,
+			lastSeen: Date.now()
 		}));
-		console.log('Initialized');
+		console.log(stale ? 'Rebaselined' : 'Initialized');
 		return;
 	}
 
@@ -185,6 +192,7 @@ async function check() {
 
 	if (changes.length > 7) {
 		console.log('Too many changes? api fucked up again? skipping...');
+		await fs.writeFile(STATE_FILE, JSON.stringify({ ...saved, lastSeen: Date.now() }));
 		return;
 	}
 
@@ -304,24 +312,30 @@ async function check() {
 		await sendEmbeds(embeds);
 	}
 
-	const likesStateChanged =
-		confirmedLikes !== (saved.confirmedLikes ?? null) ||
-		candidateLikes !== (saved.candidateLikes ?? null) ||
-		likeStreak !== (saved.likeStreak ?? 0);
+	await fs.writeFile(STATE_FILE, JSON.stringify({
+		fields: flat,
+		bannerHash: bannerHash ?? saved.bannerHash,
+		bannerUrl: bannerUrl ?? saved.bannerUrl,
+		followingList: newFollowingList,
+		latestTweetId,
+		confirmedLikes,
+		candidateLikes,
+		likeStreak,
+		lastSeen: Date.now()
+	}));
+}
 
-	if (changes.length > 0 || bannerChanged || followingChanged || latestTweetId !== saved.latestTweetId || likesStateChanged) {
-		await fs.writeFile(STATE_FILE, JSON.stringify({
-			fields: flat,
-			bannerHash: bannerHash ?? saved.bannerHash,
-			bannerUrl: bannerUrl ?? saved.bannerUrl,
-			followingList: newFollowingList,
-			latestTweetId,
-			confirmedLikes,
-			candidateLikes,
-			likeStreak
-		}));
+let checking = false;
+
+async function guardedCheck() {
+	if (checking) return;
+	checking = true;
+	try {
+		await check();
+	} finally {
+		checking = false;
 	}
 }
 
-setInterval(check, INTERVAL);
-check();
+setInterval(guardedCheck, INTERVAL);
+guardedCheck();
