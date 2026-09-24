@@ -1,33 +1,27 @@
 {
+  ".NET": {
+    "version": "1.0.0",
+    "description": "C# and .NET language support, solution explorer and debugging.",
+    "publisher": "vscode",
+    "repository": "N/A"
+  },
+  ".NET Profiler": {
+    "version": "0.1.0",
+    "description": "Rider-style live CPU, memory and allocation profiling for .NET, inside VS Code",
+    "publisher": "local",
+    "repository": "N/A"
+  },
+  "C/C++ (clangd)": {
+    "version": "1.0.0",
+    "description": "C and C++ language support backed by clangd: go to definition, completion, hover, references and diagnostics.",
+    "publisher": "vscode",
+    "repository": "https://github.com/callumok2004/vscode-fork.git"
+  },
   "Claude Code for VS Code": {
-    "version": "2.1.219",
+    "version": "2.1.260",
     "description": "Claude Code for VS Code: Harness the power of Claude Code without leaving your IDE",
     "publisher": "Anthropic",
     "repository": "N/A"
-  },
-  "GitLens — Git supercharged": {
-    "version": "18.3.0",
-    "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more",
-    "publisher": "eamodio",
-    "repository": "https://github.com/gitkraken/vscode-gitlens.git"
-  },
-  "Garry's Mod Language Server": {
-    "version": "1.0.27",
-    "description": "Advanced GLua language server for Visual Studio Code - IntelliSense, debugger, formatter, and more for Garry's Mod development.",
-    "publisher": "Pollux",
-    "repository": "https://github.com/Pollux12/vscode-gmod-glua-ls"
-  },
-  "Lua": {
-    "version": "3.18.2",
-    "description": "Lua Language Server coded by Lua",
-    "publisher": "sumneko",
-    "repository": "https://github.com/LuaLS/lua-language-server"
-  },
-  "C/C++": {
-    "version": "1.33.4",
-    "description": "C/C++ IntelliSense, debugging, and code browsing.",
-    "publisher": "ms-vscode",
-    "repository": "git+https://github.com/Microsoft/vscode-cpptools.git"
   },
   "CSS Formatter": {
     "version": "1.0.2",
@@ -35,29 +29,17 @@
     "publisher": "aeschli",
     "repository": "https://github.com/aeschli/vscode-css-formatter"
   },
-  "glua": {
-    "version": "1.1.0",
-    "description": "GLua language support for Visual Studio Code",
-    "publisher": "aStonedPenguin",
+  "Error Lens": {
+    "version": "3.28.0",
+    "description": "Improve highlighting of errors, warnings and other language diagnostics.",
+    "publisher": "usernamehw",
+    "repository": "https://github.com/usernamehw/vscode-error-lens"
+  },
+  "Fork Tools": {
+    "version": "1.0.0",
+    "description": "Editor decorations, auto save behaviour and rich presence that used to live in third party extensions.",
+    "publisher": "vscode",
     "repository": "N/A"
-  },
-  "PHP Intelephense": {
-    "version": "1.18.5",
-    "description": "PHP code intelligence for Visual Studio Code",
-    "publisher": "bmewburn",
-    "repository": "https://github.com/bmewburn/vscode-intelephense.git"
-  },
-  "XAML Styler": {
-    "version": "1.6.1",
-    "description": "XAML Styler is used to format XAML source code based on a set of styling rules. This tool can help you/your team maintain a better XAML coding style as well as a much better XAML readability.",
-    "publisher": "dabbinavo",
-    "repository": "https://github.com/dabbinavo/vscode-xamlstyler"
-  },
-  "Composer": {
-    "version": "1.71.19076",
-    "description": "All-in-One composer integration, quick actions, commands, automatic installation, tasks, code lenses, diagnostics, and composer.json IntelliSense.",
-    "publisher": "DEVSENSE",
-    "repository": "https://github.com/DEVSENSE/phptools-docs"
   },
   "IntelliPHP - AI Autocomplete for PHP": {
     "version": "0.12.17700",
@@ -65,123 +47,39 @@
     "publisher": "DEVSENSE",
     "repository": "https://github.com/DEVSENSE/phptools-docs"
   },
-  "PHP": {
-    "version": "1.71.19076",
-    "description": "All-in-One PHP support - IntelliSense, Debug, Formatter, Code Lenses, Code Fixes, Linting, Refactoring, PHPUnit Tests, Web Server, and more.",
-    "publisher": "DEVSENSE",
-    "repository": "https://github.com/DEVSENSE/phptools-docs"
-  },
-  "PHP Profiler": {
-    "version": "1.71.19076",
-    "description": "Support for PHP (Xdebug) profiling files and inspecting them.",
-    "publisher": "DEVSENSE",
-    "repository": "https://github.com/DEVSENSE/phptools-docs"
-  },
-  "Rojo - Roblox Studio Sync": {
-    "version": "2.1.2",
-    "description": "Rojo for VS Code",
-    "publisher": "evaera",
-    "repository": "N/A"
-  },
-  "Highlight": {
-    "version": "2.1.0",
-    "description": "Advanced text highlighter based on regexes. Useful for todos, annotations, colors etc.",
-    "publisher": "fabiospampinato",
-    "repository": "N/A"
-  },
-  "%displayName%": {
-    "version": "0.161.2026072404",
-    "description": "%description%",
-    "publisher": "GitHub",
-    "repository": "https://github.com/Microsoft/vscode-pull-request-github"
-  },
-  "Todo Tree": {
-    "version": "0.0.226",
-    "description": "Show TODO, FIXME, etc. comment tags in a tree view",
-    "publisher": "Gruntfuggly",
-    "repository": "N/A"
-  },
-  "Discord Presence": {
-    "version": "5.9.2",
-    "description": "Update your discord status with a rich presence.",
-    "publisher": "icrawl",
-    "repository": "https://github.com/iCrawl/discord-vscode.git"
-  },
-  "Luau Language Server": {
-    "version": "1.68.0",
-    "description": "A Language Server Client for Luau",
-    "publisher": "JohnnyMorganz",
-    "repository": "https://github.com/JohnnyMorganz/luau-lsp"
-  },
-  "Auto-Save on Window Change": {
-    "version": "1.0.3",
-    "description": "Auto-Save files by switching between windows.",
-    "publisher": "mcright",
-    "repository": "https://github.com/McRight/Auto-Save-VSCode"
-  },
-  "Git Graph": {
-    "version": "1.30.0",
-    "description": "View a Git Graph of your repository, and perform Git actions from the graph.",
-    "publisher": "mhutchie",
-    "repository": "https://github.com/mhutchie/vscode-git-graph.git"
-  },
-  "SCSS IntelliSense": {
-    "version": "0.10.0",
-    "description": "Advanced autocompletion and refactoring support for SCSS",
-    "publisher": "mrmlnc",
-    "repository": "https://github.com/mrmlnc/vscode-scss"
-  },
-  "C#": {
-    "version": "2.146.2",
-    "description": "Base language support for C#",
-    "publisher": "ms-dotnettools",
-    "repository": "https://github.com/dotnet/vscode-csharp"
-  },
-  ".NET Extension Pack": {
-    "version": "1.0.13",
-    "description": "The ultimate collection of extensions for working with .NET in VS Code!",
-    "publisher": "ms-dotnettools",
-    "repository": "https://github.com/dotnet/vscode-dotnet-pack.git"
-  },
-  ".NET Install Tool": {
-    "version": "3.1.0",
-    "description": "This extension installs and manages different versions of the .NET SDK and Runtime.",
-    "publisher": "ms-dotnettools",
-    "repository": "https://github.com/dotnet/vscode-dotnet-runtime.git"
-  },
-  "JavaScript Debugger": {
-    "version": "1.72.1",
-    "description": "An extension for debugging Node.js programs and Chrome.",
-    "publisher": "ms-vscode",
-    "repository": "https://github.com/Microsoft/vscode-pwa.git"
-  },
-  "Color Highlight": {
-    "version": "2.8.0",
-    "description": "Highlight web colors in your editor",
-    "publisher": "naumovs",
-    "repository": "https://github.com/naumovs/vscode-ext-color-highlight.git"
-  },
-  "indent-rainbow": {
-    "version": "8.3.1",
-    "description": "Makes indentation easier to read",
-    "publisher": "oderwat",
-    "repository": "https://github.com/oderwat/vscode-indent-rainbow.git"
-  },
   "Material Icon Theme": {
-    "version": "5.37.0",
+    "version": "5.38.1",
     "description": "Material Design Icons for Visual Studio Code",
     "publisher": "PKief",
     "repository": "git+https://github.com/material-extensions/vscode-material-icon-theme.git"
   },
-  "Trailing Spaces": {
-    "version": "0.4.4",
-    "description": "Highlight trailing spaces and delete them in a flash!",
-    "publisher": "shardulm94",
-    "repository": "https://github.com/shardulm94/vscode-trailingspaces.git"
+  "PHP": {
+    "version": "1.73.19214",
+    "description": "All-in-One PHP support - IntelliSense, Debug, Formatter, Code Lenses, Code Fixes, Linting, Refactoring, PHPUnit Tests, Web Server, and more.",
+    "publisher": "DEVSENSE",
+    "repository": "https://github.com/DEVSENSE/phptools-docs"
+  },
+  "PHP Debug": {
+    "version": "1.40.1",
+    "description": "Debug support for PHP with Xdebug",
+    "publisher": "xdebug",
+    "repository": "https://github.com/xdebug/vscode-php-debug.git"
+  },
+  "PHP Intelephense": {
+    "version": "1.18.5",
+    "description": "PHP code intelligence for Visual Studio Code",
+    "publisher": "bmewburn",
+    "repository": "https://github.com/bmewburn/vscode-intelephense.git"
+  },
+  "PHP Profiler": {
+    "version": "1.73.19214",
+    "description": "Support for PHP (Xdebug) profiling files and inspecting them.",
+    "publisher": "DEVSENSE",
+    "repository": "https://github.com/DEVSENSE/phptools-docs"
   },
   "SCSS Formatter": {
     "version": "3.0.1",
-    "description": "%scssFormatter.description%",
+    "description": "A Visual Studio Code Extension to format SCSS",
     "publisher": "sibiraj-s",
     "repository": "https://github.com/sibiraj-s/vscode-scss-formatter.git"
   },
@@ -191,46 +89,10 @@
     "publisher": "slevesque",
     "repository": "https://github.com/stef-levesque/vscode-shader.git"
   },
-  "Min Darker": {
-    "version": "0.0.2",
-    "description": "Darker version of Min Dark theme",
-    "publisher": "St0pien",
-    "repository": "N/A"
-  },
-  "Svelte for VS Code": {
-    "version": "110.3.0",
-    "description": "Svelte language support for VS Code",
-    "publisher": "svelte",
-    "repository": "https://github.com/sveltejs/language-tools.git"
-  },
-  "Error Lens": {
-    "version": "3.28.0",
-    "description": "Improve highlighting of errors, warnings and other language diagnostics.",
-    "publisher": "usernamehw",
-    "repository": "https://github.com/usernamehw/vscode-error-lens"
-  },
-  "GLua Enhanced (Garry's Mod/Gmod Lua)": {
-    "version": "2.5.5",
-    "description": "GLua language support for Visual Studio Code",
-    "publisher": "venner",
-    "repository": "https://github.com/WilliamVenner/vscode-glua-enhanced.git"
-  },
   "WakaTime": {
     "version": "30.2.1",
     "description": "Metrics, insights, and time tracking automatically generated from your programming activity.",
     "publisher": "WakaTime",
     "repository": "https://github.com/wakatime/vscode-wakatime.git"
-  },
-  "PHP Debug": {
-    "version": "1.40.1",
-    "description": "Debug support for PHP with Xdebug",
-    "publisher": "xdebug",
-    "repository": "https://github.com/xdebug/vscode-php-debug.git"
-  },
-  "Pretty TypeScript Errors": {
-    "version": "0.8.7",
-    "description": "Make TypeScript errors prettier and more human-readable in VSCode",
-    "publisher": "YoavBls",
-    "repository": "https://github.com/yoavbls/pretty-ts-errors"
   }
 }
