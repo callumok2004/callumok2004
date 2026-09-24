@@ -7,7 +7,7 @@
   },
   ".NET Profiler": {
     "version": "0.1.0",
-    "description": "Rider-style live CPU, memory and allocation profiling for .NET, inside VS Code",
+    "description": "description!",
     "publisher": "local",
     "repository": "N/A"
   },
@@ -18,7 +18,7 @@
     "repository": "https://github.com/callumok2004/vscode-fork.git"
   },
   "Claude Code for VS Code": {
-    "version": "2.1.260",
+    "version": "2.1.281",
     "description": "Claude Code for VS Code: Harness the power of Claude Code without leaving your IDE",
     "publisher": "Anthropic",
     "repository": "N/A"
@@ -41,12 +41,6 @@
     "publisher": "vscode",
     "repository": "N/A"
   },
-  "IntelliPHP - AI Autocomplete for PHP": {
-    "version": "0.12.17700",
-    "description": "AI-assisted development for PHP.",
-    "publisher": "DEVSENSE",
-    "repository": "https://github.com/DEVSENSE/phptools-docs"
-  },
   "Material Icon Theme": {
     "version": "5.38.1",
     "description": "Material Design Icons for Visual Studio Code",
@@ -59,23 +53,11 @@
     "publisher": "DEVSENSE",
     "repository": "https://github.com/DEVSENSE/phptools-docs"
   },
-  "PHP Debug": {
-    "version": "1.40.1",
-    "description": "Debug support for PHP with Xdebug",
-    "publisher": "xdebug",
-    "repository": "https://github.com/xdebug/vscode-php-debug.git"
-  },
   "PHP Intelephense": {
     "version": "1.18.5",
     "description": "PHP code intelligence for Visual Studio Code",
     "publisher": "bmewburn",
     "repository": "https://github.com/bmewburn/vscode-intelephense.git"
-  },
-  "PHP Profiler": {
-    "version": "1.73.19214",
-    "description": "Support for PHP (Xdebug) profiling files and inspecting them.",
-    "publisher": "DEVSENSE",
-    "repository": "https://github.com/DEVSENSE/phptools-docs"
   },
   "SCSS Formatter": {
     "version": "3.0.1",
@@ -88,11 +70,5 @@
     "description": "Syntax highlighter for shader language (hlsl, glsl, cg) ",
     "publisher": "slevesque",
     "repository": "https://github.com/stef-levesque/vscode-shader.git"
-  },
-  "WakaTime": {
-    "version": "30.2.1",
-    "description": "Metrics, insights, and time tracking automatically generated from your programming activity.",
-    "publisher": "WakaTime",
-    "repository": "https://github.com/wakatime/vscode-wakatime.git"
   }
 }
