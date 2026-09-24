@@ -1,359 +1,189 @@
 {
-  "[css]": {
-    "editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter",
-    "editor.formatOnSave": false
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  },
-  "[scss]": {
-    "editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  },
-  "files.autoGuessEncoding": true,
-  "discord.detailsEditing": "📁 {file_name} • {dir_name} • {workspace}",
-  "discord.lowerDetailsEditing": "📝 Line: {current_line}/{total_lines} • Col: {current_column}",
-  "editor.bracketPairColorization.enabled": true,
-  "editor.cursorBlinking": "expand",
-  "editor.cursorSmoothCaretAnimation": "on",
-  "editor.cursorWidth": 5,
-  // "editor.fontFamily": "'Fira Code'",
-  "editor.fontLigatures": true,
-  "editor.inlineSuggest.enabled": true,
-  "editor.linkedEditing": true,
-  "editor.minimap.maxColumn": 100,
-  "editor.minimap.scale": 2,
-  "editor.minimap.showSlider": "always",
-  "editor.suggestSelection": "first",
-  "editor.tabSize": 2,
-  "git.enableSmartCommit": true,
-  "indentRainbow.colorOnWhiteSpaceOnly": false,
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "php.validate.executablePath": "C:/xampp/php/php.exe",
-  "security.workspace.trust.untrustedFiles": "open",
-  "terminal.integrated.defaultProfile.windows": "PowerShell",
-  "terminal.integrated.fontFamily": "FiraCode Nerd Font",
-  "terminal.integrated.profiles.windows": {
-    "Command Prompt": {
-      "args": [],
-      "icon": "terminal-cmd",
-      "path": [
-        "${env:windir}\\Sysnative\\cmd.exe",
-        "${env:windir}\\System32\\cmd.exe"
-      ]
-    },
-    "Git Bash": {
-      "source": "Git Bash"
-    },
-    "PowerShell": {
-      "icon": "terminal-powershell",
-      "source": "PowerShell"
-    },
-    "Windows PowerShell": {
-      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
-    }
-  },
-  "terminal.integrated.scrollback": 10000,
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "window.title": "${activeEditorShort}${separator}${rootName} • ZARP Gaming",
-  "workbench.iconTheme": "material-icon-theme",
-  "github.copilot.enable": {
-    "*": true,
-    "plaintext": true,
-    "markdown": false,
-    "scminput": false,
-    "yaml": false,
-    "typescriptreact": true,
-    "php": true,
-    "glua": true,
-    "csharp": false,
-    "javascript": true
-  },
-  "files.associations": {
-    ".env": "code-text-binary",
-    "*.fs": "glsl",
-    "*.vs": "glsl"
-  },
-  "liveshare.connectionMode": "relay",
-  "glualint.linter": "C:\\Users\\callu\\OneDrive\\Documents\\glualint\\glualint.exe",
-  "glualint.run": "manual",
-  "[dart]": {
-    "editor.formatOnSave": true,
-    "editor.formatOnType": true,
-    "editor.rulers": [
-      80
-    ],
-    "editor.selectionHighlight": false,
-    "editor.suggest.snippetsPreventQuickSuggestions": false,
-    "editor.suggestSelection": "first",
-    "editor.tabCompletion": "onlySnippets",
-    "editor.wordBasedSuggestions": "off"
-  },
-  "explorer.fileNesting.patterns": {
-    "*.ts": "${capture}.js",
-    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
-    "*.jsx": "${capture}.js",
-    "*.tsx": "${capture}.ts",
-    "tsconfig.json": "tsconfig.*.json",
-    "package.json": "package-lock.json, yarn.lock",
-    "*.d.ts": "${capture}.d.ts",
-    ".env.*": ".env.${capture}",
-    "*.cpp": "${capture}.h, ${capture}.hpp"
-  },
-  "explorer.fileNesting.enabled": true,
-  "gitlens.detectNestedRepositories": true,
-  "js/ts.implicitProjectConfig.target": "ES2022",
-  "discord.detailsIdling": "https://callumdev.xyz",
-  "discord.lowerDetailsIdling": "https://zarpgaming.com",
-  "discord.smallImage": "GitHub - @callumok2004",
-  "discord.detailsDebugging": "🧪(DBG) {file_name} • {dir_name} • {workspace}",
-  "editor.stickyScroll.enabled": true,
-  "window.commandCenter": true,
-  "git.confirmSync": false,
-  "emmet.excludeLanguages": [
-    "markdown",
-    "php"
-  ],
-  "intelephense.format.enable": false,
-  "intelephense.maxMemory": 2048,
-  "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": true,
-  "intelephense.diagnostics.embeddedLanguages": false,
-  "git.autofetch": true,
-  "editor.accessibilitySupport": "off",
-  "php.debug.executablePath": "c:/xampp/php/php.exe",
-  "intelephense.runtime": "C:\\Program Files\\nodejs\\node.exe",
-  "intelephense.completion.maxItems": 200,
-  "editor.insertSpaces": false,
-  "[python]": {
-    "editor.formatOnType": true
-  },
-  "workbench.editorAssociations": {
-    "*.lua": "default",
-    "*.jpg": "imagePreview.previewEditor"
-  },
-  "diffEditor.maxComputationTime": 0,
-  "workbench.tree.indent": 8,
-  "workbench.tree.renderIndentGuides": "always",
-  "workbench.view.alwaysShowHeaderActions": true,
-  "search.showLineNumbers": true,
-  "scm.alwaysShowRepositories": true,
-  "scm.providerCountBadge": "auto",
-  "extensions.ignoreRecommendations": true,
-  "gitlens.views.repositories.showIncomingActivity": true,
-  "diffEditor.ignoreTrimWhitespace": false,
-  "editor.unicodeHighlight.invisibleCharacters": false,
-  "diffEditor.experimental.showEmptyDecorations": true,
-  "diffEditor.experimental.showMoves": true,
-  "diffEditor.hideUnchangedRegions.enabled": true,
-  "haskell.manageHLS": "PATH",
-  "window.zoomLevel": 1.5,
-  "workbench.colorCustomizations": {
-    "statusBar.background": "#2333cc96",
-    "statusBar.foreground": "#ffffff",
-    "statusBar.noFolderBackground": "#212121",
-    "statusBar.noFolderForeground": "#fff",
-    "statusBar.debuggingBackground": "#ff0000",
-    "statusBar.debuggingForeground": "#fff",
-    "statusBar.debuggingBorder": "#ff0000",
-    "statusBarItem.hoverBackground": "#1AffFF39",
-    "statusBarItem.remoteForeground": "#fff",
-    "statusBarItem.errorBackground": "#ff0000",
-    "statusBarItem.errorForeground": "#fff",
-    "statusBarItem.warningBackground": "#ff3000",
-    "statusBarItem.warningForeground": "#fff",
-  },
-  "workbench.colorTheme": "Min Darker",
-  "search.maxResults": 250000,
-  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.)|--)\\s*($TAGS)",
-  "Lua.hint.await": false,
-  "git.openRepositoryInParentFolders": "never",
-  "php.completion.namingConvention": "CamelCase",
-  "php.highlight-todo.enable": false,
-  "php.problems.excludeGitIgnore": true,
-  "vscode-mysql.enableTelemetry": false,
-  "redhat.telemetry.enabled": false,
-  "extensions.trustedPublishers": [
-    "aeschli",
-    "astonedpenguin",
-    "bmewburn",
-    "eamodio",
-    "gruntfuggly",
-    "icrawl",
-    "mcright",
-    "mhutchie",
-    "mrmlnc",
-    "naumovs",
-    "oderwat",
-    "pkief",
-    "shardulm94",
-    "sibiraj-s",
-    "st0pien",
-    "sumneko",
-    "venner",
-    "wakatime",
-    "yoavbls",
-    "zainchen"
-  ],
-  "security.promptForLocalFileProtocolHandling": false,
-  "Lua.diagnostics.globalsRegex": [
-    "^.*$"
-  ],
-  "Lua.runtime.nonstandardSymbol": [
-    "//",
-    "||",
-    "!",
-    "!=",
-    "continue",
-    "/**/",
-    "&&"
-  ],
-  "Lua.completion.enable": true,
-  "Lua.workspace.preloadFileSize": 500000,
-  "Lua.diagnostics.disable": [
-    "err-comment-prefix",
-    "redundant-parameter",
-    "undefined-global",
-    "err-c-long-comment",
-    "duplicate-set-field",
-    "redundant-return-value",
-    "err-esc"
-  ],
-  "Lua.runtime.special": {
-    "include": "dofile",
-    "IncludeCS": "dofile"
-  },
-  "Lua.runtime.version": "Lua 5.1",
-  "Lua.workspace.maxPreload": 500000,
-  "Lua.workspace.useGitIgnore": false,
-  "intelephense.environment.includePaths": [
-    "."
-  ],
-  "intelephense.files.maxSize": 10000000,
-  "Lua.completion.callSnippet": "Both",
-  "Lua.completion.displayContext": 1,
-  "Lua.completion.keywordSnippet": "Both",
-  "Lua.hint.semicolon": "Disable",
-  "github.copilot.nextEditSuggestions.enabled": false,
-  "security.allowedUNCHosts": [
-    "pi"
-  ],
-  "github.copilot.selectedCompletionModel": "",
-  "Lua.codeLens.enable": true,
-  "Lua.completion.autoRequire": false,
-  "Lua.format.enable": false,
-  "Lua.semantic.enable": false,
-  "Lua.semantic.annotation": false,
-  "Lua.semantic.variable": false,
-  "scm.repositories.selectionMode": "multiple",
-  "intelephense.environment.phpVersion": "7.4",
-  "prettyxml.settings.indentSpaceLength": 2,
-  "prettyxml.settings.attributesInNewlineThreshold": 9,
-  "[xml]": {
-    "editor.defaultFormatter": "dabbinavo.xamlstyler"
-  },
-  "csharp.debug.console": "externalTerminal",
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
-  "gitlens.advanced.messages": {
-    "suppressIntegrationDisconnectedTooManyFailedRequestsWarning": true
-  },
-  "csharp.experimental.debug.hotReload": true,
-  "highlight.regexes": {
-    "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *TODO(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))": {
-      "filterFileRegex": ".*(?<!CHANGELOG.md)$",
-      "decorations": [
-        {
-          "overviewRulerColor": "#ffcc00",
-          "backgroundColor": "#ffcc00",
-          "color": "#1f1f1f",
-          "fontWeight": "bold"
-        },
-        {
-          "backgroundColor": "#ffcc00",
-          "color": "#1f1f1f"
-        }
-      ]
-    },
-    "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:FIXME|FIX|BUG|UGLY|DEBUG|HACK)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))": {
-      "filterFileRegex": ".*(?<!CHANGELOG.md)$",
-      "decorations": [
-        {
-          "overviewRulerColor": "#cc0000",
-          "backgroundColor": "#cc0000",
-          "color": "#1f1f1f",
-          "fontWeight": "bold"
-        },
-        {
-          "backgroundColor": "#cc0000",
-          "color": "#1f1f1f"
-        }
-      ]
-    },
-    "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:REVIEW|OPTIMIZE|TSC)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))": {
-      "filterFileRegex": ".*(?<!CHANGELOG.md)$",
-      "decorations": [
-        {
-          "overviewRulerColor": "#00ccff",
-          "backgroundColor": "#00ccff",
-          "color": "#1f1f1f",
-          "fontWeight": "bold"
-        },
-        {
-          "backgroundColor": "#00ccff",
-          "color": "#1f1f1f"
-        }
-      ]
-    },
-    "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:IDEA)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))": {
-      "filterFileRegex": ".*(?<!CHANGELOG.md)$",
-      "decorations": [
-        {
-          "overviewRulerColor": "#cc00cc",
-          "backgroundColor": "#cc00cc",
-          "color": "#1f1f1f",
-          "fontWeight": "bold"
-        },
-        {
-          "backgroundColor": "#cc00cc",
-          "color": "#1f1f1f"
-        }
-      ]
-    },
-    "(!)": [
-      {
-        "overviewRulerColor": "#ff0000",
-        "backgroundColor": "#ff0000",
-        "color": "#ffffff",
-        "fontWeight": "bold",
-        "fontStyle": "underline"
-      }
-    ]
-  },
-  "debug.onTaskErrors": "abort",
-  "svelte.enable-ts-plugin": true,
-  "chat.tools.terminal.outputLocation": "chat",
-  "editor.minimap.size": "fill",
-  "editor.aiStats.enabled": false,
-  "githubPullRequests.createOnPublishBranch": "never",
-  "update.statusBar": "actionable",
-  "csharp.inlayHints.enableInlayHintsForImplicitVariableTypes": true,
-  "git.addAICoAuthor": "off",
-  "continue.enableTabAutocomplete": true,
-  "gluals.completion.autoRequire": false,
-  "claudeCode.preferredLocation": "sidebar",
-  "csharp.suppressProjectJsonWarning": true,
-  "githubPullRequests.pullBranch": "never",
-  "php.problems.exclude": {
-    "**/*": [
-      "PHP2439"
-    ]
-  },
-  "workbench.startupEditor": "none",
-  "dotnet.projects.enableFileBasedPrograms": false,
-  "terminal.integrated.initialHint": false,
+	"[css]": {
+		"editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter",
+		"editor.formatOnSave": false
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"[scss]": {
+		"editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"files.autoGuessEncoding": true,
+	"discord.detailsEditing": "📁 {file_name} • {dir_name} • {workspace}",
+	"discord.lowerDetailsEditing": "📝 Line: {current_line}/{total_lines} • Col: {current_column}",
+	"editor.bracketPairColorization.enabled": true,
+	"editor.cursorBlinking": "expand",
+	"editor.cursorSmoothCaretAnimation": "on",
+	"editor.cursorWidth": 5,
+	"editor.fontLigatures": true,
+	"editor.inlineSuggest.enabled": true,
+	"editor.linkedEditing": true,
+	"editor.minimap.maxColumn": 100,
+	"editor.minimap.scale": 2,
+	"editor.minimap.showSlider": "always",
+	"editor.suggestSelection": "first",
+	"editor.tabSize": 2,
+	"git.enableSmartCommit": true,
+	"indentRainbow.colorOnWhiteSpaceOnly": false,
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"php.validate.executablePath": "C:/xampp/php/php.exe",
+	"security.workspace.trust.untrustedFiles": "open",
+	"terminal.integrated.defaultProfile.windows": "PowerShell",
+	"terminal.integrated.fontFamily": "FiraCode Nerd Font",
+	"terminal.integrated.profiles.windows": {
+		"Command Prompt": {
+			"args": [],
+			"icon": "terminal-cmd",
+			"path": [
+				"${env:windir}\\Sysnative\\cmd.exe",
+				"${env:windir}\\System32\\cmd.exe"
+			]
+		},
+		"Git Bash": {
+			"source": "Git Bash"
+		},
+		"PowerShell": {
+			"icon": "terminal-powershell",
+			"source": "PowerShell"
+		},
+		"Windows PowerShell": {
+			"path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+		}
+	},
+	"terminal.integrated.scrollback": 10000,
+	"window.title": "${activeEditorShort}${separator}${rootName} • ZARP Gaming",
+	"workbench.iconTheme": "material-icon-theme",
+	"files.associations": {
+		".env": "code-text-binary",
+		"*.fs": "glsl",
+		"*.vs": "glsl"
+	},
+	"[dart]": {
+		"editor.formatOnSave": true,
+		"editor.formatOnType": true,
+		"editor.rulers": [
+			80
+		],
+		"editor.selectionHighlight": false,
+		"editor.suggest.snippetsPreventQuickSuggestions": false,
+		"editor.suggestSelection": "first",
+		"editor.tabCompletion": "onlySnippets",
+		"editor.wordBasedSuggestions": "off"
+	},
+	"explorer.fileNesting.patterns": {
+		"*.ts": "${capture}.js",
+		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+		"*.jsx": "${capture}.js",
+		"*.tsx": "${capture}.ts",
+		"tsconfig.json": "tsconfig.*.json",
+		"package.json": "package-lock.json, yarn.lock",
+		"*.d.ts": "${capture}.d.ts",
+		".env.*": ".env.${capture}",
+		"*.cpp": "${capture}.h, ${capture}.hpp"
+	},
+	"explorer.fileNesting.enabled": true,
+	"js/ts.implicitProjectConfig.target": "ES2022",
+	"discord.detailsIdling": "https://callumdev.xyz",
+	"discord.lowerDetailsIdling": "https://zarpgaming.com",
+	"discord.smallImage": "GitHub - @callumok2004",
+	"discord.detailsDebugging": "🧪(DBG) {file_name} • {dir_name} • {workspace}",
+	"editor.stickyScroll.enabled": true,
+	"window.commandCenter": true,
+	"git.confirmSync": false,
+	"emmet.excludeLanguages": [
+		"markdown",
+		"php"
+	],
+	"intelephense.format.enable": false,
+	"intelephense.maxMemory": 2048,
+	"intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": true,
+	"intelephense.diagnostics.embeddedLanguages": false,
+	"git.autofetch": true,
+	"editor.accessibilitySupport": "off",
+	"php.debug.executablePath": "c:/xampp/php/php.exe",
+	"intelephense.runtime": "C:\\Program Files\\nodejs\\node.exe",
+	"intelephense.completion.maxItems": 200,
+	"editor.insertSpaces": false,
+	"[python]": {
+		"editor.formatOnType": true
+	},
+	"workbench.editorAssociations": {
+		"*.lua": "default",
+		"*.jpg": "imagePreview.previewEditor"
+	},
+	"diffEditor.maxComputationTime": 0,
+	"workbench.tree.indent": 8,
+	"workbench.tree.renderIndentGuides": "always",
+	"workbench.view.alwaysShowHeaderActions": true,
+	"search.showLineNumbers": true,
+	"scm.alwaysShowRepositories": true,
+	"scm.providerCountBadge": "auto",
+	"extensions.ignoreRecommendations": true,
+	"diffEditor.ignoreTrimWhitespace": false,
+	"editor.unicodeHighlight.invisibleCharacters": false,
+	"diffEditor.experimental.showEmptyDecorations": true,
+	"diffEditor.experimental.showMoves": true,
+	"diffEditor.hideUnchangedRegions.enabled": true,
+	"window.zoomLevel": 1.5,
+	"workbench.colorCustomizations": {
+		"statusBar.background": "#2333cc96",
+		"statusBar.foreground": "#ffffff",
+		"statusBar.noFolderBackground": "#212121",
+		"statusBar.noFolderForeground": "#fff",
+		"statusBar.debuggingBackground": "#ff0000",
+		"statusBar.debuggingForeground": "#fff",
+		"statusBar.debuggingBorder": "#ff0000",
+		"statusBarItem.hoverBackground": "#1AffFF39",
+		"statusBarItem.remoteForeground": "#fff",
+		"statusBarItem.errorBackground": "#ff0000",
+		"statusBarItem.errorForeground": "#fff",
+		"statusBarItem.warningBackground": "#ff3000",
+		"statusBarItem.warningForeground": "#fff",
+	},
+	"workbench.colorTheme": "Callum Theme",
+	"search.maxResults": 250000,
+	"git.openRepositoryInParentFolders": "never",
+	"php.completion.namingConvention": "CamelCase",
+	"php.highlight-todo.enable": false,
+	"php.problems.excludeGitIgnore": true,
+	"security.promptForLocalFileProtocolHandling": false,
+	"intelephense.environment.includePaths": [
+		"."
+	],
+	"intelephense.files.maxSize": 10000000,
+	"security.allowedUNCHosts": [
+		"pi"
+	],
+	"scm.repositories.selectionMode": "multiple",
+	"intelephense.environment.phpVersion": "7.4",
+	"[xml]": {
+		"editor.defaultFormatter": "dabbinavo.xamlstyler"
+	},
+	"debug.onTaskErrors": "abort",
+	"chat.tools.terminal.outputLocation": "chat",
+	"editor.minimap.size": "fill",
+	"editor.aiStats.enabled": false,
+	"git.addAICoAuthor": "off",
+	"claudeCode.preferredLocation": "sidebar",
+	"php.problems.exclude": {
+		"**/*": [
+			"PHP2439"
+		]
+	},
+	"terminal.integrated.initialHint": false,
+	"dotnetProfiler.openPanelOnAttach": false,
+	"workbench.experimental.modernUI": true,
+	"files.autoSave": "onFocusChange",
+	"git.blame.ignoreWhitespace": true,
+	"workbench.panel.showLabels": false,
+	"claudeCode.hideOnboarding": true,
+	"dotnetProfiler.refreshIntervalMs": 100,
+	"claudeCode.initialPermissionMode": "manual"
 }
