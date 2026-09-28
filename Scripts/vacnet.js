@@ -2209,6 +2209,7 @@
     const MODES = [
         { id: 0, label: 'Unlabelled', short: '—' },
         { id: 1, label: 'Competitive', short: 'COMP' },
+        { id: 8, label: 'Rush', short: 'RUSH' },
         { id: 3, label: 'Wingman', short: 'WING' },
         { id: 4, label: 'Casual', short: 'CAS' },
         { id: 5, label: 'Deathmatch', short: 'DM' },
