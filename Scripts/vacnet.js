@@ -59,6 +59,21 @@
     }
 
     const css = `
+        /* The sidebar width only governs the OLD layout; the new page sizes its
+           own panel with a clamp() and we leave that alone. Declared outside the
+           legacy block so the resizer's reads never return nothing. */
+        :root { --vacnet-sidebar: ${SIDEBAR_WIDTH}; }
+
+        /* ================= OLD PAGE ONLY =================================
+           Everything in here re-created a layout the site didn't have: full-bleed
+           player, fixed-width scrolling sidebar, no page scroll. The metamodel
+           redesign does all of that itself, and properly, so forcing our version
+           over it only made things worse -- and hiding video.js's progress
+           control (further down) left the new player with no scrub bar at all,
+           because our replacement bar isn't built on a metamodel match.
+           markLegacyLayout() adds .vacnet-legacy only when the old
+           .flex-row-wrap layout is actually present. */
+        html.vacnet-legacy {
         /* ---- nuke the junk ---- */
         .top-section,
         .top-section-logo,
@@ -67,7 +82,9 @@
         }
 
         /* ---- page chrome ---- */
-        html {
+        /* & is the scoping root (html.vacnet-legacy); a nested html selector would
+           read as a descendant of html and never match */
+        & {
             height: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -94,20 +111,6 @@
             position: relative !important;
             z-index: 40 !important;
         }
-
-        /* the footer's buttons get relocated into the verdict column (see moveFooterButtons) */
-        .footer-container { display: none !important; }
-
-        .verdict-column .footer-buttons {
-            display: flex !important;
-            gap: 14px !important;
-            justify-content: center !important;
-            margin: 12px 0 0 0 !important;
-            padding-top: 10px !important;
-            border-top: 1px solid rgba(255,255,255,0.15) !important;
-            flex: 0 0 auto !important;
-        }
-        .verdict-column .footer-buttons a { font-size: 12px !important; }
 
         /* ---- layout: video left (fills everything), verdicts right ---- */
         .page-container {
@@ -171,8 +174,6 @@
         .video-js .vjs-tech { object-fit: contain !important; }
 
         /* ---- decision table column ---- */
-        :root { --vacnet-sidebar: ${SIDEBAR_WIDTH}; }
-
         .verdict-column,
         .verdict-column.size-for-column {
             flex: 0 0 var(--vacnet-sidebar) !important;
@@ -260,6 +261,8 @@
             left: -4px !important; right: -4px !important;
         }
         body.sidebar-resizing { user-select: none !important; cursor: col-resize !important; }
+        }
+        /* ================= END OLD PAGE ONLY ============================= */
 
         /* ---- press-and-hold 2x badge ---- */
         .holdspeed-badge {
@@ -304,17 +307,18 @@
 
         /* ---- history panel ---- */
         .cliphistory {
-            margin-top: 14px !important;
-            padding-top: 12px !important;
-            border-top: 1px solid rgba(255,255,255,0.15) !important;
+            margin-top: var(--space-l, 16px) !important;
+            padding: var(--space-m, 12px) !important;
+            background: var(--bg-inset, rgba(255,255,255,0.05)) !important;
+            border: none !important;
+            border-radius: var(--shape-m, 12px) !important;
             flex: 0 0 auto !important;
             font-size: 13px !important;
         }
         .cliphistory-head {
-            font-size: 13px !important;
-            font-weight: bold !important;
-            color: #f5a623 !important;
-            margin-bottom: 6px !important;
+            font: var(--type-title-s, 500 13px/18px sans-serif) !important;
+            color: var(--positive, #ffc20a) !important;
+            margin-bottom: var(--space-s, 8px) !important;
         }
         .cliphistory-row {
             display: flex !important;
@@ -333,6 +337,18 @@
         .v-unc { color: #b8b8b8 !important; }
         .v-no  { color: #6bd47a !important; }
         .v-bad { color: #c39bf0 !important; }
+        /* badge marking a whole-match (metamodel) verdict, so it never reads as
+           one of the four subproblem labels */
+        .v-match {
+            color: #ff9ecb !important;
+            border: 1px solid rgba(255,158,203,0.45) !important;
+            border-radius: 3px !important;
+            padding: 0 4px !important;
+            margin-right: 5px !important;
+            font-size: 10px !important;
+            letter-spacing: 0.04em !important;
+            vertical-align: 1px !important;
+        }
         .cliphistory-verdict .v-yes + .v-unc,
         .cliphistory-verdict .v-yes + .v-yes,
         .cliphistory-verdict .v-unc + .v-unc { margin-left: 5px !important; }
@@ -340,6 +356,22 @@
             flex: 1 1 auto !important;
             font-family: monospace !important;
             color: rgba(255,255,255,0.75) !important;
+        }
+        /* clips credited for a whole-match submit, on that match's row */
+        .creditbadge {
+            margin-left: 8px !important;
+            padding: 0 7px !important;
+            font-family: var(--font-body, sans-serif) !important;
+            font-size: 11px !important;
+            font-weight: 500 !important;
+            color: #ff9ecb !important;
+            background: rgba(255,158,203,0.14) !important;
+            border-radius: 9999px !important;
+            white-space: nowrap !important;
+        }
+        .creditbadge.is-unknown {
+            color: rgba(255,255,255,0.4) !important;
+            background: rgba(255,255,255,0.06) !important;
         }
         .cliphistory-meta {
             flex: 0 0 auto !important;
@@ -372,50 +404,77 @@
         .clipbar-overlap.seen-uncertain { background-color: #8a8a8a !important; }
         .clipbar-overlap.seen-bad       { background-color: #7a4fb5 !important; }
 
+        /* The footer bar gets relocated into the verdict column on both
+           layouts (see moveFooterButtons), so this is not legacy-scoped. */
+        .footer-container { display: none !important; }
+        .verdict-column .footer-buttons {
+            display: flex !important;
+            gap: var(--space-l, 16px) !important;
+            justify-content: center !important;
+            margin: var(--space-m, 12px) 0 0 0 !important;
+            padding-top: var(--space-m, 12px) !important;
+            border-top: 1px solid var(--border, rgba(255,255,255,0.15)) !important;
+            flex: 0 0 auto !important;
+        }
+        .verdict-column .footer-buttons a { font-size: 12px !important; }
+
+        /* ---- our own blocks, in the site's design language ----------------
+           The redesign ships a token set (panel/inset colours, 8/12/16px
+           shapes, a Noto Sans type scale, a green accent). Everything we inject
+           now borrows those rather than inventing a flatter, squarer parallel
+           look next to it. Fallbacks keep the old page looking as it did. */
+        .vodname, .modepick, .cliphistory, .overlapwarn,
+        .verdict-column .footer-buttons, .presetbuttons {
+            font-family: var(--font-body, sans-serif) !important;
+        }
+
         /* ---- VOD alias header ---- */
         .vodname {
             flex: 0 0 auto !important;
             display: flex !important;
-            align-items: baseline !important;
+            align-items: center !important;
             flex-wrap: wrap !important;
-            gap: 8px !important;
-            margin-bottom: 12px !important;
-            padding-bottom: 8px !important;
-            border-bottom: 1px solid rgba(255,255,255,0.15) !important;
+            gap: var(--space-s, 8px) !important;
+            margin-bottom: var(--space-m, 12px) !important;
+            padding: var(--space-s, 8px) var(--space-m, 12px) !important;
+            background: var(--bg-inset, rgba(255,255,255,0.06)) !important;
+            border: none !important;
+            border-radius: var(--shape-m, 12px) !important;
         }
         .vodname-label {
-            font-size: 11px !important;
+            font: var(--type-label-m, 500 11px/16px sans-serif) !important;
             text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            color: rgba(255,255,255,0.45) !important;
+            letter-spacing: 0.08em !important;
+            color: var(--text-muted, rgba(255,255,255,0.45)) !important;
         }
         .vodname-name {
-            font-size: 19px !important;
-            font-weight: bold !important;
-            color: #fff !important;
+            font-size: 17px !important;
+            font-weight: 500 !important;
+            color: var(--text, #fff) !important;
         }
         .vodname-id {
             font-family: monospace !important;
             font-size: 11px !important;
-            color: rgba(255,255,255,0.35) !important;
+            color: var(--text-disabled, rgba(255,255,255,0.35)) !important;
         }
         .vodname-seen {
-            font-size: 11px !important;
-            font-weight: bold !important;
-            color: #f5a623 !important;
-            border: 1px solid rgba(245,166,35,0.5) !important;
-            border-radius: 10px !important;
-            padding: 1px 8px !important;
+            font: var(--type-label-m, 500 11px/16px sans-serif) !important;
+            color: var(--positive, #ffc20a) !important;
+            background: color-mix(in srgb, var(--positive, #ffc20a) 18%, transparent) !important;
+            border: none !important;
+            border-radius: var(--shape-full, 9999px) !important;
+            padding: 2px 9px !important;
         }
 
         /* ---- overlap warning banner ---- */
         .overlapwarn {
             flex: 0 0 auto !important;
-            margin-bottom: 12px !important;
-            padding: 8px 10px !important;
-            background: rgba(245,166,35,0.12) !important;
-            border: 1px solid rgba(245,166,35,0.5) !important;
-            border-radius: 3px !important;
+            margin-bottom: var(--space-m, 12px) !important;
+            padding: var(--space-s, 8px) var(--space-m, 12px) !important;
+            background: color-mix(in srgb, var(--positive, #ffc20a) 14%,
+                        var(--bg-inset, #313234)) !important;
+            border: none !important;
+            border-radius: var(--shape-m, 12px) !important;
         }
         .overlapwarn-head {
             font-size: 14px !important;
@@ -438,26 +497,35 @@
         }
 
         /* ---- history popup ---- */
+        /* deliberately the same shape as the site's own .invitebutton, which it
+           sits directly beside: 32px pill, hairline outline, label type */
         .histbutton {
+            box-sizing: border-box !important;
             width: 100% !important;
-            margin-top: 8px !important;
-            padding: 7px 6px !important;
-            font-size: 13px !important;
-            color: #fff !important;
-            background: rgba(255,255,255,0.10) !important;
-            border: 1px solid rgba(255,255,255,0.25) !important;
-            border-radius: 3px !important;
+            margin-top: var(--space-s, 8px) !important;
+            height: 32px !important;
+            padding: 0 var(--space-l, 16px) !important;
+            font: var(--type-label-l, 500 13px/18px sans-serif) !important;
+            white-space: nowrap !important;
+            color: var(--text, #fff) !important;
+            background: transparent !important;
+            border: 1px solid var(--outline, rgba(255,255,255,0.28)) !important;
+            border-radius: var(--shape-full, 9999px) !important;
             cursor: pointer !important;
             flex: 0 0 auto !important;
         }
-        .histbutton:hover { background: rgba(255,255,255,0.18) !important; }
+        .histbutton:hover {
+            background-image: var(--state-hover,
+                linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08))) !important;
+        }
         /* header variant: sits inline next to Invite Reviewers */
         .histbutton-inline {
+            display: inline-flex !important;
+            align-items: center !important;
             width: auto !important;
             margin-top: 0 !important;
-            margin-left: 8px !important;
+            margin-left: var(--space-s, 8px) !important;
             vertical-align: middle !important;
-            display: inline-block !important;
         }
         /* last-resort host: no header, no sidebar -- pin it so it still exists */
         .histbutton-floating {
@@ -473,21 +541,24 @@
         .sharebutton {
             margin-left: auto !important;
             flex: 0 0 auto !important;
-            width: 24px !important;
-            height: 24px !important;
+            width: 26px !important;
+            height: 26px !important;
             padding: 0 !important;
             font-size: 12px !important;
             line-height: 1 !important;
-            color: #fff !important;
-            background: rgba(255,255,255,0.10) !important;
-            border: 1px solid rgba(255,255,255,0.2) !important;
-            border-radius: 3px !important;
+            color: var(--text, #fff) !important;
+            background: transparent !important;
+            border: 1px solid var(--outline, rgba(255,255,255,0.28)) !important;
+            border-radius: var(--shape-full, 9999px) !important;
             cursor: pointer !important;
         }
-        .sharebutton:hover { background: rgba(255,255,255,0.2) !important; }
+        .sharebutton:hover {
+            background-image: var(--state-hover,
+                linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08))) !important;
+        }
         .sharebutton.copied {
-            background: #3d8b40 !important;
-            border-color: #3d8b40 !important;
+            background: var(--accent, #6ea31d) !important;
+            border-color: var(--accent, #6ea31d) !important;
         }
         /* feedback has to fit the same 24px box, so it's a tick, not a sentence */
         .sharebutton.copied, .sharebutton.failed { font-size: 13px !important; }
@@ -510,20 +581,21 @@
             max-height: 82vh !important;
             display: flex !important;
             flex-direction: column !important;
-            background: #1b1f23 !important;
-            border: 1px solid rgba(255,255,255,0.2) !important;
-            border-radius: 5px !important;
+            font-family: var(--font-body, sans-serif) !important;
+            background: var(--bg-panel, #1b1f23) !important;
+            border: 1px solid var(--border, rgba(255,255,255,0.2)) !important;
+            border-radius: var(--shape-l, 16px) !important;
             box-shadow: 0 8px 40px rgba(0,0,0,0.6) !important;
+            overflow: hidden !important;
         }
         .histpopup-head {
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
-            padding: 10px 14px !important;
-            font-size: 14px !important;
-            font-weight: bold !important;
-            color: #fff !important;
-            border-bottom: 1px solid rgba(255,255,255,0.15) !important;
+            padding: var(--space-m, 12px) var(--space-l, 16px) !important;
+            font: var(--type-title-s, 500 14px/18px sans-serif) !important;
+            color: var(--text, #fff) !important;
+            border-bottom: 1px solid var(--border, rgba(255,255,255,0.15)) !important;
         }
         .histpopup-close { cursor: pointer !important; padding: 0 6px !important; }
         .histpopup-body {
@@ -620,7 +692,7 @@
             box-shadow: inset 2px 0 0 #f5a623 !important;
         }
         /* every per-pass lane, not just the one directly after the combined row
-           -- `+` only ever matched the first, which is why one lane looked odd */
+           -- the + combinator only ever matched the first, which is why one lane looked odd */
         .histtimeline .histlane:not(.is-combined) { opacity: 0.75 !important; }
         .histtimeline i.seen-guilty    { background: #b03030 !important; }
         .histtimeline i.seen-clean     { background: #3d8b40 !important; }
@@ -687,11 +759,11 @@
         /* each block is its own card: without the panel and the gap they ran
            together into one undifferentiated column */
         .histsum {
-            margin-bottom: 14px !important;
-            padding: 10px 12px !important;
-            background: rgba(255,255,255,0.035) !important;
-            border: 1px solid rgba(255,255,255,0.09) !important;
-            border-radius: 4px !important;
+            margin-bottom: var(--space-m, 14px) !important;
+            padding: var(--space-m, 12px) !important;
+            background: var(--bg-inset, rgba(255,255,255,0.035)) !important;
+            border: none !important;
+            border-radius: var(--shape-m, 12px) !important;
         }
         .histsum-title {
             display: flex !important;
@@ -737,6 +809,10 @@
         .histsub-name {
             font-weight: bold !important;
             font-family: monospace !important;
+        }
+        .histsub-name.is-match {
+            color: #ff9ecb !important;
+            cursor: help !important;
         }
         .histsub-bar {
             display: flex !important;
@@ -869,45 +945,48 @@
             flex: 0 0 auto !important;
             display: flex !important;
             align-items: center !important;
-            gap: 8px !important;
-            margin-bottom: 12px !important;
-            padding: 6px 9px !important;
-            background: rgba(255,255,255,0.05) !important;
-            border: 1px solid rgba(255,255,255,0.12) !important;
-            border-radius: 4px !important;
+            gap: var(--space-s, 8px) !important;
+            margin-bottom: var(--space-m, 12px) !important;
+            padding: var(--space-s, 8px) var(--space-m, 12px) !important;
+            background: var(--bg-inset, rgba(255,255,255,0.05)) !important;
+            border: none !important;
+            border-radius: var(--shape-m, 12px) !important;
         }
-        .modepick.is-set { border-color: rgba(245,166,35,0.45) !important; }
         .modepick-label {
-            font-size: 11px !important;
+            font: var(--type-label-m, 500 11px/16px sans-serif) !important;
             text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            color: rgba(255,255,255,0.45) !important;
+            letter-spacing: 0.08em !important;
+            color: var(--text-muted, rgba(255,255,255,0.45)) !important;
         }
-        /* one-click chips, in the sidebar and in every history row */
+        /* one-click chips, in the sidebar and in every history row. Pills with a
+           hairline outline, like every other control the site ships. */
         .modebtn {
             flex: 1 1 0 !important;
-            padding: 5px 4px !important;
-            font-size: 12px !important;
-            font-weight: bold !important;
+            padding: 4px 6px !important;
+            font: var(--type-label-m, 500 11px/16px sans-serif) !important;
             font-family: monospace !important;
             letter-spacing: 0.5px !important;
-            color: rgba(255,255,255,0.55) !important;
-            background: rgba(255,255,255,0.08) !important;
-            border: 1px solid rgba(255,255,255,0.12) !important;
-            border-radius: 3px !important;
+            color: var(--text-muted, rgba(255,255,255,0.55)) !important;
+            background: transparent !important;
+            border: 1px solid var(--border, rgba(255,255,255,0.12)) !important;
+            border-radius: var(--shape-full, 9999px) !important;
             cursor: pointer !important;
-            transition: background 0.12s ease, color 0.12s ease !important;
+            transition: background-color 0.12s ease, color 0.12s ease !important;
         }
         .modebtn:hover {
-            color: #fff !important;
-            background: rgba(255,255,255,0.16) !important;
+            color: var(--text, #fff) !important;
+            background-image: var(--state-hover,
+                linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08))) !important;
         }
         .modebtn.is-on {
-            color: #1b1f23 !important;
-            background: #f5a623 !important;
-            border-color: #f5a623 !important;
+            color: var(--bg-page, #1b1f23) !important;
+            background: var(--positive, #ffc20a) !important;
+            border-color: var(--positive, #ffc20a) !important;
         }
-        .modepick.is-set { border-color: rgba(245,166,35,0.45) !important; }
+        .modepick.is-set {
+            box-shadow: inset 0 0 0 1px color-mix(in srgb,
+                var(--positive, #ffc20a) 45%, transparent) !important;
+        }
 
         /* the history-row variant is the same control, just smaller */
         .groupmode {
@@ -1030,6 +1109,7 @@
         .ms-2 { background: #7ec2ff !important; }
         .ms-3 { background: #c39bf0 !important; }
         /* grey everywhere else means uncertain, so it does here too */
+        .ms-match  { background: #ff9ecb !important; }
         .ms-unsure { background: #b8b8b8 !important; }
         .ms-clean { background: #3d8b40 !important; }
         .ms-bad { background: #7a4fb5 !important; }
@@ -1358,14 +1438,15 @@
         }
         .presetbutton {
             flex: 1 1 0 !important;
-            padding: 9px 6px !important;
-            font-size: 16px !important;
-            font-weight: bold !important;
-            color: #fff !important;
+            height: 36px !important;
+            padding: 0 var(--space-s, 8px) !important;
+            font: var(--type-label-l, 500 13px/18px sans-serif) !important;
+            font-size: 15px !important;
+            color: var(--text, #fff) !important;
             border: none !important;
-            border-radius: 3px !important;
+            border-radius: var(--shape-full, 9999px) !important;
             cursor: pointer !important;
-            opacity: 0.85 !important;
+            opacity: 0.9 !important;
             transition: opacity 0.1s ease !important;
         }
         .presetbutton:hover { opacity: 1 !important; }
@@ -1404,7 +1485,12 @@
         /* keep the modal usable on top of everything */
         .modaloverlay { z-index: 100 !important; }
 
-        /* ---- clip-scoped scrub bar replaces video.js's full-length one ---- */
+        /* ---- clip-scoped scrub bar replaces video.js's full-length one ----
+           Legacy-only, and the hiding rule below is why: it strips video.js's
+           progress control on the assumption our own bar has taken its place.
+           On a metamodel match we deliberately don't build that bar, so applying
+           this to the new page removed the ability to seek entirely. */
+        html.vacnet-legacy {
         .vjs-control-bar .vjs-progress-control,
         .vjs-control-bar .vjs-current-time,
         .vjs-control-bar .vjs-time-divider,
@@ -1557,6 +1643,7 @@
         /* only offered once you've actually left the clip */
         .clipbar-unclamped .clipbar-rearm { visibility: visible !important; }
         .clipbar-unclamped .clipbar-label { color: #f5a623 !important; }
+        }
     `;
 
     function inject() {
@@ -1567,6 +1654,15 @@
     }
     inject();
     restoreSidebarWidth();
+
+    // The old page's column lived in a .flex-row-wrap flex row; the metamodel
+    // redesign uses a .review-layout CSS grid and styles the panel itself. Only
+    // the former wants our layout overrides, so gate them on finding it. Runs
+    // every tick because at document-start there is no body to look at yet.
+    function markLegacyLayout() {
+        const legacy = !!document.querySelector('.flex-row-wrap');
+        document.documentElement.classList.toggle('vacnet-legacy', legacy);
+    }
 
     // video.js sets inline width/height from the <video> attributes; strip them
     // and re-strip whenever the player re-renders.
@@ -1827,6 +1923,11 @@
         const videoEl = document.querySelector('.video-js video');
         const bounds = getClipBounds();
         if (!videoEl || !bounds || !(bounds.len > 0)) return; // no bounds -> leave stock player alone
+        // On a metamodel match the "clip" is the entire video (startTime 0,
+        // endTime = duration), so the clip bar would just duplicate the stock
+        // progress bar -- and every seek it issued would be yanked back by the
+        // page's own clamp to furthestWatched. Leave the native controls alone.
+        if (isMetamodel()) return;
         buildBars(videoEl, controlBar, bounds);
     }
 
@@ -1913,6 +2014,10 @@
     function ensureClipLoop() {
         if (document.documentElement.dataset.vacnetLoop) return;
         if (!pageVideoEl() || !getClipBounds()) return;
+        // Looping a whole match back to 0:00 the moment it ends is actively
+        // harmful here: reaching the end is what unlocks Uncertain and No
+        // Cheating Seen, and the page is watching for it.
+        if (isMetamodel()) return;
         document.documentElement.dataset.vacnetLoop = '1';
 
         let restarting = false;
@@ -2183,7 +2288,10 @@
     // and this grows forever. Layout:
     //   { v:2, c:{ <16 hex of vod hash>: [ [task, start*10, len*10, code, minutes, tok, dur] ] } }
     // where `code` is one char per subproblem (0 = not, 1 = uncertain, 2 = yes)
-    // or "b" for a bad-clip report, `tok` is the /vacnet/view?s= token
+    // or "b" for a bad-clip report; on a metamodel match it is instead a single
+    // letter -- "g" guilty / "u" uncertain / "n" no cheating seen -- which can
+    // never collide, since a subproblem code is always 4 digits. `tok` is the
+    // /vacnet/view?s= token
     // base64-packed (48 hex chars -> 32), and `dur` is the whole VOD's length in
     // seconds. The token can't be derived from the task id, so it has to be kept
     // verbatim if the history is to link anywhere.
@@ -2202,6 +2310,36 @@
     const SUBS = ['aimassist', 'wallhack', 'autobhop', 'bot'];
     const SHORT_NAME = ['AIM', 'WH', 'BH', 'BOT'];
 
+    // ---- metamodel tasks --------------------------------------------------
+    // Valve's second task type: one stitched reel of a whole match's highlights
+    // instead of a single ~12s clip, with one verdict (cheating / uncertain /
+    // none) instead of four subproblems. You can rewind but never seek past
+    // what you've watched, and the playback menu stops at 1x.
+    //
+    // The page marks these with .vjs-metamodel and branches on it itself, so
+    // the two types coexist and we have to branch too rather than migrate.
+    //
+    // Two things only this type gives us, both appended to the entry array so
+    // older entries keep decoding:
+    //   [8] vt     -- the moment you pressed Mark Cheating, *10 (0 if n/a).
+    //                 The page posts it as a game tick; seconds are what we can
+    //                 actually draw on a timeline.
+    //   [9] credit -- how many clips this one submit was worth. The reel's
+    //                 constituent clips appear nowhere in the page, so this is
+    //                 recovered by diffing the "Clips Labeled" counter across
+    //                 the reload (see settleCredit).
+    const MM_CODES = { positive: 'g', skip: 'u', negative: 'n' };
+    const MM_LABEL = { g: 'cheating', u: 'uncertain', n: 'no cheating seen' };
+
+    function isMetamodel() {
+        return !!document.querySelector('.video-js.vjs-metamodel, .vjs-metamodel');
+    }
+
+    // a stored code belonging to a metamodel task rather than a subproblem set
+    function isMMCode(code) {
+        return code === 'g' || code === 'u' || code === 'n';
+    }
+
     // ---- game modes -------------------------------------------------------
     // Stored as an index (one char) in field 7. The site never tells us the
     // mode, so this is entirely your own annotation. It belongs to the VOD, not
@@ -2209,7 +2347,6 @@
     const MODES = [
         { id: 0, label: 'Unlabelled', short: '—' },
         { id: 1, label: 'Competitive', short: 'COMP' },
-        { id: 8, label: 'Rush', short: 'RUSH' },
         { id: 3, label: 'Wingman', short: 'WING' },
         { id: 4, label: 'Casual', short: 'CAS' },
         { id: 5, label: 'Deathmatch', short: 'DM' },
@@ -2267,6 +2404,16 @@
 
     function encodeLabels(labels) {
         if (labels.indexOf('tag_badclip') >= 0) return 'b';
+        // A metamodel task posts exactly one guilty_/skip_/innocent_cheating
+        // label. "cheating" is not in SUBS, so the loop below would otherwise
+        // ignore it and store a meaningless all-uncertain "1111".
+        const mm = labels
+            .map(l => l.match(/^(guilty|skip|innocent)_cheating$/))
+            .find(m => m);
+        if (mm) {
+            return MM_CODES[mm[1] === 'guilty' ? 'positive'
+                : (mm[1] === 'skip' ? 'skip' : 'negative')];
+        }
         const code = SUBS.map(() => '1');
         labels.forEach(l => {
             const m = l.match(/^(guilty|skip|innocent)_(.+)$/);
@@ -2309,6 +2456,63 @@
         return m ? m[1] : '';
     }
 
+    // ---- clips-credited recovery ------------------------------------------
+    // A metamodel reel is worth however many clips Valve stitched into it --
+    // you submit once and the "Clips Labeled" counter jumps by 10-20 or more.
+    // The constituent clips are nowhere in the page: no chapter track, no cue
+    // list, no segment array. The counter delta is the only observable.
+    //
+    // So: stash the pre-submit counter, then read it again on the page we land
+    // on and write the difference back onto the entry we just logged. The
+    // submit is a full form POST + reload, so exactly one load follows.
+    const CREDIT_KEY = 'vacnetPendingCredit';
+    const CREDIT_TTL = 10 * 60000; // a stale stash must not claim someone else's delta
+
+    function readClipCount() {
+        const el = document.querySelector('.panel-clipcount b, p.ClipCount');
+        if (!el) return 0;
+        const m = el.textContent.match(/(\d[\d,]*)/);
+        return m ? parseInt(m[1].replace(/,/g, ''), 10) : 0;
+    }
+
+    function stashCredit(key, task) {
+        const before = readClipCount();
+        if (!before || !key || !task) return;
+        try {
+            localStorage.setItem(CREDIT_KEY, JSON.stringify(
+                { k: key, t: task, n: before, at: Date.now() }));
+        } catch (e) { /* storage blocked: credit just stays unknown */ }
+    }
+
+    // Called once per load. Anything unexpected (no stash, expired, counter
+    // went down, entry gone) clears the stash rather than guessing.
+    let creditSettled = false;
+    function settleCredit() {
+        if (creditSettled) return; // tick() runs on every mutation
+        let s = null;
+        try { s = JSON.parse(localStorage.getItem(CREDIT_KEY)); } catch (e) { creditSettled = true; return; }
+        if (!s || !s.k) { creditSettled = true; return; }
+        const now = readClipCount();
+        // the counter only updates server-side, so on a page that doesn't show
+        // it we must wait rather than discard the stash
+        if (!now) return;
+        creditSettled = true;
+        try { localStorage.removeItem(CREDIT_KEY); } catch (e) { /* ignore */ }
+        if (Date.now() - (s.at || 0) > CREDIT_TTL) return;
+        const delta = now - s.n;
+        if (delta <= 0) return;
+
+        const h = loadHistory();
+        const list = h[s.k];
+        if (!list) return;
+        const at = list.findIndex(e => e[0] === s.t);
+        if (at < 0) return;
+        list[at][9] = delta;
+        saveHistory(h);
+        seenCache = null;
+        seenCacheKey = null;
+    }
+
     function loadHistory() {
         try {
             const h = JSON.parse(localStorage.getItem(HISTORY_KEY));
@@ -2346,8 +2550,27 @@
             ts: a[4] * 60000,
             dur: a[6] || 0,
             mode: modeId(a[7]),
+            // metamodel only; 0 means "not applicable or not recorded"
+            vt: (a[8] || 0) / 10,
+            credit: a[9] || 0,
+            mm: isMMCode(a[3]),
             url: tok ? 'https://www.counter-strike.net/vacnet/view?s=' + tok : null
         };
+    }
+
+    // Where in the reel you called it. The page posts this as a game tick
+    // (GetVideoTick(): base + (currentTime - eventTime) * 64), and inverting
+    // that would mean scraping three constants out of an inline script. We
+    // don't have to: choosing a verdict pauses the player and freezes progress,
+    // so the playhead is still sitting exactly on the decision moment when we
+    // record. The tick field is only read to tell "marked cheating" (set) from
+    // "no cheating seen / uncertain" (empty).
+    function verdictSeconds() {
+        const tickEl = document.getElementById('form_verdict_tick');
+        if (!tickEl || !tickEl.value) return 0;
+        const v = pageVideoEl();
+        const t = v ? v.currentTime : 0;
+        return isFinite(t) && t > 0 ? t : 0;
     }
 
     function currentTaskId() {
@@ -2392,10 +2615,20 @@
             Math.round((pageVideoEl() || {}).duration || 0) || 0,
             // mode is per-VOD: inherit whatever this VOD already carries unless
             // it was set on this page
-            pendingMode || modeId(list.length && list[0][7]) || 0
+            pendingMode || modeId(list.length && list[0][7]) || 0,
+            // the instant Mark Cheating was pressed. The page has already put
+            // the game tick on the form by the time we run, so convert it back
+            // through the same constants it used.
+            Math.round(verdictSeconds() * 10),
+            // filled in on the next load by settleCredit()
+            0
         ];
         const at = task ? list.findIndex(e => e[0] === task) : -1;
-        if (at >= 0) list[at] = entry; else list.push(entry);
+        if (at >= 0) {
+            // keep a credit already recovered for this task across a re-submit
+            if (list[at][9]) entry[9] = list[at][9];
+            list[at] = entry;
+        } else list.push(entry);
         h[key] = list.slice(-HISTORY_MAX_PER_VOD);
 
         const keys = Object.keys(h);
@@ -2434,6 +2667,19 @@
                 text: 'bad clip',
                 cls: 'seen-bad',
                 html: '<span class="v-bad">bad clip</span>'
+            };
+        }
+        // metamodel: one verdict on a whole match, so there are no parts to
+        // colour separately. MATCH marks it as the other task type at a glance.
+        if (isMMCode(code)) {
+            const cls = code === 'g' ? 'v-yes' : (code === 'u' ? 'v-unc' : 'v-no');
+            const seen = code === 'g' ? 'seen-guilty'
+                : (code === 'u' ? 'seen-uncertain' : 'seen-clean');
+            return {
+                text: 'MATCH ' + MM_LABEL[code],
+                cls: seen,
+                html: '<span class="v-match">MATCH</span>' +
+                    '<span class="' + cls + '">' + esc(MM_LABEL[code]) + '</span>'
             };
         }
         const guilty = [];
@@ -2512,6 +2758,30 @@
         return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     }
 
+    // What a history row says about the stretch of video it covers. A clip is a
+    // window into the VOD; a metamodel match is the whole reel, so "0.0s →
+    // 351.5s" says nothing useful -- show its length and, if you marked it
+    // cheating, the moment you called it.
+    function segLabel(e) {
+        if (!e.mm) return e.start.toFixed(1) + 's → ' + (e.start + e.len).toFixed(1) + 's';
+        const len = e.len || e.dur;
+        return 'match' + (len ? ' · ' + fmt(len, len) : '') +
+            (e.vt ? ' · called at ' + fmt(e.vt, len || e.vt) : '');
+    }
+
+    // How many clips the server credited for one match submit (see
+    // settleCredit). Shown on every match row, including when it's missing, so
+    // a failed capture is visible rather than indistinguishable from "none".
+    function creditBadge(e) {
+        if (!e.mm) return '';
+        return e.credit
+            ? '<span class="creditbadge" data-tip="The Clips Labeled counter rose by ' +
+              e.credit + ' after this submit">+' + e.credit + ' clips</span>'
+            : '<span class="creditbadge is-unknown" data-tip="Not recorded: the counter ' +
+              'was not read again within 10 minutes of submitting, or this match was ' +
+              'logged before tracking existed">? clips</span>';
+    }
+
     function ensureHistoryPanel() {
         const col = document.querySelector('.verdict-column');
         if (!col || col.querySelector('.cliphistory')) return;
@@ -2526,13 +2796,13 @@
             (entries.length === 1 ? ' time before' : ' times before') + '</div>' +
             entries.map(e => {
                 const s = summarize(e.code);
-                const seg = e.start.toFixed(1) + 's → ' + (e.start + e.len).toFixed(1) + 's';
+                const seg = segLabel(e);
                 const task = e.url
                     ? '<a href="' + esc(e.url) + '" target="_blank" rel="noreferrer">#' + esc(e.task) + '</a>'
                     : '#' + esc(e.task);
                 return '<div class="cliphistory-row">' +
                     '<span class="cliphistory-verdict ' + s.cls + '">' + s.html + '</span>' +
-                    '<span class="cliphistory-seg">' + esc(seg) + '</span>' +
+                    '<span class="cliphistory-seg">' + esc(seg) + creditBadge(e) + '</span>' +
                     '<span class="cliphistory-meta">' + esc(ago(e.ts)) + ' · ' + task + '</span>' +
                     '</div>';
             }).join('');
@@ -2734,6 +3004,7 @@
     // '2100' -> "aim, uncertain wallhack, not bhop, not bot"
     function describeCode(code) {
         if (code === 'b') return 'bad clip';
+        if (isMMCode(code)) return 'whole match: ' + MM_LABEL[code];
         const parts = SUBS.map((_, i) => {
             const c = String(code)[i];
             const n = LONG_NAME[i] || SUBS[i];
@@ -2748,6 +3019,10 @@
         const subs = SUBS.map(() => [0, 0, 0]);
         const combos = {};
         let total = 0, bad = 0;
+        // metamodel tasks tallied apart: [guilty, uncertain, none], plus how
+        // many clips they were credited for and how many of those we recovered
+        const mm = [0, 0, 0];
+        let mmTotal = 0, mmCredit = 0, mmCredited = 0;
 
         Object.keys(h).forEach(k => {
             h[k].forEach(a => {
@@ -2755,6 +3030,12 @@
                 total++;
                 combos[code] = (combos[code] || 0) + 1;
                 if (code === 'b') { bad++; return; }
+                if (isMMCode(code)) {
+                    mmTotal++;
+                    mm[code === 'g' ? 0 : (code === 'u' ? 1 : 2)]++;
+                    if (a[9]) { mmCredit += a[9]; mmCredited++; }
+                    return;
+                }
                 SUBS.forEach((_, i) => {
                     const c = String(code)[i];
                     if (c === '2') subs[i][0]++;
@@ -2770,6 +3051,10 @@
             bad: bad,
             labelled: total - bad,
             subs: subs,
+            mm: mm,
+            mmTotal: mmTotal,
+            mmCredit: mmCredit,
+            mmCredited: mmCredited,
             combos: Object.keys(combos)
                 .map(code => ({ code: code, n: combos[code] }))
                 .sort((a, b) => b.n - a.n)
@@ -2887,7 +3172,10 @@
                 // raw percentages could otherwise sum past the whole bar.
                 const n = r.t.n || 1;
                 const posSum = r.t.pos.reduce((a, b) => a + b, 0) || 1;
-                const posShare = r.t.posAny * 100 / n;
+                // metamodel guilties are confirmed but belong to no subproblem,
+                // so they get their own segment and are taken out of the share
+                // that the four labels divide up
+                const posShare = (r.t.posAny - r.t.mm[0]) * 100 / n;
                 const seg = (cls, nm, width, count) =>
                     '<i class="' + cls + '" style="width:' + width + '%" data-tip="' +
                     esc(nm + ' ' + Math.round(count * 100 / n) + '% (' + count + ' of ' +
@@ -2895,6 +3183,7 @@
 
                 const split = SHORT_NAME.map((nm, i) =>
                         seg('ms-' + i, nm, posShare * r.t.pos[i] / posSum, r.t.pos[i])).join('') +
+                    seg('ms-match', 'match cheating', r.t.mm[0] * 100 / n, r.t.mm[0]) +
                     seg('ms-unsure', 'uncertain only', r.t.uncOnly * 100 / n, r.t.uncOnly) +
                     seg('ms-clean', 'clean', r.t.clean * 100 / n, r.t.clean) +
                     seg('ms-bad', 'bad clip', r.t.bad * 100 / n, r.t.bad);
@@ -2916,6 +3205,7 @@
             '</div>' +
             '<div class="mode-key">' + SHORT_NAME.map((nm, i) =>
                 '<span><i class="ms-' + i + '"></i>' + esc(nm) + '</span>').join('') +
+            '<span><i class="ms-match"></i>match</span>' +
             '<span><i class="ms-unsure"></i>unsure</span>' +
             '<span><i class="ms-clean"></i>clean</span>' +
             '<span><i class="ms-bad"></i>bad</span>' +
@@ -2941,7 +3231,28 @@
                 '<span class="histsub-nums">' +
                 '<b>' + yes + '</b> yes · <i>' + unc + '</i> unc · <s>' + no + '</s> no' +
                 '</span>';
-        }).join('');
+        }).join('') +
+            // Whole-match tasks share the grid but are a different question, so
+            // they read as one more row rather than being folded into the four.
+            (st.mmTotal ? (() => {
+                const [g, u, no] = st.mm;
+                const t = st.mmTotal;
+                const credit = st.mmCredited
+                    ? ' · ' + st.mmCredit + ' clips credited over ' + st.mmCredited +
+                      (st.mmCredited === 1 ? ' match' : ' matches')
+                    : '';
+                return '<span class="histsub-name is-match" data-tip="' +
+                    esc('Whole-match (metamodel) tasks: one verdict for a reel of ' +
+                        'highlights, not a single clip' + credit) + '">MATCH</span>' +
+                    '<span class="histsub-bar">' +
+                    '<i class="b-yes" style="width:' + (g * 100 / t) + '%"></i>' +
+                    '<i class="b-unc" style="width:' + (u * 100 / t) + '%"></i>' +
+                    '<i class="b-no"  style="width:' + (no * 100 / t) + '%"></i>' +
+                    '</span>' +
+                    '<span class="histsub-nums">' +
+                    '<b>' + g + '</b> yes · <i>' + u + '</i> unc · <s>' + no + '</s> no' +
+                    '</span>';
+            })() : '');
 
         // Up to 81 combinations exist; showing them all buries the clip list, so
         // only the meaningful head is open by default.
@@ -3041,11 +3352,23 @@
         // posAny/uncOnly partition the set with clean and bad: every entry lands
         // in exactly one of the four, which is what the mode bars need to fill
         // without gaps. `pos` and `uncertain` overlap by design and can't.
+        // `mm` is [guilty, uncertain, none] for metamodel tasks. They still feed
+        // the four-way partition (so the mode bars stay gapless) but can't
+        // contribute to `pos`, which is per-subproblem and has no counterpart
+        // on a whole-match verdict. mmGuilty therefore gets its own segment.
         const t = { n: entries.length, bad: 0, clean: 0, uncertain: 0, posAny: 0, uncOnly: 0,
-                    pos: [0, 0, 0, 0], vods: {} };
+                    pos: [0, 0, 0, 0], mm: [0, 0, 0], mmN: 0, credit: 0, vods: {} };
         entries.forEach(e => {
             t.vods[e.vod] = 1;
             if (e.code === 'b') { t.bad++; return; }
+            if (isMMCode(e.code)) {
+                t.mmN++;
+                t.credit += e.credit || 0;
+                if (e.code === 'g') { t.mm[0]++; t.posAny++; }
+                else if (e.code === 'u') { t.mm[1]++; t.uncertain++; t.uncOnly++; }
+                else { t.mm[2]++; t.clean++; }
+                return;
+            }
             const s = String(e.code);
             let anyPos = false, anyUnc = false;
             SUBS.forEach((_, i) => {
@@ -3087,6 +3410,7 @@
         { name: 'WH', color: '#f5a623', rate: t => t.pos[1] / t.n },
         { name: 'BH', color: '#7ec2ff', rate: t => t.pos[2] / t.n },
         { name: 'BOT', color: '#c39bf0', rate: t => t.pos[3] / t.n },
+        { name: 'MATCH', color: '#ff9ecb', rate: t => t.mm[0] / t.n },
         { name: 'clean', color: '#6bd47a', rate: t => t.clean / t.n },
         { name: 'unsure', color: '#b8b8b8', rate: t => t.uncertain / t.n },
         { name: 'bad', color: '#7a4fb5', rate: t => t.bad / t.n }
@@ -3299,6 +3623,7 @@
         { id: 'p1', label: 'Wall hack' },
         { id: 'p2', label: 'Auto bhop' },
         { id: 'p3', label: 'Bot' },
+        { id: 'match', label: 'Whole match' },
         { id: 'unsure', label: 'Uncertain' },
         { id: 'clean', label: 'Clean' },
         { id: 'bad', label: 'Bad clip' }
@@ -3306,6 +3631,10 @@
 
     function entryLabels(e) {
         if (e.code === 'b') return ['bad'];
+        if (isMMCode(e.code)) {
+            return e.code === 'g' ? ['match']
+                : (e.code === 'u' ? ['match', 'unsure'] : ['match', 'clean']);
+        }
         const s = String(e.code);
         const out = [];
         let anyUnc = false;
@@ -3440,7 +3769,7 @@
             groupTimeline(g) +
             g.items.map(e => {
                 const s = summarize(e.code);
-                const seg = e.start.toFixed(1) + 's → ' + (e.start + e.len).toFixed(1) + 's';
+                const seg = segLabel(e);
                 const task = e.url
                     ? '<a href="' + esc(e.url) + '" target="_blank" rel="noreferrer" ' +
                       'data-tip="task #' + esc(e.task) + '">view</a>'
@@ -3448,7 +3777,7 @@
                       '">no link</span>';
                 return '<div class="histrow">' +
                     '<span class="cliphistory-verdict ' + s.cls + '">' + s.html + '</span>' +
-                    '<span class="cliphistory-seg">' + esc(seg) + '</span>' +
+                    '<span class="cliphistory-seg">' + esc(seg) + creditBadge(e) + '</span>' +
                     '<span class="cliphistory-meta">' + esc(ago(e.ts)) + ' · ' + task + '</span>' +
                     '</div>';
             }).join('') +
@@ -3466,7 +3795,9 @@
             '<div class="histpopup">' +
             '<div class="histpopup-head">' +
             '<span>Review history — ' + stats.total + ' review' + (stats.total === 1 ? '' : 's') +
-            ' across ' + stats.vods + ' VOD' + (stats.vods === 1 ? '' : 's') + '</span>' +
+            ' across ' + stats.vods + ' VOD' + (stats.vods === 1 ? '' : 's') +
+            (stats.mmCredit ? ' · ' + stats.mmCredit + ' clips credited from matches' : '') +
+            '</span>' +
             '<span class="histpopup-close">X</span>' +
             '</div>' +
             '<div class="histpopup-body">' +
@@ -3890,6 +4221,10 @@
     function ensurePresets() {
         const col = document.querySelector('.verdict-column');
         if (!col || col.querySelector('.presetbuttons')) return;
+        // A metamodel match has one three-way question, already one click each,
+        // so there is nothing for a preset to shortcut -- and every radio these
+        // presets target is absent, which would make them silently do nothing.
+        if (isMetamodel()) return;
         const row = document.createElement('div');
         row.className = 'presetbuttons';
         PRESETS.forEach(p => {
@@ -3968,7 +4303,10 @@
             // and the page navigates away immediately, so log it right now.
             const bad = t.closest('a[onclick*="ReportBadClip"]');
             if (bad) {
-                try { recordCurrentVerdict('b'); } catch (err) { /* never block a submit */ }
+                try {
+                    recordCurrentVerdict('b');
+                    stashCredit(currentVodKey(), parseInt(currentTaskId(), 10) || 0);
+                } catch (err) { /* never block a submit */ }
                 return;
             }
 
@@ -3976,9 +4314,29 @@
             if (!btn) return;
             const wasProceed = !document.getElementById('backbutton');
 
+            // This click IS the one that posts (we're on the confirm screen, so
+            // the verdict labels are already on the form). The page's own
+            // onclick runs after us and calls form.submit() synchronously, so a
+            // deferred log can lose the race with navigation -- do it now,
+            // while the counter still shows the pre-submit value.
+            if (!wasProceed) {
+                try {
+                    recordCurrentVerdict();
+                    stashCredit(currentVodKey(), parseInt(currentTaskId(), 10) || 0);
+                } catch (err) { /* never block a submit */ }
+                return;
+            }
+
             // after the page's handler has built the hidden verdict_labels[]
             setTimeout(() => {
                 try { recordCurrentVerdict(); } catch (err) { /* never block a submit */ }
+                // Unconditional: whether this click posts directly or opens the
+                // confirm screen we then press for the user, the POST happens in
+                // this same tick and the counter can't have moved. Re-stashing
+                // the same task just overwrites, and an unspent stash expires.
+                try {
+                    stashCredit(currentVodKey(), parseInt(currentTaskId(), 10) || 0);
+                } catch (err) { /* credit is a nicety; never block a submit */ }
                 if (!wasProceed) return;
                 // now on the confirm screen: press Confirm for the user
                 const confirmBtn = document.getElementById('submitVerdictButton');
@@ -4014,9 +4372,11 @@
     }
 
     function tick() {
+        step('markLegacyLayout', markLegacyLayout);
         step('unsizePlayer', unsizePlayer);
         step('killJunk', killJunk);
         step('ensureTooltips', ensureTooltips);
+        step('settleCredit', settleCredit);
         step('yoink', yoink);
         step('stripLabelPrefix', stripLabelPrefix);
         step('ensureClipBar', ensureClipBar);
